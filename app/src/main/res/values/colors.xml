@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--#303F9F-->
+    <color name="colorPrimary">#3F51B5</color><!--侧滑栏选中及toolbar背景-->
+    <color name="colorPrimaryDark">#588df59b</color> <!--通知栏颜色-->
+    <color name="colorAccent">#8cb987</color>  <!--悬浮按钮颜色-->
 </resources>
