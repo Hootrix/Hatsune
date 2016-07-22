@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pang.hatsune.R;
 import com.pang.hatsune.fragment.Fragment1News;
@@ -70,12 +71,13 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
         ra2.setCompoundDrawables(drawable1, null, null, null);//只放左边
 
         setFragmentListData();
+        fragmentTransaction.add(R.id.main_fragment_viewgroup, fragment3Echo);
         fragmentTransaction.add(R.id.main_fragment_viewgroup, fragment1News);
         fragmentTransaction.add(R.id.main_fragment_viewgroup, fragment2Channel);
-        fragmentTransaction.add(R.id.main_fragment_viewgroup, fragment3Echo);
         fragmentTransaction.add(R.id.main_fragment_viewgroup, fragment4Celebrity);
         fragmentTransaction.commit(); //commit()方法提交对事务的操作
         radioGroupBottom.check(R.id.main_bottom_radiogroup_r3);//默认点亮第三个radiobutton
+        radioGroupTop.check(R.id.main_top_radiogroup_r1);//默认顶部的第一个点亮：推荐按钮
         //监听浮动按钮
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -239,5 +241,14 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
             radioGroupTop.setVisibility(View.GONE);
             topTitle.setVisibility(View.VISIBLE);
         }
+    }
+
+
+    /**
+     * 监听顶部导航条 右边的按钮
+     * @param v
+     */
+    public void doMusic(View v){
+        Toast.makeText(this,"doMusic执行播放音乐",Toast.LENGTH_SHORT).show();
     }
 }
