@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <!--底部radioGroup-->
+
+    <RadioGroup
+        android:id="@+id/main_bottom_radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/main_bottom_radiogroup_r1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="动态"
+            android:textColor="@color/main_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_radiogroup_r2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="频道"
+            android:textColor="@color/main_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_radiogroup_r3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="回声"
+            android:textColor="@color/main_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_radiogroup_r4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="名人"
+            android:textColor="@color/main_textcolor_selector" />
+    </RadioGroup>
+</LinearLayout>

@@ -2,6 +2,6 @@
 <resources>
     <!--#303F9F-->
     <color name="colorPrimary">#3F51B5</color><!--侧滑栏选中及toolbar背景-->
-    <color name="colorPrimaryDark">#588df59b</color> <!--通知栏颜色-->
+    <color name="colorPrimaryDark">#6ed56c</color> <!--通知栏颜色>#588df59b-->
     <color name="colorAccent">#8cb987</color>  <!--悬浮按钮颜色-->
 </resources>

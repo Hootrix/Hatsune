@@ -4,19 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import android.view.View;
+
 import com.pang.hatsune.R;
 
 /**
  * Created by Administrator on 2016/7/21.
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     private boolean isExit;
 
     private Handler mHandler = new Handler() {
@@ -27,9 +28,64 @@ public class BaseActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+        setContentView(setLayoutResourceID());
+        initView();
+        initViewData();
+    }
+
+    /***
+     * 给绑定的控件设置数据
+     */
+    protected void initViewData() {
+    }
+
+    /***
+     * 用于在初始化View之前做一些事
+     */
+    protected void init() {
+
+    }
+
+    /**
+     * 给view控件赋值 绑定
+     */
+    protected abstract void initView();
+
+
+    /**
+     * 设置view布局界面的layout ID
+     */
+    protected abstract int setLayoutResourceID();
+
+
+    /**
+     * 用于findViewById 绑定控件 ID
+     */
+    protected <T extends View> T $(int id) {
+        return (T) super.findViewById(id);
+    }
+
+    /***
+     * 执行跳转 不带数据包Bundle
+     */
+    protected void startActivityWithoutExtras(Class<?> clazz) {
+        Intent intent = new Intent(this, clazz);
+        startActivity(intent);
+    }
+
+    /***
+     * 执行跳转 带数据包Bundle
+     */
+    protected void startActivityWithExtras(Class<?> clazz, Bundle extras) {
+        Intent intent = new Intent(this, clazz);
+        intent.putExtras(extras);
+        startActivity(intent);
+
     }
 
 
