@@ -277,17 +277,6 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
      * @param v
      */
     public void toggle_left_view(View v) {
-        View clippedView = v;
-        int margin = Math.min(clippedView.getWidth(), clippedView.getHeight()) / 10;
-        Outline mClip = new Outline();
-        mClip.setRoundRect(margin, margin, clippedView.getWidth() - margin,
-                clippedView.getHeight() - margin, margin / 2);
-/* Sets the Outline of the View. */
-//        clippedView.setOutline(mClip);
-/* Enables clipping on the View. */
-        clippedView.setClipToOutline(true);
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {//如果侧滑栏已打开
             drawer.closeDrawer(GravityCompat.START);
