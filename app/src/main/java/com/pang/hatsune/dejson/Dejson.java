@@ -3,8 +3,7 @@ package com.pang.hatsune.dejson;
 import com.google.gson.Gson;
 import com.pang.hatsune.acache.ACache;
 import com.pang.hatsune.http.HttpResquestPang;
-import com.pang.hatsune.info.NewsRecyclerViewInfo;
-import com.pang.hatsune.info.PublisherInfo;
+//import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.SoundInfo;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
 
@@ -21,8 +20,7 @@ public class Dejson {
     private volatile static Dejson instance;//volatile  轻量级同步锁
     private ACache aCache;//缓存网络请求的字符串
 
-    protected Dejson() {
-    }
+    protected Dejson() {}
 
     public static Dejson getInstance() {//仿imageLoader的单例模式
 

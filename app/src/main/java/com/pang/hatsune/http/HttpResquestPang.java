@@ -72,8 +72,10 @@ public class HttpResquestPang {
         hashMap.put("x-sn", "5447780032dd82422231957bdd6c346e56c102e0/1469197053");
         hashMap.put("x-c", "2");
         hashMap.put("x-av", "9");
-        hashMap.put("PHPSESSID", "h3ojsl6a7aq22tvnnafsm1d5i0");
-//        hashMap.put("PHPSESSID","4l1t5o6iovrufi91gojob5tuq6");
+        hashMap.put("Cookie", "PHPSESSID=h3ojsl6a7aq22tvnnafsm1d5i0");
+
+
+//        hashMap.put("Cookie", "PHPSESSID=4l1t5o6iovrufi91gojob5tuq6");
 //        hashMap.put("Host", "echosystem.kibey.com");
         return hashMap;
     }
@@ -89,8 +91,8 @@ public class HttpResquestPang {
 
     public String get(String url, HashMap<String, String> header, String charsetName) {
         String result = "";
-        System.out.println("===get请求地址：" + url);
         aCache = ACache.get(new File(DATA.CACHE_DIR));
+        System.out.println("===get请求地址：" + url);
         try {
             result = aCache.getAsString(url);
             if (TextUtils.isEmpty(result)) {
@@ -101,13 +103,12 @@ public class HttpResquestPang {
             return result;
         } catch (NullPointerException e) {
             System.out.println("===get=无缓存开始请求");
-
+            result = "";
             try {
                 URL u = new URL(url);
                 HttpURLConnection conn = (HttpURLConnection) u.openConnection();// 向下转型为HttpURLConnection
                 conn.setDoInput(true);// 系统默认为true，可以不用
                 conn.setConnectTimeout(5000);// 设置超时
-
                 if (header != null) {
                     Iterator<Map.Entry<String, String>> itor = header.entrySet().iterator();
                     while (itor.hasNext()) {
@@ -121,7 +122,7 @@ public class HttpResquestPang {
                 BufferedReader bfr = new BufferedReader(inr);
                 String s = "";
                 while ((s = bfr.readLine()) != null) {
-                    // System.out.println(s);
+//                     System.out.println("=---------"+s);
                     result += s;
                 }
                 bfr.close();
@@ -132,9 +133,9 @@ public class HttpResquestPang {
             System.out.println("====get=result:" + result);
         }
 
-        if (!TextUtils.isEmpty(result)) {
-            aCache.put(url, result, DATA.CACHE_TIME);
-            System.out.println("====保存缓存！");
+        if (!TextUtils.isEmpty(result)) {//TODO
+//            aCache.put(url, result, DATA.CACHE_TIME);
+//            System.out.println("====保存缓存！");
         }
         return result;
     }

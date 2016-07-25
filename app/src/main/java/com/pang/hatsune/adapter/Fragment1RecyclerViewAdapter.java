@@ -9,8 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pang.hatsune.R;
+import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,39 +51,45 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mItem = infoClass.getDesc();
+//        System.out.println("=============" + holder.mItem.get(position).getSound().getName());
         holder.publisher.setText(holder.mItem.get(position).getPublisher().getName());
         holder.publicTitle.setText(holder.mItem.get(position).getLabel_text());
-        holder.publicTime.setText(holder.mItem.get(position).getCreate_time() + "");
-        holder.content.setText(holder.mItem.get(position).getContent() + "");
+        String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date((long)(holder.mItem.get(position).getCreate_time())));
+        holder.publicTime.setText(date);
+//        holder.content.setText(holder.mItem.get(position).getContent() + "");
 //        holder.musicIcon.setIma
-        holder.musicDes.setText(holder.mItem.get(position).getSound().getName());
-        holder.musicPlayNum.setText(holder.mItem.get(position).getSound().getView_count());
-        holder.comment.setText(holder.mItem.get(position).getComment_num());
-        holder.like.setText(holder.mItem.get(position).getLike_num());
-        holder.share.setText(holder.mItem.get(position).getRelay_num());
+
+//        holder.musicDes.setText(holder.mItem.get(position).getSound().getName());
+        // holder.musicPlayNum.setText(holder.mItem.get(position).getSound().getView_count());
+//        holder.comment.setText(holder.mItem.get(position).getComment_num());
+//        holder.like.setText(holder.mItem.get(position).getLike_num());
+//        holder.share.setText(holder.mItem.get(position).getRelay_num());
     }
 
     @Override
     public int getItemCount() {
-        if (infoClass.getDesc() == null) {
-            return 0;
+        int num = 0;
+        try {
+            num = infoClass.getDesc().size();
+        } catch (NullPointerException e) {
+            return num;
         }
-        return infoClass.getDesc().size();
+        return num;
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView publisher;
-        TextView publicTitle;
-        TextView publicTime;
-        TextView content;
-        ImageView musicIcon;
-        TextView musicDes;
-        TextView musicPlayNum;
-        Button comment;
-        Button like;
-        Button share;
+        public final TextView publicTitle;
+        public final TextView publicTime;
+        public final TextView content;
+        public final ImageView musicIcon;
+        public final TextView musicDes;
+        public final TextView musicPlayNum;
+        public final Button comment;
+        public final Button like;
+        public final Button share;
 
         public List<NewsRecyclerViewInfoGson.DescBean> mItem;
 

@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +17,8 @@
 
             <ImageView
                 android:id="@+id/fragment1_news_recyclerview_item_echo_icon"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/echo_round_logo" />
 
             <ImageView
@@ -67,6 +69,7 @@
         android:layout_weight="1"
         android:padding="20dp"
         android:orientation="vertical"
+        android:background="#fff"
         >
         <TextView
             android:id="@+id/fragment1_news_recyclerview_item_content"
@@ -77,11 +80,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="#f5f5f5"
+            android:paddingRight="20dp"
             >
             <ImageView
                 android:id="@+id/fragment1_news_recyclerview_item_music_icon"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:src="@drawable/echo_round_logo"
                 />
 
@@ -114,8 +119,8 @@
             </LinearLayout>
             <ImageButton
                 android:layout_gravity="center"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@drawable/expression_play_playbalck"
                 />
         </LinearLayout>
