@@ -1,18 +1,33 @@
 package com.pang.hatsune.adapter;
 
+import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.interfaces.DraweeHierarchy;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.pang.hatsune.R;
-import com.pang.hatsune.data.DATA;
+import com.pang.hatsune.fresco.ImageLoadingDrawable;
+import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,10 +36,12 @@ import java.util.List;
  * Created by Administrator on 2016/7/25.
  */
 public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1RecyclerViewAdapter.ViewHolder> {
-    private final NewsRecyclerViewInfoGson infoClass;
+    private final ArrayList<NewsRecyclerViewInfo> list;
+    private Context context;
 
-    public Fragment1RecyclerViewAdapter(NewsRecyclerViewInfoGson infoClass) {
-        this.infoClass = infoClass;
+    public Fragment1RecyclerViewAdapter(Context context,ArrayList<NewsRecyclerViewInfo> list) {
+        this.list = list;
+        this.context = context;
     }
 
     /**
@@ -50,27 +67,40 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mItem = infoClass.getDesc();
-//        System.out.println("=============" + holder.mItem.get(position).getSound().getName());
-        holder.publisher.setText(holder.mItem.get(position).getPublisher().getName());
+        holder.mItem = list;
+        holder.publisher.setText(holder.mItem.get(position).getPublisherInfo().getName());
         holder.publicTitle.setText(holder.mItem.get(position).getLabel_text());
-        String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date((long)(holder.mItem.get(position).getCreate_time())));
+        String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date(Long.valueOf(holder.mItem.get(position).getCreate_time())));
         holder.publicTime.setText(date);
-//        holder.content.setText(holder.mItem.get(position).getContent() + "");
-//        holder.musicIcon.setIma
+        holder.content.setText(holder.mItem.get(position).getContent() + "");
 
-//        holder.musicDes.setText(holder.mItem.get(position).getSound().getName());
-        // holder.musicPlayNum.setText(holder.mItem.get(position).getSound().getView_count());
-//        holder.comment.setText(holder.mItem.get(position).getComment_num());
-//        holder.like.setText(holder.mItem.get(position).getLike_num());
-//        holder.share.setText(holder.mItem.get(position).getRelay_num());
+        holder.musicIcon.setImageURI(Uri.parse(holder.mItem.get(position).getSoundInfo().getPic()));
+
+        ProgressBarDrawable progress =   new ProgressBarDrawable();
+        progress.setBackgroundColor(0xff858585);
+        progress.setColor(0xffffffff);
+        progress.setBarWidth(5);
+        progress.setHideWhenZero(true);
+        GenericDraweeHierarchyBuilder builder =
+                new GenericDraweeHierarchyBuilder(context.getResources());
+        GenericDraweeHierarchy hierarchy = builder
+                .setFadeDuration(300)
+                .setProgressBarImage(progress)
+                .build();
+        holder.musicIcon.setHierarchy(hierarchy);
+
+        holder.musicDes.setText(holder.mItem.get(position).getSoundInfo().getName());
+         holder.musicPlayNum.setText(holder.mItem.get(position).getSoundInfo().getView_count());
+        holder.comment.setText(holder.mItem.get(position).getComment_num());
+        holder.like.setText(holder.mItem.get(position).getLike_num());
+        holder.share.setText(holder.mItem.get(position).getRelay_num());
     }
 
     @Override
     public int getItemCount() {
         int num = 0;
         try {
-            num = infoClass.getDesc().size();
+            num = list.size();
         } catch (NullPointerException e) {
             return num;
         }
@@ -84,14 +114,14 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         public final TextView publicTitle;
         public final TextView publicTime;
         public final TextView content;
-        public final ImageView musicIcon;
+        public final  SimpleDraweeView musicIcon;
         public final TextView musicDes;
         public final TextView musicPlayNum;
         public final Button comment;
         public final Button like;
         public final Button share;
 
-        public List<NewsRecyclerViewInfoGson.DescBean> mItem;
+        public List<NewsRecyclerViewInfo> mItem;
 
         public ViewHolder(View rootView) {
             super(rootView);
@@ -100,7 +130,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
             publicTitle = (TextView) rootView.findViewById(R.id.fragment1_news_recyclerview_item_echo_title);
             publicTime = (TextView) rootView.findViewById(R.id.fragment1_news_recyclerview_item_echo_date);
             content = (TextView) rootView.findViewById(R.id.fragment1_news_recyclerview_item_content);
-            musicIcon = (ImageView) rootView.findViewById(R.id.fragment1_news_recyclerview_item_music_icon);
+            musicIcon = (SimpleDraweeView) rootView.findViewById(R.id.fragment1_news_recyclerview_item_music_icon);
             musicDes = (TextView) rootView.findViewById(R.id.fragment1_news_recyclerview_item_music_title);
             musicPlayNum = (TextView) rootView.findViewById(R.id.fragment1_news_recyclerview_item_music_play_num);
             comment = (Button) rootView.findViewById(R.id.fragment1_news_recyclerview_item_play_comment);

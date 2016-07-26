@@ -3,12 +3,15 @@ package com.pang.hatsune.data;
 import com.pang.hatsune.acache.ACache;
 import com.pang.hatsune.activity.BaseActivity;
 
+import java.util.Locale;
+
 /**
  * Created by Administrator on 2016/7/25.
  */
 public class DATA {
 
-    public static final String DOMAIN = "http://www.app-echo.com";
+    private static boolean LOCALE = true;
+    public static final String DOMAIN = LOCALE ?"http://192.168.9.12":"http://www.app-echo.com";
     public static final String DOMAIN_API_NEWS_DATA = DOMAIN+"/feed/api-friend?page_uid=177480060&page=";//需要页数  动态页数据
 
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import android.view.View;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.pang.hatsune.R;
 
 /**
@@ -48,7 +49,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 用于在初始化View之前做一些事
      */
     protected void init() {
-
     }
 
     /**

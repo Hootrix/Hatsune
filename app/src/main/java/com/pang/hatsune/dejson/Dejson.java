@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.pang.hatsune.acache.ACache;
 import com.pang.hatsune.http.HttpResquestPang;
 //import com.pang.hatsune.info.NewsRecyclerViewInfo;
+import com.pang.hatsune.info.NewsRecyclerViewInfo;
+import com.pang.hatsune.info.PublisherInfo;
 import com.pang.hatsune.info.SoundInfo;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
 
@@ -46,33 +48,37 @@ public class Dejson {
     }
 
 
-//    public ArrayList<NewsRecyclerViewInfo> getNewsInfoJsonObject(String jsonString) {
-//        ArrayList<NewsRecyclerViewInfo> list = new ArrayList<NewsRecyclerViewInfo>();
-//        try {
-//            JSONObject jsonObject = new JSONObject(jsonString);
-//            JSONArray jsonArray = jsonObject.getJSONArray("desc");
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                NewsRecyclerViewInfo newsRecyclerViewInfo = new NewsRecyclerViewInfo();
-//                JSONObject obj = jsonArray.getJSONObject(i);
-//                newsRecyclerViewInfo.setCreate_time(obj.getInt("create_time") + "");
-//                newsRecyclerViewInfo.setLabel_text(obj.getString("label_text"));
-//                newsRecyclerViewInfo.setContent(obj.getString("content"));
-//                newsRecyclerViewInfo.setLike_num(obj.getString("like_num"));
-//                newsRecyclerViewInfo.setComment_num(obj.getString("comment_num"));
-//                newsRecyclerViewInfo.setRelay_num(obj.getString("relay_num"));
-//
-//                obj = obj.getJSONObject("sound");
-//                newsRecyclerViewInfo.setSoundInfo(new SoundInfo().setId(obj.getString("id")).setName(obj.getString("name")).setPic(obj.getString("pic")).setSource(obj.getString("source")));
-//                obj = obj.getJSONObject("publisher");
-//                newsRecyclerViewInfo.setPublisherInfo(new PublisherInfo().setName(obj.getString("name")).setAvatar(obj.getString("avatar")).setAvatar_100(obj.getString("avatar_100")));
-//                list.add(newsRecyclerViewInfo);
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//            System.out.println("解析json异常");
-//        }
-//        return list;
-//    }
+    public ArrayList<NewsRecyclerViewInfo> getNewsInfoJsonObject(String jsonString) {
+        ArrayList<NewsRecyclerViewInfo> list = new ArrayList<NewsRecyclerViewInfo>();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("desc");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                NewsRecyclerViewInfo newsRecyclerViewInfo = new NewsRecyclerViewInfo();
+                JSONObject obj = jsonArray.getJSONObject(i);
+                if(obj.getInt("type")!=0 || !obj.has("sound")){
+                    continue;
+                }
+                newsRecyclerViewInfo.setCreate_time(obj.getInt("create_time") + "");
+                newsRecyclerViewInfo.setLabel_text(obj.getString("label_text"));
+                newsRecyclerViewInfo.setContent(obj.getString("content"));
+                newsRecyclerViewInfo.setLike_num(obj.getInt("like_num")+"");
+                newsRecyclerViewInfo.setComment_num(obj.getInt("comment_num")+"");
+                newsRecyclerViewInfo.setRelay_num(obj.getInt("relay_num")+"");
+             JSONObject soundObj = obj.getJSONObject("sound");
+                newsRecyclerViewInfo.setSoundInfo(new SoundInfo().setId(soundObj.getString("id")).setName(soundObj.getString("name")).setPic(soundObj.getString("pic")).setSource(soundObj.getString("source")));
+                if(obj.has("publisher")){
+                JSONObject publisherObj = obj.getJSONObject("publisher");
+                newsRecyclerViewInfo.setPublisherInfo(new PublisherInfo().setName(publisherObj.getString("name")).setAvatar(publisherObj.getString("avatar")).setAvatar_100(publisherObj.getString("avatar_100")));
+                }
+                list.add(newsRecyclerViewInfo);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            System.out.println("解析json异常");
+        }
+        return list;
+    }
 
 }

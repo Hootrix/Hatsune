@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:orientation="vertical"
-    >
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,12 +21,14 @@
                 android:src="@drawable/echo_round_logo" />
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_alignRight="@id/fragment1_news_recyclerview_item_echo_icon"
                 android:layout_below="@id/fragment1_news_recyclerview_item_echo_icon"
                 android:layout_marginTop="-20dp"
-                android:src="@drawable/vip_m_on" />
+                android:src="@drawable/vip_m_on"
+                />
+
         </RelativeLayout>
 
         <TextView
@@ -83,12 +84,20 @@
             android:background="#f5f5f5"
             android:paddingRight="20dp"
             >
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/fragment1_news_recyclerview_item_music_icon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/echo_round_logo"
-                />
+                fresco:placeholderImage="@drawable/echo_round_logo"
+                >
+                </com.facebook.drawee.view.SimpleDraweeView>
+
+            <!--<ImageView-->
+                <!--android:id="@+id/fragment1_news_recyclerview_item_music_icon"-->
+                <!--android:layout_width="80dp"-->
+                <!--android:layout_height="80dp"-->
+                <!--android:src="@drawable/echo_round_logo"-->
+                <!--/>-->
 
             <LinearLayout
                 android:layout_width="0dp"
