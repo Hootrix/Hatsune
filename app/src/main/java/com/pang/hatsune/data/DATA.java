@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public class DATA {
 
-    private static boolean LOCALE = true;
+    private static boolean LOCALE = false;
     public static final String DOMAIN = LOCALE ?"http://192.168.9.12":"http://www.app-echo.com";
     public static final String DOMAIN_API_NEWS_DATA = DOMAIN+"/feed/api-friend?page_uid=177480060&page=";//需要页数  动态页数据
 
