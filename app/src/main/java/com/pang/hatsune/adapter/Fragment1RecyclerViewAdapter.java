@@ -24,6 +24,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.pang.hatsune.R;
+import com.pang.hatsune.fresco.FrescoConfigClass;
 import com.pang.hatsune.fresco.ImageLoadingDrawable;
 import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
@@ -113,20 +114,22 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         holder.content.setText(holder.mItem.get(position).getContent() + "");
 
         holder.musicIcon.setImageURI(Uri.parse(holder.mItem.get(position).getSoundInfo().getPic()));
+        holder.musicIcon.setHierarchy(FrescoConfigClass.getLoadingProgressHierarchy());
 
-        //图片的加载进度条
-        ProgressBarDrawable progress = new ProgressBarDrawable();
-        progress.setBackgroundColor(0xff858585);
-        progress.setColor(0xffffffff);
-        progress.setBarWidth(5);
-        progress.setHideWhenZero(true);
-        GenericDraweeHierarchyBuilder builder =
-                new GenericDraweeHierarchyBuilder(context.getResources());
-        GenericDraweeHierarchy hierarchy = builder
-                .setFadeDuration(300)
-                .setProgressBarImage(progress)
-                .build();
-        holder.musicIcon.setHierarchy(hierarchy);
+//
+//        //图片的加载进度条
+//        ProgressBarDrawable progress = new ProgressBarDrawable();
+//        progress.setBackgroundColor(0xff858585);
+//        progress.setColor(0xffffffff);
+//        progress.setBarWidth(5);
+//        progress.setHideWhenZero(true);
+//        GenericDraweeHierarchyBuilder builder =
+//                new GenericDraweeHierarchyBuilder(context.getResources());
+//        GenericDraweeHierarchy hierarchy = builder
+//                .setFadeDuration(300)
+//                .setProgressBarImage(progress)
+//                .build();
+//        holder.musicIcon.setHierarchy(hierarchy);
 
         holder.musicDes.setText(holder.mItem.get(position).getSoundInfo().getName());
         holder.musicPlayNum.setText(holder.mItem.get(position).getSoundInfo().getView_count());

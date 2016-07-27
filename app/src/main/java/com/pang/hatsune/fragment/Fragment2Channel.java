@@ -1,7 +1,10 @@
 package com.pang.hatsune.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -11,14 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
 import com.pang.hatsune.custom_view.IndicatorView;
+import com.pang.hatsune.data.DATA;
+import com.pang.hatsune.dehtml.DeHtml;
 import com.pang.hatsune.fragment.image.ImageFragment;
 import com.pang.hatsune.fragment.viewpager.Find;
 import com.pang.hatsune.fragment.viewpager.Suggest;
+import com.pang.hatsune.http.HttpResquestPang;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,8 +36,37 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class Fragment2Channel extends Fragment {
-ViewPager galleryViewpager;
+    ViewPager galleryViewpager;
     ArrayList<Fragment> list;
+    HashMap httpResutl;
+    View rootView;
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                setData();
+
+
+                galleryViewpager.setAdapter(new FragmentPagerAdapter(Fragment2Channel.this.getActivity().getSupportFragmentManager()) {
+                    @Override
+                    public Fragment getItem(int position) {
+                        return list.get(position);
+                    }
+
+                    @Override
+                    public int getCount() {
+                        return list.size();
+                    }
+                });
+
+                IndicatorView mIndicatorView = (IndicatorView) rootView.findViewById(R.id.id_indicator);
+                mIndicatorView.setViewPager(galleryViewpager);//设置滑动指示器
+            }
+        }
+    };
+
+
     public Fragment2Channel() {
         // Required empty public constructor
     }
@@ -36,34 +75,39 @@ ViewPager galleryViewpager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_fragment2_channel,null);
+        rootView = inflater.inflate(R.layout.fragment_fragment2_channel, null);
         galleryViewpager = (ViewPager) rootView.findViewById(R.id.fragment2_channel_gallery_viewpager);
+        new Thread() {
+            @Override
+            public void run() {
+//        super.run();
+                HashMap<String, String> hashMap = new HashMap<String, String>();
+                hashMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2729.4 Safari/537.36");
+                String httpString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_CHANNEL_DATA,hashMap);
+                httpResutl = DeHtml.getInstance().getChannelViewPagerImage(httpString);
+                handler.sendEmptyMessage(1);
+            }
+        }.start();
 
-        ImageView imageView = new ImageView(this.getActivity());
-        imageView.setImageResource(R.drawable.echo_round_logo);
+        return rootView;
+    }
 
-        ImageView imageView2 = new ImageView(this.getActivity());
-        imageView2.setImageResource(R.drawable.disk);
+
+    /**
+     * 设置图片数据
+     */
+    public void setData() {
         list = new ArrayList<Fragment>();
+        Iterator<Map.Entry<String, String>> itor = httpResutl.entrySet().iterator();
+        while(itor.hasNext()){
+            Map.Entry<String, String> t = itor.next();
+            SimpleDraweeView simpleDraweeView = new SimpleDraweeView(Fragment2Channel.this.getContext());
+            simpleDraweeView.setImageURI(Uri.parse(t.getValue()));
+//            simpleDraweeView.setMaxWidth(600);
 
-        list.add(new ImageFragment().setView(imageView));
-        list.add(new ImageFragment().setView(imageView2));
-
-        galleryViewpager.setAdapter(new FragmentPagerAdapter(Fragment2Channel.this.getActivity().getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return list.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return list.size();
-            }
-        });
-
-        IndicatorView   mIndicatorView = (IndicatorView) rootView.findViewById(R.id.id_indicator) ;
-        mIndicatorView.setViewPager(galleryViewpager);//设置滑动指示器
-        return  rootView;
+            list.add(new ImageFragment().setView(simpleDraweeView));
+//            System.out.println(itor.next().getKey());
+        }
     }
 
 }

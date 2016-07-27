@@ -139,8 +139,8 @@ public class Fragment1News extends Fragment {
     public void thread(final int state) {
         switch (state) {
             case -1://下拉刷新
+                lastPage = 1;//默认第一页
                 if(pageNum != 0 && isEnd){//如果已经拉到末尾
-                    lastPage = 1;//默认第一页
                     isEnd = false;
                 }
                 break;
