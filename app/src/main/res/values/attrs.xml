@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="indicator_icon" format="reference"/>
+    <attr name="indicator_margin" format="dimension"/>
+    <attr name="indicator_smooth" format="boolean"/>
+    <declare-styleable name="IndicatorView">
+        <attr name="indicator_icon"/>
+        <attr name="indicator_margin"/>
+        <attr name="indicator_smooth"/>
+    </declare-styleable>
+</resources>

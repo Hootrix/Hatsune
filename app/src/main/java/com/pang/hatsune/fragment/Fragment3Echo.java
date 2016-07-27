@@ -41,44 +41,6 @@ public class Fragment3Echo extends Fragment {
         View v = inflater.inflate(R.layout.fragment_fragment3_echo, container, false);
         viewPager = (ViewPager) v.findViewById(R.id.fragment3_viewpager);
         manager = this.getChildFragmentManager();
-        viewPager.setAdapter(new FragmentPagerAdapter(manager) {
-            @Override
-            public Fragment getItem(int position) {
-                return list.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return list.size();
-            }
-        });
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-//                System.out.println("111111111:"+position);
-                int id = 0;
-                switch (position) {
-                    case 0:
-                        id = R.id.main_top_radiogroup_r1;
-                        break;
-                    case 1:
-                        id = R.id.main_top_radiogroup_r2;
-                        break;
-                    default:
-                        return;
-                }
-                radioGroup.check(id);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

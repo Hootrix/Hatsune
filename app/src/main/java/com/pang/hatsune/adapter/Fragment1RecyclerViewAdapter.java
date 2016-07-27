@@ -22,6 +22,7 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.interfaces.DraweeHierarchy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.pang.hatsune.R;
 import com.pang.hatsune.fresco.ImageLoadingDrawable;
 import com.pang.hatsune.info.NewsRecyclerViewInfo;
@@ -67,8 +68,15 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == loading) {//上拉加载更多的布局
-            TextView loadingView = new TextView(context);
-            return  new ViewHolder(loadingView);
+            //使用loading 文本
+//            TextView loadingView = new TextView(context);
+//            return  new ViewHolder(loadingView);
+
+            //使用loading 动画
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.loading, parent, false);
+
+            return  new ViewHolder(v);
         }
 
         View view = LayoutInflater.from(parent.getContext())
@@ -86,11 +94,14 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (list.get(position)==null) {//加载更多
-            TextView tv = (TextView)holder.mView;
-            tv.setText("Loading...");
-            tv.setTextSize(25);
-            tv.setGravity(Gravity.CENTER);
-            tv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            //设置loading的文本内容，样式
+//            TextView tv = (TextView)holder.mView;
+//            tv.setText("Loading...");
+//            tv.setTextSize(25);
+//            tv.setGravity(Gravity.CENTER);
+//            tv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
             return;
         }
 
@@ -103,6 +114,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
 
         holder.musicIcon.setImageURI(Uri.parse(holder.mItem.get(position).getSoundInfo().getPic()));
 
+        //图片的加载进度条
         ProgressBarDrawable progress = new ProgressBarDrawable();
         progress.setBackgroundColor(0xff858585);
         progress.setColor(0xffffffff);
