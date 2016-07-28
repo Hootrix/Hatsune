@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class Fragment2Channel extends Fragment {
     ArrayList<Fragment> list;
     HashMap httpResutl;
     View rootView;
+
+    RecyclerView horizontalRecyclerView;//横向的recycleView
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -77,6 +80,9 @@ public class Fragment2Channel extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_fragment2_channel, null);
         galleryViewpager = (ViewPager) rootView.findViewById(R.id.fragment2_channel_gallery_viewpager);
+        horizontalRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment2_channel_horizontal_recyclerView);
+
+
         new Thread() {
             @Override
             public void run() {
@@ -86,6 +92,8 @@ public class Fragment2Channel extends Fragment {
                 String httpString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_CHANNEL_DATA,hashMap);
                 httpResutl = DeHtml.getInstance().getChannelViewPagerImage(httpString);
                 handler.sendEmptyMessage(1);
+
+                //todo 请求网络数据获取频道分类的图片
             }
         }.start();
 
