@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffffff"
     >
 <com.facebook.drawee.view.SimpleDraweeView
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
@@ -11,7 +12,10 @@
     android:layout_height="70dp"
     android:layout_gravity="center"
     fresco:roundAsCircle="true"
+    fresco:roundWithOverlayColor="#ffffff"
     />
+
+
     <TextView
         android:id="@+id/fragment2_channel_horizontal_recycleview_item_name"
         android:layout_width="wrap_content"

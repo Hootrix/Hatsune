@@ -39,7 +39,7 @@ public class DeHtml {
 
 
     /**
-     * 获取频道页面的viewpager图片
+     * 获取频道页面的viewpager图片<br/>使用解析html的框架
      * @param jsonString
      * @return
      */
@@ -68,6 +68,28 @@ public class DeHtml {
             i++;
         }
 
+        return list;
+    }
+
+    /**
+     *
+     * 获取频道页面的 频道分类 数据 无图片
+     * @param jsonString
+     * @return
+     */
+    public ArrayList<String> getChannelClassname(String jsonString){
+        ArrayList<String> list = new ArrayList<String>();
+
+        Pattern p = Pattern.compile("style='color:#999'\\s*?href=\"[^\"]+?\">(.*?)</a>", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(jsonString);
+//        System.out.println("hhtjim:--======start");
+        while (m.find()) {//while循环操作
+            String t = m.group(1).trim();
+//            System.out.println(t);
+            list.add(t);
+        }
+//            System.out.println("hhtjim:"+title);
+//            System.out.println("hhtjim:"+url);
         return list;
     }
 }

@@ -8,6 +8,7 @@ import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.PublisherInfo;
 import com.pang.hatsune.info.SoundInfo;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
+import com.pang.hatsune.info.gsonfactory.SearchResltInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,12 +44,6 @@ public class Dejson {
      * @param jsonString
      * @return
      */
-    public NewsRecyclerViewInfoGson getNewsRecyclerViewInfo(String jsonString) {
-        Gson gson = new Gson();// new一个Gson对象
-        NewsRecyclerViewInfoGson a = gson.fromJson(jsonString, NewsRecyclerViewInfoGson.class);
-        return a;
-    }
-
 
     public ArrayList<NewsRecyclerViewInfo> getNewsInfoJsonObject(String jsonString) {
         ArrayList<NewsRecyclerViewInfo> list = new ArrayList<NewsRecyclerViewInfo>();
@@ -84,6 +79,18 @@ public class Dejson {
             System.out.println("解析json异常");
         }
         return list;
+    }
+
+
+    /**
+     * 解析搜索结果的json
+     * @param jsonString
+     * @return
+     */
+    public SearchResltInfo getSearchResult(String jsonString) {
+        Gson gson = new Gson();
+        SearchResltInfo info = gson.fromJson(jsonString, SearchResltInfo.class);
+        return info;
     }
 
 }

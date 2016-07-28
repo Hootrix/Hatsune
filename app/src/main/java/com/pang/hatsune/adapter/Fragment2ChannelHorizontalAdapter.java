@@ -3,6 +3,7 @@ package com.pang.hatsune.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,15 +31,21 @@ public class Fragment2ChannelHorizontalAdapter extends RecyclerView.Adapter<Recy
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.fragment2_channel_horizontal_recycleview_item,null);
+        View v = LayoutInflater.from(context).inflate(R.layout.fragment2_channel_horizontal_recycleview_item, null);
         return new VH(v);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         VH viewholder = (VH) holder;
-        Fragment2ChannelHorizontalInfo  info = list.get(position);
-        viewholder.imageView.setImageURI(Uri.parse(info.getUrl()));
+        Fragment2ChannelHorizontalInfo info = list.get(position);
+        String url = "";
+        try {
+            url = info.getUrl();
+            viewholder.imageView.setImageURI(Uri.parse(info.getUrl()));
+        } catch (NullPointerException e) {
+        }
+
         viewholder.textView.setText(info.getName());
     }
 

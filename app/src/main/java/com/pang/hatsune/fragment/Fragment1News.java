@@ -45,10 +45,13 @@ public class Fragment1News extends Fragment {
     boolean isLoading;//加载更多的状态
     boolean isEnd;//判断是否到结尾了
 
+    private  final int NORMAL = 0;
+    private  final int LOADING = -2;
+    private  final int REFRESH = -1;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 0) {//普通请求，应该是第一次进来
+            if (msg.what == NORMAL) {//普通请求，应该是第一次进来
                 list = Dejson.getInstance().getNewsInfoJsonObject(jsonString);
 //                info = Dejson.getInstance().getNewsRecyclerViewInfo(jsonString);
                 recyclerViewAdapter = new Fragment1RecyclerViewAdapter(Fragment1News.this.getContext(), list);
@@ -61,7 +64,7 @@ public class Fragment1News extends Fragment {
             }
 
 
-            if (msg.what == -1) {//下拉刷新
+            if (msg.what == REFRESH) {//下拉刷新
                 list.clear();
                 list.addAll(Dejson.getInstance().getNewsInfoJsonObject(jsonString));
                 recyclerViewAdapter.notifyDataSetChanged();
@@ -69,7 +72,7 @@ public class Fragment1News extends Fragment {
                 return;
             }
 
-            if (msg.what == -2) {//上拉加载
+            if (msg.what == LOADING) {//上拉加载
                 list.remove(list.size() - 1);
                 ArrayList<NewsRecyclerViewInfo> templist = Dejson.getInstance().getNewsInfoJsonObject(jsonString);
                 if (templist.size() < 1) {
@@ -101,7 +104,7 @@ public class Fragment1News extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {//监听下拉刷新
-                thread(-1);
+                thread(REFRESH);
             }
         });
 
@@ -120,7 +123,7 @@ public class Fragment1News extends Fragment {
                         recyclerViewAdapter.notifyItemInserted(list.size() - 1);
                     }
                     if (dy > 0) {//触摸点向上托
-                        thread(-2);
+                        thread(LOADING);
                     }
                 }
 
@@ -133,7 +136,7 @@ public class Fragment1News extends Fragment {
      * 执行我网络请求
      */
     public void thread() {//默认普通的请求
-        thread(0);
+        thread(NORMAL);
     }
 
     public void thread(final int state) {
