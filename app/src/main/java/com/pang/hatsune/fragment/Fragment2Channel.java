@@ -6,27 +6,26 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment2ChannelHorizontalAdapter;
+import com.pang.hatsune.custom_view.FullyLinearLayoutManager;
 import com.pang.hatsune.custom_view.IndicatorView;
+import com.pang.hatsune.custom_view.RecycleViewDivider;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
 import com.pang.hatsune.dejson.Dejson;
 import com.pang.hatsune.fragment.image.ImageFragment;
-import com.pang.hatsune.fragment.viewpager.Find;
-import com.pang.hatsune.fragment.viewpager.Suggest;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
 import com.pang.hatsune.info.gsonfactory.SearchResltInfo;
@@ -36,7 +35,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 
@@ -53,8 +51,11 @@ public class Fragment2Channel extends Fragment {
     private final int UPDATE_BANNER = 1;//更新banner
     private final int UPDATE_CLASS_NAME = 2;//更新分类数据  只是分类名字  没有图片
     private final int UPDATE_CLASS_IMAGE = 10;//更新分类数据  显示图片
+    private final String DEFAULT_IMAGE = "http://kibey-echo.b0.upaiyun.com/poster/2014/06/06/40c1270e870ab214.jpg";//默认的图片
 
-
+    FragmentManager fragmentManager;
+    FragmentTransaction transaction;
+ArrayList<Fragment> hotAndNewlist;
     RecyclerView horizontalRecyclerView;//横向的recycleView
     Fragment2ChannelHorizontalAdapter horizontalRecyclerViewAdapter;//横向的recycleView 适配器
     ArrayList<Fragment2ChannelHorizontalInfo> hoRelist;//横向的recycleView 容器
@@ -83,11 +84,12 @@ public class Fragment2Channel extends Fragment {
 
             if (msg.what == UPDATE_CLASS_NAME) {//  更新分类数据  只是分类名字  没有图片
                 horizontalRecyclerViewAdapter = new Fragment2ChannelHorizontalAdapter(hoRelist, Fragment2Channel.this.getContext());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Fragment2Channel.this.getContext());
+                LinearLayoutManager linearLayoutManager = new FullyLinearLayoutManager(Fragment2Channel.this.getContext());
                 linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 //                linearLayoutManager.setSmoothScrollbarEnabled();
                 horizontalRecyclerView.setLayoutManager(linearLayoutManager);
                 horizontalRecyclerView.setAdapter(horizontalRecyclerViewAdapter);
+                horizontalRecyclerView.addItemDecoration(new RecycleViewDivider(Fragment2Channel.this.getActivity(), LinearLayoutManager.VERTICAL,50, 0xffffffff));//设置分割线
                 isFinish = true;
             }
 
@@ -115,7 +117,12 @@ public class Fragment2Channel extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        fragmentManager = this.getChildFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+
+
         rootView = inflater.inflate(R.layout.fragment_fragment2_channel, null);
+
         galleryViewpager = (ViewPager) rootView.findViewById(R.id.fragment2_channel_gallery_viewpager);
         horizontalRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment2_channel_horizontal_recyclerView);
 
@@ -169,6 +176,11 @@ public class Fragment2Channel extends Fragment {
             list.add(new ImageFragment().setView(simpleDraweeView));
 //            System.out.println(itor.next().getKey());
         }
+
+
+        //开始设置HotAndNewlist
+        hotAndNewlist = new ArrayList<Fragment>();
+//        hotAndNewlist.add()//todo
     }
 
     /**
@@ -198,7 +210,7 @@ public class Fragment2Channel extends Fragment {
                         try {
                             url = searchResltInfo.getResult().getData().get(0).getSound().getPic();
                         } catch (NullPointerException e) {
-                            url = "http://kibey-echo.b0.upaiyun.com/poster/2014/06/06/40c1270e870ab214.jpg";//没有图片就默认显示爱因斯坦的这张
+                            url = DEFAULT_IMAGE;//没有图片就默认显示爱因斯坦的这张
                         }
                         info.setUrl(url);
 //                        System.out.println("hhtjim:1111:" + url);

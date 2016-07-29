@@ -12,8 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * RecycleView的万能分割线
- * http://blog.csdn.net/pengkv/article/details/50538121
+ * RecycleView的万能分割线<br/>
+ * 修改：根据构造方法中的列表方向（<b>这个好像是分割线方向吧<b/>）来设置分割线的位置<br/>
+ *
+ * 参考：http://blog.csdn.net/pengkv/article/details/50538121
  * Created by Pang on 2016/7/25.
  */
 public class RecycleViewDivider extends RecyclerView.ItemDecoration {
@@ -75,7 +77,19 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-        outRect.set(0, 0, 0, mDividerHeight);
+        //20160729 修改
+        switch (mOrientation) {
+            case LinearLayoutManager.HORIZONTAL:
+                outRect.set(0, 0, 0, mDividerHeight);//底部设置间距分割线
+                break;
+            case LinearLayoutManager.VERTICAL:
+                outRect.set(0, 0, mDividerHeight, 0);//右边设置间距分割线
+                break;
+            default:
+                outRect.set(0, 0, 0, mDividerHeight);
+                break;
+        }
+
     }
 
     //绘制分割线

@@ -1,5 +1,6 @@
 package com.pang.hatsune.activity;
 
+import android.content.res.Configuration;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -343,4 +344,7 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
         Snackbar.make(v, "doMusic执行播放音乐", Snackbar.LENGTH_SHORT).show();
         // Toast.makeText(this, "doMusic执行播放音乐", Toast.LENGTH_SHORT).show();
     }
+
+
+
 }
