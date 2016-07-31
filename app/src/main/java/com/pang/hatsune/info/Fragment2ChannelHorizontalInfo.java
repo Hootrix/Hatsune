@@ -6,7 +6,15 @@ package com.pang.hatsune.info;
 public class Fragment2ChannelHorizontalInfo implements Info {
     private String name;
     private String url;
+    private String id;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUrl() {
         return url;

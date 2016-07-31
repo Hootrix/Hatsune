@@ -15,16 +15,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment2ChannelHorizontalAdapter;
 import com.pang.hatsune.custom_view.FullyLinearLayoutManager;
 import com.pang.hatsune.custom_view.IndicatorView;
+import com.pang.hatsune.custom_view.MyScrollview;
 import com.pang.hatsune.custom_view.RecycleViewDivider;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
 import com.pang.hatsune.dejson.Dejson;
+import com.pang.hatsune.fragment.channel_hotnew.HotAndNewFragment;
 import com.pang.hatsune.fragment.image.ImageFragment;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
@@ -44,6 +47,7 @@ import java.util.Map;
  */
 public class Fragment2Channel extends Fragment {
     ViewPager galleryViewpager;
+    ScrollView myScrollview;
     ArrayList<Fragment> list;
     HashMap httpResutl;
     View rootView;
@@ -55,10 +59,12 @@ public class Fragment2Channel extends Fragment {
 
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
-ArrayList<Fragment> hotAndNewlist;
+    ArrayList<Fragment> hotAndNewlist;
     RecyclerView horizontalRecyclerView;//横向的recycleView
     Fragment2ChannelHorizontalAdapter horizontalRecyclerViewAdapter;//横向的recycleView 适配器
     ArrayList<Fragment2ChannelHorizontalInfo> hoRelist;//横向的recycleView 容器
+
+    ArrayList<HotAndNewFragment> hotAndNewFragmentList;//装热门/最新 fragment的容器
 
     Handler handler = new Handler() {
         @Override
@@ -89,7 +95,7 @@ ArrayList<Fragment> hotAndNewlist;
 //                linearLayoutManager.setSmoothScrollbarEnabled();
                 horizontalRecyclerView.setLayoutManager(linearLayoutManager);
                 horizontalRecyclerView.setAdapter(horizontalRecyclerViewAdapter);
-                horizontalRecyclerView.addItemDecoration(new RecycleViewDivider(Fragment2Channel.this.getActivity(), LinearLayoutManager.VERTICAL,50, 0xffffffff));//设置分割线
+                horizontalRecyclerView.addItemDecoration(new RecycleViewDivider(Fragment2Channel.this.getActivity(), RecycleViewDivider.VERTICAL, 20, 0xffffffff));//设置分割线
                 isFinish = true;
             }
 
@@ -119,12 +125,23 @@ ArrayList<Fragment> hotAndNewlist;
                              Bundle savedInstanceState) {
         fragmentManager = this.getChildFragmentManager();
         transaction = fragmentManager.beginTransaction();
+        hotAndNewFragmentList = new ArrayList<HotAndNewFragment>();
+        HotAndNewFragment hot = new HotAndNewFragment().setType(HotAndNewFragment.HOT);
+        HotAndNewFragment newf = new HotAndNewFragment().setType(HotAndNewFragment.NEW);
+        hotAndNewFragmentList.add(hot);
+        hotAndNewFragmentList.add(newf);
 
 
         rootView = inflater.inflate(R.layout.fragment_fragment2_channel, null);
+        myScrollview = (ScrollView) rootView.findViewById(R.id.myscrollview);
 
         galleryViewpager = (ViewPager) rootView.findViewById(R.id.fragment2_channel_gallery_viewpager);
         horizontalRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment2_channel_horizontal_recyclerView);
+
+
+        transaction.add(R.id.fragment2_channel_hot_and_new, hot);
+//        transaction.add(R.id.fragment2_channel_hot_and_new,newf);
+        transaction.commit();
 
 
         new Thread() {
@@ -182,6 +199,26 @@ ArrayList<Fragment> hotAndNewlist;
         hotAndNewlist = new ArrayList<Fragment>();
 //        hotAndNewlist.add()//todo
     }
+
+
+    /**
+     * 显示隐藏 fragment
+     *
+     * @param fr
+     */
+    public void displayFragment(Fragment fr) {//传入需要显示的Fragment
+        transaction = fragmentManager.beginTransaction();
+        transaction.show(fr);
+        Iterator<Fragment> it = list.iterator();
+        while (it.hasNext()) {
+            Fragment f = it.next();
+            if (f != fr) {
+                transaction.hide(f);
+            }
+        }
+        transaction.commit();
+    }
+
 
     /**
      * 用于抓取分类图标的线程

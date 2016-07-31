@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,11 +15,15 @@ import android.view.View;
 /**
  * RecycleView的万能分割线<br/>
  * 修改：根据构造方法中的列表方向（<b>这个好像是分割线方向吧<b/>）来设置分割线的位置<br/>
- *
+ * <p/>
  * 参考：http://blog.csdn.net/pengkv/article/details/50538121
  * Created by Pang on 2016/7/25.
  */
 public class RecycleViewDivider extends RecyclerView.ItemDecoration {
+
+    public static final int VERTICAL = LinearLayoutManager.VERTICAL;
+    public static final int HORIZONTAL = LinearLayoutManager.HORIZONTAL;
+    public static final int HORIZONTAL_VERTICAL = 3;
 
     private Paint mPaint;
     private Drawable mDivider;
@@ -33,7 +38,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
      * @param orientation 列表方向
      */
     public RecycleViewDivider(Context context, int orientation) {
-        if (orientation != LinearLayoutManager.VERTICAL && orientation != LinearLayoutManager.HORIZONTAL) {
+        if (orientation != VERTICAL && orientation != HORIZONTAL && orientation != HORIZONTAL_VERTICAL) {
             throw new IllegalArgumentException("请输入正确的参数！");
         }
         mOrientation = orientation;
@@ -77,16 +82,33 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
+//        parent.getChildPosition(view) != 0  获取position
+//        parent.getChildCount()
+//        int spanCount = -1;
+//        int position = parent.getChildLayoutPosition(view);
+//        try{
+//            spanCount = ((GridLayoutManager) parent.getLayoutManager()).getSpanCount();//获取列数
+//        }catch (ClassCastException e){
+//             spanCount = -1;
+//        }
+//        if (spanCount != -1 && position < spanCount) {
+//            outRect.set(mDividerHeight, 0, mDividerHeight, 0);//grid中给第一排顶部不设置
+//            return;
+//        }
+
         //20160729 修改
+
         switch (mOrientation) {
-            case LinearLayoutManager.HORIZONTAL:
-                outRect.set(0, 0, 0, mDividerHeight);//底部设置间距分割线
+            case HORIZONTAL:
+                outRect.set(0, mDividerHeight, 0, mDividerHeight);//顶/底部设置间距分割线
                 break;
-            case LinearLayoutManager.VERTICAL:
-                outRect.set(0, 0, mDividerHeight, 0);//右边设置间距分割线
+            case VERTICAL:
+                outRect.set(mDividerHeight, 0, mDividerHeight, 0);//左/右边设置间距分割线
+                break;
+            case HORIZONTAL_VERTICAL:
+                outRect.set(mDividerHeight, mDividerHeight, mDividerHeight, mDividerHeight);//右边设置间距分割线
                 break;
             default:
-                outRect.set(0, 0, 0, mDividerHeight);
                 break;
         }
 
@@ -96,7 +118,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
-        if (mOrientation == LinearLayoutManager.VERTICAL) {
+        if (mOrientation == VERTICAL) {
             drawVertical(c, parent);
         } else {
             drawHorizontal(c, parent);

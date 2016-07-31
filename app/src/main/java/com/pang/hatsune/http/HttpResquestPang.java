@@ -80,6 +80,17 @@ public class HttpResquestPang {
         return hashMap;
     }
 
+    public HashMap<String, String> getPCHeaders() {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("Cookie", "PHPSESSID=h3ojsl6a7aq22tvnnafsm1d5i0");
+
+        hashMap.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2729.4 Safari/537.36");
+
+//        hashMap.put("Cookie", "PHPSESSID=4l1t5o6iovrufi91gojob5tuq6");
+//        hashMap.put("Host", "echosystem.kibey.com");
+        return hashMap;
+    }
+
 
     public String get(String url) {
         return get(url, getDefaultHeaders());
@@ -92,7 +103,7 @@ public class HttpResquestPang {
     public String get(String url, HashMap<String, String> header, String charsetName) {
         String result = "";
         aCache = ACache.get(new File(DATA.CACHE_DIR));
-        System.out.println("===get请求地址：" + url);
+//        System.out.println("===get请求地址：" + url);
         try {
             result = aCache.getAsString(url);
             if (TextUtils.isEmpty(result)) {
@@ -130,7 +141,7 @@ public class HttpResquestPang {
                 e.printStackTrace();
                 System.err.println("HttpResquestClass.post()---Exception");
             }
-            System.out.println("====get=result:" + result);
+            System.out.println("===get请求地址：" + url+" ===result:" + result);
         }
 
         if (!TextUtils.isEmpty(result)) {//TODO

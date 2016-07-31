@@ -69,7 +69,7 @@ public class FullyGridLayoutManager extends GridLayoutManager {
             case View.MeasureSpec.UNSPECIFIED:
         }
 
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(width, height);//todo 修改 添加高度
     }
 
     private void measureScrapChild(RecyclerView.Recycler recycler, int position, int widthSpec,
