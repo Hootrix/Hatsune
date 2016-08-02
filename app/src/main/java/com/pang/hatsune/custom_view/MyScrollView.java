@@ -9,12 +9,12 @@ import android.widget.ScrollView;
 
 /**
  *
- * 屏蔽 滑动事件  设置滚动监听
+ * 屏蔽 滑动事件  设置滚动监听..
  * Created by fc on 2015/7/16.
  *
  */
 
-public class MyScrollView extends ScrollView {
+ class MyScrollView extends ScrollView {
     private int downX;
     private int downY;
     private int mTouchSlop;
@@ -73,7 +73,7 @@ public class MyScrollView extends ScrollView {
     }
 
     public interface OnScrollChangeListener{
-        void onScrollChange(MyScrollView view,int x,int y,int oldx,int oldy);
+        void onScrollChange(MyScrollView view, int x, int y, int oldx, int oldy);
         void onScrollBottomListener();
         void onScrollTopListener();
     }
