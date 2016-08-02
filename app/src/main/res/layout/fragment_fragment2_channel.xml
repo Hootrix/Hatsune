@@ -5,7 +5,7 @@
     android:orientation="vertical"
     tools:context="com.pang.hatsune.fragment.Fragment2Channel">
     <!--com.pang.hatsune.custom_view.My-->
-    <ScrollView
+    <com.pang.hatsune.custom_view.MyScrollView
         android:id="@+id/myscrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,28 +25,7 @@
                 android:inputType="text"
                 android:singleLine="true" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp">
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/fragment2_channel_gallery_viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
-
-                <!--滑动指示器-->
-                <com.pang.hatsune.custom_view.IndicatorView xmlns:zgy="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/id_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="5dp"
-                    android:padding="5dp"
-                    zgy:indicator_icon="@drawable/indicator_selector"
-                    zgy:indicator_margin="5dp"
-                    zgy:indicator_smooth="true" />
-            </RelativeLayout>
+            <include layout="@layout/image_viewpager" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,19 +48,23 @@
 
 
             <android.support.v7.widget.RecyclerView
-                android:background="#ffffff"
                 android:id="@+id/fragment2_channel_horizontal_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="90dp">
+                android:layout_height="90dp"
+                android:background="#ffffff">
 
             </android.support.v7.widget.RecyclerView>
 
             <RadioGroup
+                android:id="@+id/fragment2_channel_hot_and_new_radiogroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/fragment2_channel_hot_and_new_r1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -92,6 +75,7 @@
                     android:textSize="20sp" />
 
                 <RadioButton
+                    android:id="@+id/fragment2_channel_hot_and_new_r2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -102,12 +86,12 @@
                     android:textSize="20sp" />
             </RadioGroup>
 
-            <!--todo 打算做碎片-->
+
             <LinearLayout
                 android:id="@+id/fragment2_channel_hot_and_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"></LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.pang.hatsune.custom_view.MyScrollView>
 </LinearLayout>
