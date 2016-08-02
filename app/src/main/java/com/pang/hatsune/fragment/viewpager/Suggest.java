@@ -22,7 +22,7 @@ public class Suggest extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.viewpager_fragment1_suggest, null);
+        View v = inflater.inflate(R.layout.fragment3_echo_viewpager_fragment1_suggest, null);
         return v;
     }
 }

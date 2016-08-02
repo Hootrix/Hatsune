@@ -115,7 +115,6 @@ public class Fragment1News extends Fragment {
                 LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int lastItemIndex = manager.findLastVisibleItemPosition();
                 int firstItemIndex = manager.findFirstVisibleItemPosition();
-//                Log.i("aa","进了onScrolled："+lastItemIndex+":"+list.size());
                 //滑动到最后一个并且状态不是加载中,执行加载更多，isLoading默认值false
                 if (lastItemIndex >= list.size() - 1 && !isLoading) {//若最后一项的布局高度比较高，列表的下边界在最后一项高度以内 都会触发if
                     if (!isEnd) {

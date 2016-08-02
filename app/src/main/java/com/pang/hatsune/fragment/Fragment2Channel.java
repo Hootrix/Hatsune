@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -22,7 +23,6 @@ import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment2ChannelHorizontalAdapter;
 import com.pang.hatsune.custom_view.FullyLinearLayoutManager;
 import com.pang.hatsune.custom_view.IndicatorView;
-import com.pang.hatsune.custom_view.MyScrollview;
 import com.pang.hatsune.custom_view.RecycleViewDivider;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
@@ -48,7 +48,7 @@ import java.util.Map;
 public class Fragment2Channel extends Fragment {
     ViewPager galleryViewpager;
     ScrollView myScrollview;
-    ArrayList<Fragment> list;
+    ArrayList<Fragment> imageFragmentList;
     HashMap httpResutl;
     View rootView;
     boolean isFinish;//是否完成分类文本数据加载
@@ -59,7 +59,6 @@ public class Fragment2Channel extends Fragment {
 
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
-    ArrayList<Fragment> hotAndNewlist;
     RecyclerView horizontalRecyclerView;//横向的recycleView
     Fragment2ChannelHorizontalAdapter horizontalRecyclerViewAdapter;//横向的recycleView 适配器
     ArrayList<Fragment2ChannelHorizontalInfo> hoRelist;//横向的recycleView 容器
@@ -75,12 +74,12 @@ public class Fragment2Channel extends Fragment {
                 galleryViewpager.setAdapter(new FragmentPagerAdapter(Fragment2Channel.this.getActivity().getSupportFragmentManager()) {
                     @Override
                     public Fragment getItem(int position) {
-                        return list.get(position);
+                        return imageFragmentList.get(position);
                     }
 
                     @Override
                     public int getCount() {
-                        return list.size();
+                        return imageFragmentList.size();
                     }
                 });
 
@@ -135,12 +134,12 @@ public class Fragment2Channel extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_fragment2_channel, null);
         myScrollview = (ScrollView) rootView.findViewById(R.id.myscrollview);
 
-        galleryViewpager = (ViewPager) rootView.findViewById(R.id.fragment2_channel_gallery_viewpager);
+        galleryViewpager = (ViewPager) rootView.findViewById(R.id.image_viewpager);
         horizontalRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment2_channel_horizontal_recyclerView);
 
 
         transaction.add(R.id.fragment2_channel_hot_and_new, hot);
-//        transaction.add(R.id.fragment2_channel_hot_and_new,newf);
+        transaction.add(R.id.fragment2_channel_hot_and_new,newf);
         transaction.commit();
 
 
@@ -174,6 +173,31 @@ public class Fragment2Channel extends Fragment {
         thread.setPriority(Thread.NORM_PRIORITY - 3);//降低线程优先级
         thread.start();
 
+
+
+        //最新 最热  按钮监听
+        RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.fragment2_channel_hot_and_new_radiogroup);
+        radioGroup.check(R.id.fragment2_channel_hot_and_new_r1);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // int position = 0;
+                switch (checkedId) {
+                    case R.id.fragment2_channel_hot_and_new_r1:
+                        //  position = 0;
+                        displayFragment(hotAndNewFragmentList.get(0));
+                        break;
+                    case R.id.fragment2_channel_hot_and_new_r2:
+                        // position = 1;
+                        displayFragment(hotAndNewFragmentList.get(1));
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
+
         return rootView;
     }
 
@@ -182,7 +206,7 @@ public class Fragment2Channel extends Fragment {
      * 设置图片数据
      */
     public void setData() {
-        list = new ArrayList<Fragment>();
+        imageFragmentList = new ArrayList<Fragment>();
         Iterator<Map.Entry<String, String>> itor = httpResutl.entrySet().iterator();
         while (itor.hasNext()) {
             Map.Entry<String, String> t = itor.next();
@@ -190,14 +214,10 @@ public class Fragment2Channel extends Fragment {
             simpleDraweeView.setImageURI(Uri.parse(t.getValue()));
 //            simpleDraweeView.setMaxWidth(600);
 
-            list.add(new ImageFragment().setView(simpleDraweeView));
+            imageFragmentList.add(new ImageFragment().setView(simpleDraweeView));
 //            System.out.println(itor.next().getKey());
         }
 
-
-        //开始设置HotAndNewlist
-        hotAndNewlist = new ArrayList<Fragment>();
-//        hotAndNewlist.add()//todo
     }
 
 
@@ -209,7 +229,7 @@ public class Fragment2Channel extends Fragment {
     public void displayFragment(Fragment fr) {//传入需要显示的Fragment
         transaction = fragmentManager.beginTransaction();
         transaction.show(fr);
-        Iterator<Fragment> it = list.iterator();
+        Iterator<HotAndNewFragment> it = hotAndNewFragmentList.iterator();
         while (it.hasNext()) {
             Fragment f = it.next();
             if (f != fr) {

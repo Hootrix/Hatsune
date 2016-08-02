@@ -7,14 +7,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment2ChannelHotAndNewAdapter;
 import com.pang.hatsune.custom_view.FullyGridLayoutManager;
+import com.pang.hatsune.custom_view.MyScrollView;
 import com.pang.hatsune.custom_view.RecycleViewDivider;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
@@ -24,7 +28,7 @@ import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
 import java.util.ArrayList;
 
 /**
- * 频道页面的  页面和最新数据的fragment
+ * 频道页面的  热门和最新数据的fragment
  * Created by Administrator on 2016/7/29.
  */
 public class HotAndNewFragment extends Fragment {
@@ -43,20 +47,10 @@ public class HotAndNewFragment extends Fragment {
     Fragment2ChannelHotAndNewAdapter adapter;
     ArrayList<Fragment2ChannelHorizontalInfo> list, loadingList;
 
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-//            switch (type) {
-//                case HOT:
-//
-//                    break;
-//                case NEW:
-//
-//                    break;
-//            }
-
 
             if (msg.what == NORMAL) {
                 adapter = new Fragment2ChannelHotAndNewAdapter(list, HotAndNewFragment.this.getActivity());
@@ -66,9 +60,15 @@ public class HotAndNewFragment extends Fragment {
             }
 
             if (msg.what == LOADING_MORE) {
+                loadingProgress.setVisibility(View.GONE);
+
+                if (loadingList != null && loadingList.size() < 1) {
+                    isEnd = true;
+                    return;
+                }
+
                 list.addAll(loadingList);
                 adapter.notifyDataSetChanged();
-                loadingProgress.setVisibility(View.GONE);
 
 
 //                adapter.notifyItemRemoved(list.size());
@@ -108,31 +108,56 @@ public class HotAndNewFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+//                System.out.println("hhtjim:888");
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                System.out.println("hhtjim:887");
-                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int lastItemIndex = manager.findLastVisibleItemPosition();
-                int firstItemIndex = manager.findFirstVisibleItemPosition();
-//                Log.i("aa","进了onScrolled："+lastItemIndex+":"+list.size());
-                //滑动到最后一个并且状态不是加载中,执行加载更多，isLoading默认值false
-                if (lastItemIndex >= list.size() - 1 && !isLoading) {//若最后一项的布局高度比较高，列表的下边界在最后一项高度以内 都会触发if
+//                System.out.println("hhtjim:887");
+//                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//                int lastItemIndex = manager.findLastVisibleItemPosition();
+//                int firstItemIndex = manager.findFirstVisibleItemPosition();
+////                Log.i("aa","进了onScrolled："+lastItemIndex+":"+list.size());
+//                //滑动到最后一个并且状态不是加载中,执行加载更多，isLoading默认值false
+//                if (lastItemIndex >= list.size() - 1 && !isLoading) {//若最后一项的布局高度比较高，列表的下边界在最后一项高度以内 都会触发if
+//                    if (!isEnd) {
+//                        loadingProgress.setVisibility(View.VISIBLE);
+//
+////                        list.add(null);
+////                        adapter.notifyItemInserted(list.size() - 1);
+//                    }
+//                    if (dy > 0) {//触摸点向上托
+//                        thread();
+//                    }
+//                }
+//                System.out.println("hhtjim:lastItemIndex:" + lastItemIndex);
+//                System.out.println("hhtjim:list.size():" + list.size());
+
+            }
+        });
+
+        MyScrollView myscrollview = (MyScrollView) this.getActivity().findViewById(R.id.myscrollview);
+        myscrollview.setOnScrollChangeListener(new MyScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(MyScrollView view, int x, int y, int oldx, int oldy) {
+            }
+
+            @Override
+            public void onScrollBottomListener() {
+//                System.out.println("hhtjim::"+"进了onScrolled底部");
+
+                if (!isLoading) {//若没有loading
                     if (!isEnd) {
                         loadingProgress.setVisibility(View.VISIBLE);
-
-//                        list.add(null);
-//                        adapter.notifyItemInserted(list.size() - 1);
-                    }
-                    if (dy > 0) {//触摸点向上托
-                        thread();
+                        thread(LOADING_MORE);
+//                        System.out.println("hhtjim:99:执行loading thread");
                     }
                 }
-                    System.out.println("hhtjim:lastItemIndex:"+lastItemIndex);
-                    System.out.println("hhtjim:list.size():"+list.size());
+            }
 
+            @Override
+            public void onScrollTopListener() {
             }
         });
 
@@ -157,26 +182,38 @@ public class HotAndNewFragment extends Fragment {
     }
 
     public void thread(final int state) {
-        new Thread() {
-            @Override
-            public void run() {
+        if (!isLoading) {
+            new Thread() {
+                @Override
+                public void run() {
+                    isLoading = true;
 //                super.run();
+                    for (int i = 0; i < 2; i++) {
+                        String url = HotAndNewFragment.this.type == HOT ? DATA.DOMAIN_API_HOT_DATA : DATA.DOMAIN_API_NEW_DATA;
+                        String htmlString = "";
+                        w:
+                        while (true) {
+                            htmlString = HttpResquestPang.getInstance().get(url + ++lastNum, HttpResquestPang.getInstance().getPCHeaders());//url + ++lastNum
+                            if (!TextUtils.isEmpty(htmlString)) {
+                                break w;
+                            }
+                        }
 
-                for (int i = 0; i < 2; i++) {
-                    String url = HotAndNewFragment.this.type == HOT ? DATA.DOMAIN_API_HOT_DATA : DATA.DOMAIN_API_NEW_DATA;
-                    String htmlString = HttpResquestPang.getInstance().get(url + ++lastNum, HttpResquestPang.getInstance().getPCHeaders());//url + ++lastNum
+                        if (state == NORMAL && i < 1) {
+                            list = DeHtml.getInstance().getHotAndNewData(htmlString);
+                            handler.sendEmptyMessage(NORMAL);
+                        } else {
+                            loadingList = DeHtml.getInstance().getHotAndNewData(htmlString);
+                            handler.sendEmptyMessage(LOADING_MORE);
 
-                    if (state == NORMAL && i < 1) {
-                        list = DeHtml.getInstance().getHotAndNewData(htmlString);
-                        handler.sendEmptyMessage(NORMAL);
-                    } else {
-                        loadingList = DeHtml.getInstance().getHotAndNewData(htmlString);
-                        handler.sendEmptyMessage(LOADING_MORE);
-
+                        }
                     }
+
+
                 }
-            }
-        }.start();
+            }.start();
+        }
+
     }
 
 

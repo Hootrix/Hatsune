@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.pang.hatsune.R;
+import com.pang.hatsune.custom_view.IndicatorView;
 import com.pang.hatsune.fragment.viewpager.Find;
 import com.pang.hatsune.fragment.viewpager.Suggest;
 
@@ -27,6 +28,7 @@ public class Fragment3Echo extends Fragment {
     FragmentManager manager;
     RadioGroup radioGroup;
 
+
     public Fragment3Echo() {
         // Required empty public constructor
     }
@@ -41,6 +43,46 @@ public class Fragment3Echo extends Fragment {
         View v = inflater.inflate(R.layout.fragment_fragment3_echo, container, false);
         viewPager = (ViewPager) v.findViewById(R.id.fragment3_viewpager);
         manager = this.getChildFragmentManager();
+        viewPager.setAdapter(new FragmentPagerAdapter(manager) {
+            @Override
+            public Fragment getItem(int position) {
+                return list.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return list.size();
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int id = 0;
+                switch (position) {
+                    case 0:
+                        id = R.id.main_top_radiogroup_r1;
+                        break;
+                    case 1:
+                        id = R.id.main_top_radiogroup_r2;
+                        break;
+                    default:
+                        id = R.id.main_top_radiogroup_r1;
+                        break;
+                }
+                radioGroup.check(id);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -55,7 +97,7 @@ public class Fragment3Echo extends Fragment {
                     default:
                         break;
                 }
-                viewPager.setCurrentItem(id,true);
+                viewPager.setCurrentItem(id, true);
             }
         });
         return v;
