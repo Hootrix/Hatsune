@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp"
+    >
+
+    <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="center"
+        android:id="@+id/fragment3_echo_suggest_sound_info_grid_item_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        fresco:actualImageScaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/fragment3_echo_suggest_sound_info_grid_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:gravity="center"
+        android:textSize="17sp"
+        android:text="desc"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        >
+        <TextView
+            android:id="@+id/fragment3_echo_suggest_sound_info_grid_item_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/appColorGreen"
+            android:text="channel"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="频道"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

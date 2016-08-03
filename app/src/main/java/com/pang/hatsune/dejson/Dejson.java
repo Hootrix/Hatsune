@@ -7,6 +7,8 @@ import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.PublisherInfo;
 import com.pang.hatsune.info.SoundInfo;
+import com.pang.hatsune.info.gsonfactory.EchoSuggestBannerInfo;
+import com.pang.hatsune.info.gsonfactory.EchoSuggestSoundPageInfo;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
 import com.pang.hatsune.info.gsonfactory.SearchResltInfo;
 
@@ -90,6 +92,29 @@ public class Dejson {
     public SearchResltInfo getSearchResult(String jsonString) {
         Gson gson = new Gson();
         SearchResltInfo info = gson.fromJson(jsonString, SearchResltInfo.class);
+        return info;
+    }
+
+
+    /**
+     * 回声 推荐页 的banner  json 解析
+     * @param jsonString
+     * @return
+     */
+    public EchoSuggestBannerInfo getEchoSuggestBannerInfo(String jsonString) {
+        Gson gson = new Gson();
+        EchoSuggestBannerInfo info = gson.fromJson(jsonString, EchoSuggestBannerInfo.class);
+        return info;
+    }
+
+    /**
+     * 回声 推荐页 的banner下面的音乐封装信息  json 解析
+     * @param jsonString
+     * @return
+     */
+    public EchoSuggestSoundPageInfo getEchoSuggestSoundPageInfoo(String jsonString) {
+        Gson gson = new Gson();
+        EchoSuggestSoundPageInfo info = gson.fromJson(jsonString, EchoSuggestSoundPageInfo.class);
         return info;
     }
 

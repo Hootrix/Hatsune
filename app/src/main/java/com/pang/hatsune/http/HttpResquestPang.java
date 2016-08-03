@@ -78,6 +78,11 @@ public class HttpResquestPang {
 //        hashMap.put("Cookie", "PHPSESSID=4l1t5o6iovrufi91gojob5tuq6");
 //        hashMap.put("Cookie", "PHPSESSID=0ip3sakccou7hmd2mu2ahhofh7");//0901过期
 //        hashMap.put("Host", "echosystem.kibey.com");
+
+
+        //可用
+//        x-a-sn: 9a4246842c4195a770178c5054fed151c67f0dc1
+//        x-sn: e777c0e12c7eb7f0e7382f940a396e9389a4ae8a/1470199362
         return hashMap;
     }
 
@@ -114,35 +119,42 @@ public class HttpResquestPang {
             System.out.println("====get=result::" + result);
             return result;
         } catch (NullPointerException e) {
-            System.out.println("===get=无缓存开始请求");
-            result = "";
-            try {
-                URL u = new URL(url);
-                HttpURLConnection conn = (HttpURLConnection) u.openConnection();// 向下转型为HttpURLConnection
-                conn.setDoInput(true);// 系统默认为true，可以不用
-                conn.setConnectTimeout(5000);// 设置超时
-                if (header != null) {
-                    Iterator<Map.Entry<String, String>> itor = header.entrySet().iterator();
-                    while (itor.hasNext()) {
-                        Map.Entry<String, String> en = itor.next();
-                        conn.addRequestProperty(en.getKey(), en.getValue());// 请求头设置
-                    }
-                }
 
-                InputStream in = conn.getInputStream();// 自定义请求头时，获取服务器返回的输入流
-                InputStreamReader inr = new InputStreamReader(in, charsetName);// 转换流，使用编码
-                BufferedReader bfr = new BufferedReader(inr);
-                String s = "";
-                while ((s = bfr.readLine()) != null) {
+            loop: while (true){ // 循环处理避免返回空白内容
+                System.out.println("===get=无缓存开始请求");
+                result = "";
+                try {
+                    URL u = new URL(url);
+                    HttpURLConnection conn = (HttpURLConnection) u.openConnection();// 向下转型为HttpURLConnection
+                    conn.setDoInput(true);// 系统默认为true，可以不用
+                    conn.setConnectTimeout(5000);// 设置超时
+                    if (header != null) {
+                        Iterator<Map.Entry<String, String>> itor = header.entrySet().iterator();
+                        while (itor.hasNext()) {
+                            Map.Entry<String, String> en = itor.next();
+                            conn.addRequestProperty(en.getKey(), en.getValue());// 请求头设置
+                        }
+                    }
+
+                    InputStream in = conn.getInputStream();// 自定义请求头时，获取服务器返回的输入流
+                    InputStreamReader inr = new InputStreamReader(in, charsetName);// 转换流，使用编码
+                    BufferedReader bfr = new BufferedReader(inr);
+                    String s = "";
+                    while ((s = bfr.readLine()) != null) {
 //                     System.out.println("=---------"+s);
-                    result += s;
+                        result += s;
+                    }
+                    bfr.close();
+                } catch (Exception ee) {
+                    e.printStackTrace();
+                    System.err.println("HttpResquestClass.post()---Exception");
                 }
-                bfr.close();
-            } catch (Exception ee) {
-                e.printStackTrace();
-                System.err.println("HttpResquestClass.post()---Exception");
+                System.out.println("===get请求地址：" + url+" ===result:" + result);
+
+                if(!TextUtils.isEmpty(result)){
+                    break loop;
+                }
             }
-            System.out.println("===get请求地址：" + url+" ===result:" + result);
         }
 
         if (!TextUtils.isEmpty(result)) {//TODO

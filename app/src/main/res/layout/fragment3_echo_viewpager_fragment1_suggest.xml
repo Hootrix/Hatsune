@@ -5,14 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/image_viewpager" />
+    <!--<include layout="@layout/image_viewpager" />-->
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment3_echo_viewpager_fragment1_suggest_recycleview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="0000000000000000000000000"
-        android:textIsSelectable="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
