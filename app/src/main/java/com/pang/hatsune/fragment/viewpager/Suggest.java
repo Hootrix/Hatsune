@@ -48,7 +48,7 @@ public class Suggest extends Fragment {
     private final int GOGOING_SOUNDINFO_LOADING = 3;
     private boolean isLoading;
     private boolean isEnd;
-
+    GridLayoutManager gridLayoutManager;
     IndicatorView mIndicatorView;
 
     RecyclerView soundGridrecyclerView;
@@ -79,51 +79,27 @@ public class Suggest extends Fragment {
                 });
 
                 mIndicatorView.setViewPager(imageViewpager);//设置滑动指示器
+
             }
 
 
             if (msg.what == GOGOING_SOUNDINFO) {
-                soundGridrecyclerView.setLayoutManager(new GridLayoutManager(Suggest.this.getContext(), 2));
+                gridLayoutManager = new GridLayoutManager(Suggest.this.getContext(), 2);
+
+                /**
+                 * 判断recycleview的position 来动态返回item项占用的单位
+                 */
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        return (soundGridList.get(position) == null || position == 0) ? 2 : 1;
+                    }
+                });
+                soundGridrecyclerView.setLayoutManager(gridLayoutManager);
                 soundGridList = soundPageInfo.getDesc().getData();
                 soundGridAdapter = new Fragment3EchoSuggestSoundAdapter(Suggest.this.getActivity(), soundGridList);
-                soundGridAdapter.setHeaderView(headerView);
                 soundGridrecyclerView.setAdapter(soundGridAdapter);
-
-//                soundGridrecyclerView.setAdapter(new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-//
-//                    @Override
-//                    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//                        View v = LayoutInflater.from(Suggest.this.getActivity()).inflate(R.layout.fragment3_echo_suggest_sound_info_grid_item,null);
-//                        return new VH(v);
-//                    }
-//
-//                    @Override
-//                    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-//                        VH vh = (VH) holder;
-////                        soundPageInfo.getDesc().getData().get(position).getSound().getPic();
-////                        soundPageInfo.getDesc().getData().get(position).getSound().getId();//id
-////                        soundPageInfo.getDesc().getData().get(position).getSound().getSource();//音乐资源地址
-////                        soundPageInfo.getDesc().getData().get(position).getSound().getPic_200();//200x200的图片
-//                        vh.image.setImageURI(Uri.parse(soundPageInfo.getDesc().getData().get(position).getSound().getPic_200()));
-//                        vh.title.setText(soundPageInfo.getDesc().getData().get(position).getSound().getName());
-//                    }
-//
-//                    @Override
-//                    public int getItemCount() {
-//                        return soundPageInfo.getDesc().getData().size();
-//                    }
-//
-//                    class VH extends RecyclerView.ViewHolder {
-//                        public final SimpleDraweeView image;
-//                        public final TextView title;
-//
-//                        public VH(View itemView) {
-//                            super(itemView);
-//                            image = (SimpleDraweeView) itemView.findViewById(R.id.fragment3_echo_suggest_sound_info_grid_item_image);
-//                            title = (TextView) itemView.findViewById(R.id.fragment3_echo_suggest_sound_info_grid_item_title);
-//                        }
-//                    }
-//                });
+                soundGridAdapter.setHeaderView(headerView);
 
             }
 
@@ -151,7 +127,7 @@ public class Suggest extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment3_echo_viewpager_fragment1_suggest, null, false);
-         headerView = LayoutInflater.from(Suggest.this.getContext()).inflate(R.layout.image_viewpager, null);
+        headerView = LayoutInflater.from(Suggest.this.getContext()).inflate(R.layout.image_viewpager, null,false);
         imageViewpager = (ViewPager) headerView.findViewById(R.id.image_viewpager);
         mIndicatorView = (IndicatorView) headerView.findViewById(R.id.id_indicator);
         soundGridrecyclerView = (RecyclerView) v.findViewById(R.id.fragment3_echo_viewpager_fragment1_suggest_recycleview);
@@ -159,29 +135,22 @@ public class Suggest extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+             //   gridLayoutManager = (GridLayoutManager) soundGridrecyclerView.getLayoutManager();
 
-                GridLayoutManager manager = (GridLayoutManager) soundGridrecyclerView.getLayoutManager();
-                manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return (soundGridList.get(position) == null || position == 0) ? 2 : 1;
-                    }
-                });
-
-                int lastItemIndex = manager.findLastVisibleItemPosition()-1;
-                int firstItemIndex = manager.findFirstVisibleItemPosition();
+                int lastItemIndex = gridLayoutManager.findLastVisibleItemPosition() - 1;
+                int firstItemIndex = gridLayoutManager.findFirstVisibleItemPosition();
                 //滑动到最后一个并且状态不是加载中,执行加载更多，isLoading默认值false
-//                System.out.println("hhtjim:lastItemIndex"+lastItemIndex);
-//                System.out.println(Math.ceil((double)(lastItemIndex/2))+" -- "+soundGridList.size()/2);
-//                System.out.println("hhtjim:end");
-//                System.out.println(Math.ceil(lastItemIndex/2) >= soundGridList.size()/2);
 
                 if (Math.ceil(lastItemIndex / 2) >= (soundGridList.size() / 2 - 1) && !isLoading) {//若最后一项的布局高度比较高，列表的下边界在最后一项高度以内 都会触发if
 //                    System.out.println("hhtjim:执行loading");
-                    if (dy > 0) {//触摸点向上托
-                        soundGridList.add(null);// TODO: 2016/8/3
-                        soundGridAdapter.notifyItemInserted(soundGridList.size() - 1);
-                        thread(GOGOING_SOUNDINFO_LOADING);
+                    if (dy > 0 && !isEnd) {//触摸点向上托
+                        if (!isLoading) {//这里标记为loading最好，避免进方法里new线程
+                            isLoading = true;
+//                            System.out.println("hhtjim:00:add(null)");
+                            soundGridList.add(null);
+                            soundGridAdapter.notifyItemInserted(soundGridList.size() - 1);
+                            thread(GOGOING_SOUNDINFO_LOADING);
+                        }
 
                     }
                 }
@@ -237,27 +206,34 @@ public class Suggest extends Fragment {
 
         if (state == GOGOING_SOUNDINFO) {
             lastNum = 1;
-        }
-
-
-        if (state == GOGOING_SOUNDINFO_LOADING) {
-//            lastNum++;
-        }
-
-        if (!isLoading && !isEnd) {
-            lastNum++;
             new Thread() {
                 @Override
                 public void run() {
-                    if (state == GOGOING_SOUNDINFO_LOADING) {
-
-                        isLoading = true;
-                    }
                     String jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_ECHO_SUGGEST_SOUND_INFO + lastNum);
                     soundPageInfo = Dejson.getInstance().getEchoSuggestSoundPageInfoo(jsonString);
                     handler.sendEmptyMessage(state);
                 }
             }.start();
+
+            return;
+        }
+
+
+        if (state == GOGOING_SOUNDINFO_LOADING) {
+            if (!isEnd) {
+                new Thread() {
+                    @Override
+                    public void run() {
+
+                        lastNum++;
+                        String jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_ECHO_SUGGEST_SOUND_INFO + lastNum);
+                        soundPageInfo = Dejson.getInstance().getEchoSuggestSoundPageInfoo(jsonString);
+                        handler.sendEmptyMessage(state);
+
+                    }
+                }.start();
+            }
+            return;
         }
 
 

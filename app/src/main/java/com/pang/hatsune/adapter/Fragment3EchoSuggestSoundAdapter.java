@@ -35,6 +35,10 @@ public class Fragment3EchoSuggestSoundAdapter extends RecyclerView.Adapter<Recyc
 
     public void setHeaderView(View headerView) {
         mHeaderView = headerView;
+
+//        TextView tv = new TextView(context);
+//        tv.setText("000000000000000000000000");
+//        mHeaderView = tv;
         notifyItemInserted(0);
     }
 

@@ -151,6 +151,7 @@ public class HttpResquestPang {
                 }
                 System.out.println("===get请求地址：" + url+" ===result:" + result);
 
+//                if(true){
                 if(!TextUtils.isEmpty(result)){
                     break loop;
                 }
