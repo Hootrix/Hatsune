@@ -5,5 +5,5 @@
     <color name="appColorGray">#858585</color><!--设置全局灰色-->
     <color name="colorPrimary">#3F51B5</color><!--侧滑栏选中及toolbar背景-->
     <color name="colorPrimaryDark">#6ed56c</color> <!--通知栏颜色>#588df59b-->
-    <color name="colorAccent">#8cb987</color>  <!--悬浮按钮颜色-->
+    <color name="appColorFontsGray">#828282</color>  <!--个别地方使用的灰色字体-->
 </resources>

@@ -3,6 +3,7 @@ package com.pang.hatsune.dehtml;
 import android.provider.DocumentsContract;
 
 import com.pang.hatsune.acache.ACache;
+import com.pang.hatsune.info.EchoHotInfo;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
 
 import org.jsoup.Jsoup;
@@ -109,7 +110,7 @@ public class DeHtml {
         Pattern pattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(htmlString);
 //        System.out.println("====---===:"+matcher.find()+":"+htmlString);
-        matcher.reset();
+//        matcher.reset();
         while (matcher.find()) {
             Fragment2ChannelHorizontalInfo info = new Fragment2ChannelHorizontalInfo();
             info.setId(matcher.group(1));
@@ -123,4 +124,51 @@ public class DeHtml {
         }
         return list;
     }
+
+
+    /**
+     * 使用正则表达式解析获取Echo页面的本周，今日的热门数据//// TODO: 2016/8/4
+     *
+     * @return
+     */
+    public EchoHotInfo getEchoHotData(String htmlString) {
+        EchoHotInfo info = new EchoHotInfo();
+        String regx = "";
+        Pattern hotDataPattern = null;
+        Matcher hotDataMatcher = null;
+
+//        String regx = "<a href=\"[^\"]+?(\\d+)\">[\\s\\S]+?\\(([^\\)]+?)(?:-\\d+)?\\)[\\s\\S]+?<h4>([^</h4>]+?)</h4>[\\s\\S]+?</a>";
+        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]+?<img src=\"([^\"\\?]+)(?:\\?[^\">]+)?\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";
+        hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+        hotDataMatcher = hotDataPattern.matcher(htmlString);
+        while (hotDataMatcher.find()) {
+//            info.set
+//            System.out.println(m.group(1)); //id
+//            System.out.println(m.group(2));//pic
+//            System.out.println(m.group(3));//sound name
+//            System.out.println(m.group(4));//channel or username
+        }
+
+
+
+
+        regx = "热门榜单<i class=\"play-all js-mp-play-one\" data-sid=\"([\\d,]+)\">";
+
+//		regx = "data-sid=\"([\\d,]+)\">月榜</i>";
+        regx = "data-sid=\"([\\d,]+)\">周榜</i>";
+        Pattern hotIdPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+        Matcher hotIdMatcher = hotDataPattern.matcher(htmlString);
+
+        String idArr[] = null;//周榜数组
+        while (hotIdMatcher.find()) {
+            idArr = hotIdMatcher.group(1).split(",");
+        }
+
+
+
+
+        return info;
+    }
+
+
 }
