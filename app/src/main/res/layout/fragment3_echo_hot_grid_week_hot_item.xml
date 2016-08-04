@@ -7,8 +7,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
         android:id="@+id/fragment3_echo_hot_grid_week_hot_item_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
         fresco:actualImageScaleType="centerCrop" />
 

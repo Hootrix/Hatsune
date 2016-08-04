@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,10 +139,61 @@ public class DeHtml {
         Matcher hotDataMatcher = null;
 
 //        String regx = "<a href=\"[^\"]+?(\\d+)\">[\\s\\S]+?\\(([^\\)]+?)(?:-\\d+)?\\)[\\s\\S]+?<h4>([^</h4>]+?)</h4>[\\s\\S]+?</a>";
-        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]+?<img src=\"([^\"\\?]+)(?:\\?[^\">]+)?\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";
+
+
+//		regx = "data-sid=\"([\\d,]+)\">月榜</i>";
+        regx = "data-sid=\"([\\d,]+)\">周榜</i>";
+        hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+        hotDataMatcher = hotDataPattern.matcher(htmlString);
+
+        String weekIdArr[] = null;//周榜数组
+        while (hotDataMatcher.find()) {
+            weekIdArr = hotDataMatcher.group(1).split(",");
+        }
+
+        String hotIdArr[] = null;//热门榜单数组
+        regx = "热门榜单<i class=\"play-all js-mp-play-one\" data-sid=\"([\\d,]+)\">";
         hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
         hotDataMatcher = hotDataPattern.matcher(htmlString);
         while (hotDataMatcher.find()) {
+            hotIdArr = hotDataMatcher.group(1).split(",");
+        }
+
+
+//        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]+?<img src=\"([^\"\\?]+)(?:\\?[^\">]+)?\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";//去掉图片裁剪尾巴
+        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]+?<img src=\"([^\"]+)\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";//去掉图片裁剪尾巴
+        hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+        hotDataMatcher = hotDataPattern.matcher(htmlString);
+        List<EchoHotInfo.DayHotListBean> dayList = new ArrayList<EchoHotInfo.DayHotListBean>();
+        List<EchoHotInfo.WeekHotListBean> weekList = new ArrayList<EchoHotInfo.WeekHotListBean>();
+        w1:while (hotDataMatcher.find()) {
+            EchoHotInfo.DayHotListBean day = new EchoHotInfo.DayHotListBean();
+            EchoHotInfo.WeekHotListBean week = new EchoHotInfo.WeekHotListBean();
+            w2:
+            for (String id : hotIdArr) {
+                if (id.equals(hotDataMatcher.group(1))) {
+                    day.setId(Integer.valueOf(hotDataMatcher.group(1)));
+                    day.setChannel(hotDataMatcher.group(4));
+                    day.setPic(replaceWH(hotDataMatcher.group(2)));
+                    day.setTitle(hotDataMatcher.group(3));
+                    dayList.add(day);
+                    continue w1;
+                }
+            }
+
+
+            w3:
+            for (String id : weekIdArr) {
+                if (id.equals(hotDataMatcher.group(1))) {
+                    week.setId(Integer.valueOf(hotDataMatcher.group(1)));
+                    week.setUsername(hotDataMatcher.group(4));
+                    week.setPic(replaceWH(hotDataMatcher.group(2)));
+                    week.setTitle(hotDataMatcher.group(3));
+                    weekList.add(week);
+                    continue w1;
+                }
+            }
+
 //            info.set
 //            System.out.println(m.group(1)); //id
 //            System.out.println(m.group(2));//pic
@@ -149,26 +201,18 @@ public class DeHtml {
 //            System.out.println(m.group(4));//channel or username
         }
 
-
-
-
-        regx = "热门榜单<i class=\"play-all js-mp-play-one\" data-sid=\"([\\d,]+)\">";
-
-//		regx = "data-sid=\"([\\d,]+)\">月榜</i>";
-        regx = "data-sid=\"([\\d,]+)\">周榜</i>";
-        Pattern hotIdPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
-        Matcher hotIdMatcher = hotDataPattern.matcher(htmlString);
-
-        String idArr[] = null;//周榜数组
-        while (hotIdMatcher.find()) {
-            idArr = hotIdMatcher.group(1).split(",");
-        }
-
-
-
-
+        info.setDayHotList(dayList);
+        info.setWeekHotList(weekList);
         return info;
     }
 
-
+    /**
+     * 替换图片裁剪的宽高
+     *
+     * @return
+     */
+    private String replaceWH(String url) {
+        int w = 300;
+        return  url.replace("!100","!"+w).replace("-100","-"+w).replace("w/100","w/"+w);
+    }
 }
