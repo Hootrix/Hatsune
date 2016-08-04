@@ -15,7 +15,7 @@
         <!--/>-->
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment3_echo_viewpager_fragment2_find_grid"
+        android:id="@+id/fragment3_echo_viewpager_fragment2_hot_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 </LinearLayout>

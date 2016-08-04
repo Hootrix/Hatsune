@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.pang.hatsune.R;
-import com.pang.hatsune.custom_view.IndicatorView;
-import com.pang.hatsune.fragment.viewpager.Find;
+import com.pang.hatsune.fragment.viewpager.Hot;
 import com.pang.hatsune.fragment.viewpager.Suggest;
 
 import java.util.ArrayList;
@@ -107,6 +106,6 @@ public class Fragment3Echo extends Fragment {
     public void setData() {
         list = new ArrayList<Fragment>();
         list.add(new Suggest());
-        list.add(new Find());
+        list.add(new Hot());
     }
 }
