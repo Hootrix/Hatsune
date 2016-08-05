@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment3EchoHotGridAdapter;
@@ -22,10 +24,13 @@ import com.pang.hatsune.dehtml.DeHtml;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.EchoHotInfo;
 
+import java.util.List;
+
 /**
  * Created by Pang on 2016/7/23.
  */
 public class Hot extends Fragment {
+        Toolbar topBar  ;
     EchoHotInfo hotDataInfo;
     RecyclerView gridRecyclerView;
     private final int DOING = 10;
@@ -38,8 +43,8 @@ public class Hot extends Fragment {
             if (msg.what == DOING) {
 //                getEchoHotData
                 System.out.println("hhtjim:78:handler");
-                System.out.println("hhtjim:78:"+hotDataInfo.getDayHotList().size());
-                System.out.println("hhtjim:78:"+hotDataInfo.getWeekHotList().size());
+                System.out.println("hhtjim:78:" + hotDataInfo.getDayHotList().size());
+                System.out.println("hhtjim:78:" + hotDataInfo.getWeekHotList().size());
 
                 GridLayoutManager gridManager = new GridLayoutManager(Hot.this.getContext(), 2);
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -68,12 +73,44 @@ public class Hot extends Fragment {
                 headerImage.setImageResource(R.drawable.echo_hot_top_image);
 
 
-                ViewGroup.LayoutParams lp =  new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300);
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
                 headerImage.setScaleType(ImageView.ScaleType.FIT_XY);
                 headerImage.setLayoutParams(lp);
                 adapter.setHeaderView(headerImage);
 
                 gridRecyclerView.setAdapter(adapter);
+                gridRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    private int y = 0;
+
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+//                        System.out.println("hhtjim7:"+newState);
+                    }
+
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+//                        System.out.println("hhtjim8:"+dx);
+//                        System.out.println("hhtjim8:"+dy);
+                        y += dy;
+//                        if(dy>0&&y<350){//触点上滑
+//                            float fl = (float) (y / (350f / 100f) / 100f);
+//                            System.out.println("hhtjim:9:"+fl);
+//                            toolbar.setAlpha(fl);
+//                        }
+
+                        float heightPixels = getContext().getResources().getDisplayMetrics().heightPixels;
+                        float scrollY = y;//该值 大于0
+                        float alpha = 1-scrollY/(heightPixels/3);//
+                        int flo = (int) (alpha*255);
+                        if(flo<0){
+                            flo=0;
+                        }
+                        topBar.getBackground().setAlpha(flo);//0~255
+
+                    }
+                });
             }
         }
 
@@ -109,4 +146,26 @@ public class Hot extends Fragment {
         }.start();
     }
 
+
+    /**
+     * 判断当前fragment是否被用户看到
+     *
+     * @param isVisibleToUser
+     */
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        try {
+            topBar = (Toolbar) this.getActivity().findViewById(R.id.toolbar);
+        } catch (Exception e) {
+            return;
+        }
+
+        if (isVisibleToUser) {
+            topBar.setBackgroundResource(R.drawable.top_hot_color_gradient);
+        } else {
+            topBar.setBackgroundColor(0xffffffff);
+
+        }
+    }
 }

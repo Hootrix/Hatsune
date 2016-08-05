@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+    <!--Hot  echo 热门页  颜色渐变        android:centerColor="#ffffff"-->
+    <gradient
+        android:startColor="#ffffff"
+        android:endColor="#f9f6d7"
+        android:type="linear"
+        android:angle="-90"/> <!-- 渐变方向-90度：从上往下  90度：从下往上-->
+</shape>

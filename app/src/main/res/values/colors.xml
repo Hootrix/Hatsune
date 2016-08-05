@@ -4,7 +4,7 @@
     <color name="colorAccent">#62b461</color>  <!--编辑框下划线 -->
     <color name="appColorGreen">#6ed56c</color><!--设置全局绿色-->
     <color name="appColorGray">#858585</color><!--设置全局灰色-->
-    <color name="colorPrimary">#3F51B5</color><!--侧滑栏选中及toolbar背景-->
+    <color name="colorPrimary">#ffffff</color><!--侧滑栏选中及toolbar背景-->
     <color name="colorPrimaryDark">#6ed56c</color> <!--通知栏颜色>#588df59b-->
     <color name="appColorFontsGray">#828282</color>  <!--个别地方使用的灰色字体-->
 </resources>

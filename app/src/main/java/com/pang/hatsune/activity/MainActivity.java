@@ -198,23 +198,31 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Fragment currentFragment = null;
+                Toolbar topBar = (Toolbar) MainActivity.this.findViewById(R.id.toolbar);
+                boolean topbarWhite = false;
                 switch (checkedId) {
                     case R.id.main_bottom_radiogroup_r1:
                         currentFragment = fragment1News;
+                        topbarWhite = true;
                         break;
                     case R.id.main_bottom_radiogroup_r2:
                         currentFragment = fragment2Channel;
+                        topbarWhite = true;
                         break;
                     case R.id.main_bottom_radiogroup_r3:
                         currentFragment = fragment3Echo;
                         break;
                     case R.id.main_bottom_radiogroup_r4:
                         currentFragment = fragment4Celebrity;
+                        topbarWhite = true;
                         break;
                     default:
                         return;
                 }
-
+                //设置顶部toolbar为白色
+                if (topbarWhite) {
+//                    topBar.setBackgroundColor(0xffffffff);
+                }
                 displayFragment(currentFragment);
             }
         });
@@ -344,7 +352,6 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
         Snackbar.make(v, "doMusic执行播放音乐", Snackbar.LENGTH_SHORT).show();
         // Toast.makeText(this, "doMusic执行播放音乐", Toast.LENGTH_SHORT).show();
     }
-
 
 
 }

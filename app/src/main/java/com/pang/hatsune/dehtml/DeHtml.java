@@ -128,7 +128,7 @@ public class DeHtml {
 
 
     /**
-     * 使用正则表达式解析获取Echo页面的本周，今日的热门数据//// TODO: 2016/8/4
+     * 使用正则表达式解析获取Echo页面的本周，今日的热门数据//
      *
      * @return
      */
@@ -161,7 +161,7 @@ public class DeHtml {
 
 
 //        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]+?<img src=\"([^\"\\?]+)(?:\\?[^\">]+)?\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";//去掉图片裁剪尾巴
-        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]+?<img src=\"([^\"]+)\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";//去掉图片裁剪尾巴
+        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]{1,300}<img src=\"([^\"]+)\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";//去掉图片裁剪尾巴
         hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
         hotDataMatcher = hotDataPattern.matcher(htmlString);
         List<EchoHotInfo.DayHotListBean> dayList = new ArrayList<EchoHotInfo.DayHotListBean>();
