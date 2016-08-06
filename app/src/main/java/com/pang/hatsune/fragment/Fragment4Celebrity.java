@@ -28,4 +28,5 @@ public class Fragment4Celebrity extends Fragment {
         return inflater.inflate(R.layout.fragment_fragment4_celebrity, container, false);
     }
 
+
 }

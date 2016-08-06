@@ -30,7 +30,7 @@ import java.util.List;
  * Created by Pang on 2016/7/23.
  */
 public class Hot extends Fragment {
-        Toolbar topBar  ;
+    Toolbar topBar;
     EchoHotInfo hotDataInfo;
     RecyclerView gridRecyclerView;
     private final int DOING = 10;
@@ -42,9 +42,9 @@ public class Hot extends Fragment {
 //            super.handleMessage(msg);
             if (msg.what == DOING) {
 //                getEchoHotData
-                System.out.println("hhtjim:78:handler");
-                System.out.println("hhtjim:78:" + hotDataInfo.getDayHotList().size());
-                System.out.println("hhtjim:78:" + hotDataInfo.getWeekHotList().size());
+//                System.out.println("hhtjim:78:handler");
+//                System.out.println("hhtjim:78:" + hotDataInfo.getDayHotList().size());
+//                System.out.println("hhtjim:78:" + hotDataInfo.getWeekHotList().size());
 
                 GridLayoutManager gridManager = new GridLayoutManager(Hot.this.getContext(), 2);
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -102,12 +102,16 @@ public class Hot extends Fragment {
 
                         float heightPixels = getContext().getResources().getDisplayMetrics().heightPixels;
                         float scrollY = y;//该值 大于0
-                        float alpha = 1-scrollY/(heightPixels/3);//
-                        int flo = (int) (alpha*255);
-                        if(flo<0){
-                            flo=0;
+                        float alpha = 1 - scrollY / (heightPixels / 3);//
+                        int flo = (int) (alpha * 255);
+                        if (flo < 0) {
+                            flo = 0;
                         }
-                        topBar.getBackground().setAlpha(flo);//0~255
+                        try {
+                            System.exit(0);
+                            topBar.getBackground().setAlpha(flo);//0~255
+                        } catch (Exception e) {
+                        }
 
                     }
                 });
@@ -126,6 +130,7 @@ public class Hot extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment3_echo_viewpager_fragment2_hot, null);
         gridRecyclerView = (RecyclerView) v.findViewById(R.id.fragment3_echo_viewpager_fragment2_hot_grid);
+        topBar = (Toolbar) this.getActivity().findViewById(R.id.toolbar);
         thread();
         return v;
     }
@@ -155,17 +160,15 @@ public class Hot extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        try {
-            topBar = (Toolbar) this.getActivity().findViewById(R.id.toolbar);
-        } catch (Exception e) {
-            return;
-        }
+//        try {
+//            if (isVisibleToUser) {
+//                topBar.setBackgroundResource(R.drawable.top_hot_color_gradient);
+//            } else {
+//                topBar.setBackgroundColor(0xffffffff);
+//            }
+//        } catch (NullPointerException e) {
+//
+//        }
 
-        if (isVisibleToUser) {
-            topBar.setBackgroundResource(R.drawable.top_hot_color_gradient);
-        } else {
-            topBar.setBackgroundColor(0xffffffff);
-
-        }
     }
 }
