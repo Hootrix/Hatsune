@@ -21,6 +21,7 @@ import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment3EchoHotGridAdapter;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
+import com.pang.hatsune.fragment.BaseFragment;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.EchoHotInfo;
 
@@ -29,8 +30,9 @@ import java.util.List;
 /**
  * Created by Pang on 2016/7/23.
  */
-public class Hot extends Fragment {
+public class Hot extends BaseFragment {
     Toolbar topBar;
+    //    int alphaValue = -1;
     EchoHotInfo hotDataInfo;
     RecyclerView gridRecyclerView;
     private final int DOING = 10;
@@ -103,13 +105,12 @@ public class Hot extends Fragment {
                         float heightPixels = getContext().getResources().getDisplayMetrics().heightPixels;
                         float scrollY = y;//该值 大于0
                         float alpha = 1 - scrollY / (heightPixels / 3);//
-                        int flo = (int) (alpha * 255);
-                        if (flo < 0) {
-                            flo = 0;
+                        getBaseActivity().setTopBaralpha((int) (alpha * 255));
+                        if (getBaseActivity().getTopBaralpha() < 0) {
+                            getBaseActivity().setTopBaralpha(0);
                         }
                         try {
-                            System.exit(0);
-                            topBar.getBackground().setAlpha(flo);//0~255
+                            topBar.getBackground().setAlpha(getBaseActivity().getTopBaralpha());//0~255
                         } catch (Exception e) {
                         }
 
@@ -160,15 +161,21 @@ public class Hot extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-//        try {
-//            if (isVisibleToUser) {
-//                topBar.setBackgroundResource(R.drawable.top_hot_color_gradient);
-//            } else {
-//                topBar.setBackgroundColor(0xffffffff);
-//            }
-//        } catch (NullPointerException e) {
-//
-//        }
+//        System.out.println("hhtjim:88:isVisibleToUser"+isVisibleToUser);
+//        System.out.println("hhtjim:88:getUserVisibleHint"+getUserVisibleHint());
+        try {
+            if (isVisibleToUser) {
+                getBaseActivity().setTopBarBGShow(true);
+                topBar.setBackgroundResource(R.drawable.top_hot_color_gradient);
+                if (this.getBaseActivity().getTopBaralpha() != -1) {
+                    topBar.getBackground().setAlpha(this.getBaseActivity().getTopBaralpha());//0~255
+                }
+            } else {
+                getBaseActivity().setTopBarBGShow(false);
+                topBar.setBackgroundColor(0xffffffff);
+            }
+        } catch (NullPointerException e) {
+        }
 
     }
 }

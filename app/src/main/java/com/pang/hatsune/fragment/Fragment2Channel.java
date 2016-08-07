@@ -45,7 +45,7 @@ import java.util.Map;
  * 频道
  * A simple {@link Fragment} subclass.
  */
-public class Fragment2Channel extends Fragment {
+public class Fragment2Channel extends BaseFragment {
     ViewPager galleryViewpager;
     ScrollView myScrollview;
     ArrayList<Fragment> imageFragmentList;
@@ -257,7 +257,7 @@ public class Fragment2Channel extends Fragment {
                         Fragment2ChannelHorizontalInfo info = hoRelist.get(i);
                         String string = null;
                         try {
-                            string = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_SEARCH_DATA + URLEncoder.encode(info.getName(), "UTF-8"), hashMap);
+                            string = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_SEARCH_INPUT_BOX_DATA + URLEncoder.encode(info.getName(), "UTF-8"), hashMap);
                         } catch (UnsupportedEncodingException e) {
                             System.out.println("fragment2：url 编码错误");
                             e.printStackTrace();

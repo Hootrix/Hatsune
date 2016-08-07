@@ -1,12 +1,15 @@
 package com.pang.hatsune.info.gsonfactory;
 
+
+import com.pang.hatsune.interface_abstract.Info;
+
 import java.util.List;
 
 /**
  * echo 页  推荐页面的banner
  * Created by Administrator on 2016/8/3.
  */
-public class EchoSuggestBannerInfo {
+public class EchoSuggestBannerInfo  implements Info {
 
     /**
      * state : 1

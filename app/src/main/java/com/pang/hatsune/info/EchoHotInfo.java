@@ -1,5 +1,7 @@
 package com.pang.hatsune.info;
 
+import com.pang.hatsune.interface_abstract.Info;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,7 @@ import java.util.List;
  * 数据来源为官网 正则匹配之结果.这里是用GsonFormat插件一键生成
  * Created by Administrator on 2016/8/4.
  */
-public class EchoHotInfo  implements Info{
+public class EchoHotInfo  implements Info {
 
     /**
      * pic : pic

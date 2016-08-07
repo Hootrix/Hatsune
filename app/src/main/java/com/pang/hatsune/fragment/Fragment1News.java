@@ -32,7 +32,7 @@ import java.util.List;
  * 动态 fragment
  * Created by Administrator on 2016/7/22.
  */
-public class Fragment1News extends Fragment {
+public class Fragment1News extends BaseFragment {
     RecyclerView recyclerView;
     //NewsRecyclerViewInfoGson info;
     ArrayList<NewsRecyclerViewInfo> list;

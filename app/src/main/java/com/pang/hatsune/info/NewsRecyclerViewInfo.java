@@ -1,11 +1,13 @@
 package com.pang.hatsune.info;
 
+import com.pang.hatsune.interface_abstract.Info;
+
 /**
  *
  * 动态页面的info封装类
  * Created by Administrator on 2016/7/25.
  */
-public class NewsRecyclerViewInfo implements  Info{
+public class NewsRecyclerViewInfo implements Info {
     private String label_text;
     private String create_time;//时间戳
     private String content;

@@ -1,12 +1,14 @@
 package com.pang.hatsune.info.gsonfactory;
 
+import com.pang.hatsune.interface_abstract.Info;
+
 import java.util.List;
 
 /**
  * echo 页  推荐页面下面的  音乐数据 封装类
  * Created by Administrator on 2016/8/3.
  */
-public class EchoSuggestSoundPageInfo {
+public class EchoSuggestSoundPageInfo  implements Info {
 
     /**
      * status : 100

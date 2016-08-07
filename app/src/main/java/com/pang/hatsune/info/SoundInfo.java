@@ -1,5 +1,7 @@
 package com.pang.hatsune.info;
 
+import com.pang.hatsune.interface_abstract.Info;
+
 /**
  * 音乐信息封装类
  * <p/>

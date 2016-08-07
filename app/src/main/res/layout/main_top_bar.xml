@@ -64,7 +64,7 @@
                     android:layout_marginLeft="10dp"
                     android:button="@null"
                     android:drawableLeft="@drawable/main_top_title_radiogroup_selector2"
-                    android:text="发现"
+                    android:text="热门"
                     android:textColor="@color/main_textcolor_selector"
                     android:textSize="16sp" />
             </RadioGroup>

@@ -1,5 +1,7 @@
 package com.pang.hatsune.info;
 
+import com.pang.hatsune.interface_abstract.Info;
+
 /**
  * 动态页面的recycleView 发布者信息封装类
  * Created by Administrator on 2016/7/25.

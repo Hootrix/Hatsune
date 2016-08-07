@@ -20,6 +20,9 @@ import com.pang.hatsune.R;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     private boolean isExit;
+    private int topBaralpha = -1;
+    private boolean topBarBGShow;//判断是否显示顶部的黄色背景渐变
+
 
     private Handler mHandler = new Handler() {
         @Override
@@ -29,6 +32,32 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     };
 
+
+    public boolean isTopBarBGShow() {
+        return topBarBGShow;
+    }
+
+    public void setTopBarBGShow(boolean topBarBGShow) {
+        this.topBarBGShow = topBarBGShow;
+    }
+
+    /**
+     * 用于统一调度顶部的导航条背景透明度
+     *
+     * @return
+     */
+    public int getTopBaralpha() {
+        return topBaralpha;
+    }
+
+    /**
+     * 用于统一调度顶部的导航条背景透明度
+     *
+     * @return
+     */
+    public void setTopBaralpha(int topBaralpha) {
+        this.topBaralpha = topBaralpha;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

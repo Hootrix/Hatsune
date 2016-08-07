@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pang.hatsune.R;
+import com.pang.hatsune.fragment.BaseFragment;
 import com.pang.hatsune.fragment.Fragment1News;
 import com.pang.hatsune.fragment.Fragment2Channel;
 import com.pang.hatsune.fragment.Fragment3Echo;
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
     Fragment3Echo fragment3Echo;
     Fragment4Celebrity fragment4Celebrity;
     TextView topTitle;
-
+    Toolbar toolbar;
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
@@ -197,8 +198,8 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
         radioGroupBottom.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Fragment currentFragment = null;
-                Toolbar topBar = (Toolbar) MainActivity.this.findViewById(R.id.toolbar);
+                BaseFragment currentFragment = null;
+                toolbar = (Toolbar) MainActivity.this.findViewById(R.id.toolbar);
                 boolean topbarWhite = false;
                 switch (checkedId) {
                     case R.id.main_bottom_radiogroup_r1:
@@ -211,6 +212,7 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
                         break;
                     case R.id.main_bottom_radiogroup_r3:
                         currentFragment = fragment3Echo;
+                        topbarWhite = false;
                         break;
                     case R.id.main_bottom_radiogroup_r4:
                         currentFragment = fragment4Celebrity;
@@ -221,7 +223,15 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
                 }
                 //设置顶部toolbar为白色
                 if (topbarWhite) {
-//                    topBar.setBackgroundColor(0xffffffff);
+                    toolbar.setBackgroundColor(0xffffffff);
+                    //opBar.getBackground().setAlpha(0);//0~255
+                } else {
+                    if (MainActivity.this.isTopBarBGShow()) {
+                        toolbar.setBackgroundResource(R.drawable.top_hot_color_gradient);
+//                    System.out.println("hhtjim:get:"+currentFragment.getTopBaralpha());
+                        toolbar.getBackground().setAlpha(getTopBaralpha());//0~255
+                    }
+
                 }
                 displayFragment(currentFragment);
             }
@@ -261,7 +271,7 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
 
     @Override
     protected void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);//设置toolbar
         navigationView = (NavigationView) $(R.id.nav_view);
         drawer = (DrawerLayout) $(R.id.drawer_layout);

@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * 回声
  * A simple {@link Fragment} subclass.
  */
-public class Fragment3Echo extends Fragment {
+public class Fragment3Echo extends BaseFragment {
     ViewPager viewPager;
     ArrayList<Fragment> list;
     FragmentManager manager;
@@ -63,18 +63,26 @@ public class Fragment3Echo extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 int id = 0;
+                Toolbar toolbar = (Toolbar) Fragment3Echo.this.getBaseActivity().findViewById(R.id.toolbar);
+                boolean topBarWhite = false;
                 switch (position) {
                     case 0:
                         id = R.id.main_top_radiogroup_r1;
+                        topBarWhite = false;
                         break;
                     case 1:
                         id = R.id.main_top_radiogroup_r2;
+                        topBarWhite = true;
                         break;
                     default:
                         id = R.id.main_top_radiogroup_r1;
+                        topBarWhite = false;
                         break;
                 }
                 radioGroup.check(id);
+//                if(topBarWhite){
+//                    toolbar.setBackgroundColor(0xffffffff);
+//                }
             }
 
             @Override

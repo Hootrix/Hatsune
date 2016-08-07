@@ -1,11 +1,13 @@
 package com.pang.hatsune.info.gsonfactory;
 
+import com.pang.hatsune.interface_abstract.Info;
+
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/7/25.
  */
-public class NewsRecyclerViewInfoGson {
+public class NewsRecyclerViewInfoGson  implements Info {
 
 
     /**

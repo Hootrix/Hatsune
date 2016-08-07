@@ -22,6 +22,7 @@ import com.pang.hatsune.adapter.Fragment3EchoSuggestSoundAdapter;
 import com.pang.hatsune.custom_view.IndicatorView;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dejson.Dejson;
+import com.pang.hatsune.fragment.BaseFragment;
 import com.pang.hatsune.fragment.image.ImageFragment;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.gsonfactory.EchoSuggestBannerInfo;
@@ -34,7 +35,7 @@ import java.util.List;
  * viewpager页的推荐页面
  * Created by Pang on 2016/7/23.
  */
-public class Suggest extends Fragment {
+public class Suggest extends BaseFragment {
     ViewPager imageViewpager;
     ArrayList<ImageFragment> imageFragmentList;
     Fragment3EchoSuggestSoundAdapter soundGridAdapter;//

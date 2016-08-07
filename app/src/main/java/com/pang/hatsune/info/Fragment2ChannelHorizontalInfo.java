@@ -1,5 +1,7 @@
 package com.pang.hatsune.info;
 
+import com.pang.hatsune.interface_abstract.Info;
+
 /**
  * Created by Administrator on 2016/7/28.
  */
