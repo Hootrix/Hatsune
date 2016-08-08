@@ -2,15 +2,13 @@ package com.pang.hatsune.dejson;
 
 import com.google.gson.Gson;
 import com.pang.hatsune.acache.ACache;
-import com.pang.hatsune.http.HttpResquestPang;
 //import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.PublisherInfo;
 import com.pang.hatsune.info.SoundInfo;
 import com.pang.hatsune.info.gsonfactory.EchoSuggestBannerInfo;
 import com.pang.hatsune.info.gsonfactory.EchoSuggestSoundPageInfo;
-import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
-import com.pang.hatsune.info.gsonfactory.SearchResltInfo;
+import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,13 +83,13 @@ public class Dejson {
 
 
     /**
-     * 解析搜索结果的json
+     * 解析搜索提示的内容 的json
      * @param jsonString
      * @return
      */
-    public SearchResltInfo getSearchResult(String jsonString) {
+    public SearchResltTipInfo getSearchResult(String jsonString) {
         Gson gson = new Gson();
-        SearchResltInfo info = gson.fromJson(jsonString, SearchResltInfo.class);
+        SearchResltTipInfo info = gson.fromJson(jsonString, SearchResltTipInfo.class);
         return info;
     }
 

@@ -31,7 +31,7 @@ import com.pang.hatsune.fragment.channel_hotnew.HotAndNewFragment;
 import com.pang.hatsune.fragment.image.ImageFragment;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
-import com.pang.hatsune.info.gsonfactory.SearchResltInfo;
+import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -262,7 +262,7 @@ public class Fragment2Channel extends BaseFragment {
                             System.out.println("fragment2：url 编码错误");
                             e.printStackTrace();
                         }
-                        SearchResltInfo searchResltInfo = Dejson.getInstance().getSearchResult(string);
+                        SearchResltTipInfo searchResltInfo = Dejson.getInstance().getSearchResult(string);
                         String url = "";
                         try {
                             url = searchResltInfo.getResult().getData().get(0).getSound().getPic();

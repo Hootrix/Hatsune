@@ -5,10 +5,10 @@ import com.pang.hatsune.interface_abstract.Info;
 import java.util.List;
 
 /**
- * 搜索结果的json  信息封装
+ * 搜索结果<b>提示<b/>的信息封装
  * Created by Pang on 2016/7/28.
  */
-public class SearchResltInfo  implements Info {
+public class SearchResltTipInfo implements Info {
 
     /**
      * state : 1

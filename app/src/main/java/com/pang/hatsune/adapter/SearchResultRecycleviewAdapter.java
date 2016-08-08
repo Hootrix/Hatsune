@@ -1,8 +1,6 @@
 package com.pang.hatsune.adapter;
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
-import com.pang.hatsune.info.gsonfactory.SearchResltInfo;
+import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
 
 import java.util.List;
 
@@ -19,12 +17,11 @@ import java.util.List;
  * Created by Pang on 2016/8/7.
  */
 public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    //    SearchResltInfo info;
-    List<SearchResltInfo.ResultBean.DataBean> list;
+    List<SearchResltTipInfo.ResultBean.DataBean> list;
     Context context;
     private int TYPE_LOADING = 1;
 
-    public SearchResultRecycleviewAdapter(List<SearchResltInfo.ResultBean.DataBean> list, Context context) {
+    public SearchResultRecycleviewAdapter(List<SearchResltTipInfo.ResultBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
     }

@@ -12,7 +12,7 @@ import com.pang.hatsune.adapter.SearchResultRecycleviewAdapter;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dejson.Dejson;
 import com.pang.hatsune.http.HttpResquestPang;
-import com.pang.hatsune.info.gsonfactory.SearchResltInfo;
+import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -28,7 +28,7 @@ public class SearchActivity extends BaseActivity {
     RecyclerView recyclerView;
     SearchResultRecycleviewAdapter adapter;
     String keyword = "hebe";//todo
-    ArrayList<SearchResltInfo.ResultBean.DataBean> searchList;
+    ArrayList<SearchResltTipInfo.ResultBean.DataBean> searchList;
 
     public static final String KEYWORD = "kw";
 
@@ -69,7 +69,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initViewData() {
-        searchList = new ArrayList<SearchResltInfo.ResultBean.DataBean>();
+        searchList = new ArrayList<SearchResltTipInfo.ResultBean.DataBean>();
         try {
             keyword = getIntent().getStringExtra(KEYWORD);
         } catch (NullPointerException e) {
@@ -128,8 +128,8 @@ public class SearchActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    SearchResltInfo info = Dejson.getInstance().getSearchResult(jsonString);
-                    List<SearchResltInfo.ResultBean.DataBean> tempList = info.getResult().getData();
+                    SearchResltTipInfo info = Dejson.getInstance().getSearchResult(jsonString);
+                    List<SearchResltTipInfo.ResultBean.DataBean> tempList = info.getResult().getData();
                     for (int i = 0; i < tempList.size(); i++) {
                             System.out.println("hhtjim:"+tempList.get(i).getType() );
                         if (tempList.get(i).getType() != 1) {//不是音乐类型
