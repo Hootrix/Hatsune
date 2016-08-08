@@ -3,9 +3,11 @@ package com.pang.hatsune.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -40,11 +42,21 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_LOADING) {
-            return new VH(LayoutInflater.from(context).inflate(R.layout.loading, null, false));
+            LinearLayout loading = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.loading, null, false);
+
+            /**
+             * 必须设置LayoutParams 布局参数 否者不会居中显示
+             */
+            loading.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+            loading.setGravity(Gravity.CENTER);
+            return new VH(loading);
         }
 
         if (isEmpty && emptyView != null) {
-            return new VH(emptyView);
+            TextView tv = (TextView) emptyView;
+            tv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+            tv.setGravity(Gravity.CENTER);
+            return new VH(tv);
         }
 
         View v = LayoutInflater.from(context).inflate(R.layout.activity_search_result_list_item, null, false);
