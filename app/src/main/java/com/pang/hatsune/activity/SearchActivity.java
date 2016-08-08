@@ -6,6 +6,8 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
 
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.SearchResultRecycleviewAdapter;
@@ -13,6 +15,8 @@ import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dejson.Dejson;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
+import com.pang.hatsune.info.gsonfactory.SearchResultInfo;
+import com.pang.hatsune.token.Token;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -24,11 +28,12 @@ import java.util.List;
  * Created by Pang on 2016/8/7.
  */
 public class SearchActivity extends BaseActivity {
-    AppCompatEditText editText;
+    EditText editText;
     RecyclerView recyclerView;
     SearchResultRecycleviewAdapter adapter;
     String keyword = "hebe";//todo
-    ArrayList<SearchResltTipInfo.ResultBean.DataBean> searchList;
+
+    ArrayList<SearchResultInfo.ResultBean.DataBean> searchList;
 
     public static final String KEYWORD = "kw";
 
@@ -45,9 +50,7 @@ public class SearchActivity extends BaseActivity {
 //            super.handleMessage(msg);
 
             if (msg.what == LOADING) {
-                searchList.remove(searchList.size() - 1);
                 adapter.notifyItemRemoved(searchList.size());
-//                adapter.notifyDataSetChanged();
                 isLoading = false;
                 return;
             }
@@ -62,14 +65,14 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        editText = (AppCompatEditText) findViewById(R.id.search_result_edittext);
+        editText = (EditText) findViewById(R.id.search_result_edittext);
         recyclerView = (RecyclerView) findViewById(R.id.search_result_list);
 
     }
 
     @Override
     protected void initViewData() {
-        searchList = new ArrayList<SearchResltTipInfo.ResultBean.DataBean>();
+        searchList = new ArrayList<SearchResultInfo.ResultBean.DataBean>();
         try {
             keyword = getIntent().getStringExtra(KEYWORD);
         } catch (NullPointerException e) {
@@ -84,6 +87,8 @@ public class SearchActivity extends BaseActivity {
                 int firstItemIndex = manager.findFirstVisibleItemPosition();
                 //滑动到最后一个并且状态不是加载中,执行加载更多，isLoading默认值false
                 if (lastItemIndex >= searchList.size() - 1 && !isLoading) {//若最后一项的布局高度比较高，列表的下边界在最后一项高度以内 都会触发if
+//                    System.out.println("hhtjim:999");
+                    isLoading = true;
                     if (!isEnd) {
                         searchList.add(null);
                         adapter.notifyItemInserted(searchList.size() - 1);
@@ -114,28 +119,23 @@ public class SearchActivity extends BaseActivity {
             public void run() {
 //                super.run();
                 if (!TextUtils.isEmpty(keyword) || !isEnd) {
-                    String jsonString = "";
+                    String jsonString = "", key = "";
                     try {
                         if (statue == LOADING) {
-                            isLoading = true;
                             lastNum++;
                         } else {
                             lastNum = 1;
                         }
-                        String key = URLEncoder.encode("hebe", "UTF-8");
-                        jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_SEARCH_INPUT_BOX_DATA + key + "&page=" + lastNum, HttpResquestPang.getInstance().getPCHeaders());
+
+                        key = URLEncoder.encode(keyword, "UTF-8");
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
 
-                    SearchResltTipInfo info = Dejson.getInstance().getSearchResult(jsonString);
-                    List<SearchResltTipInfo.ResultBean.DataBean> tempList = info.getResult().getData();
-                    for (int i = 0; i < tempList.size(); i++) {
-                            System.out.println("hhtjim:"+tempList.get(i).getType() );
-                        if (tempList.get(i).getType() != 1) {//不是音乐类型
-                            tempList.remove(i);
-                        }
-                    }
+                    jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_SEARCH_DATA + "keyword=" + key + "&page=" + lastNum + "&token=" + Token.getLinkSearchToken(key, lastNum + ""));
+
+                    SearchResultInfo info = Dejson.getInstance().getSearchResult(jsonString);
+                    List<SearchResultInfo.ResultBean.DataBean> tempList = info.getResult().getData();
 
                     if (statue == NORMAL) {
                         searchList.clear();
@@ -143,10 +143,20 @@ public class SearchActivity extends BaseActivity {
                     if (tempList.size() < 1) {
                         isEnd = true;
                     }
+                    if(statue == LOADING){
+                        searchList.remove(searchList.size() - 1);
+                    }
+
                     searchList.addAll(tempList);
                     handler.sendEmptyMessage(statue);
                 }
             }
         }.start();
+    }
+
+
+    public void doSearch(View v){
+         keyword =  editText.getText().toString();
+        thread(NORMAL);
     }
 }

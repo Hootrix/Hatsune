@@ -5,9 +5,9 @@ package com.pang.hatsune.utils;
  */
 import java.util.Date;
 
-public class Time {
+public class TokenTime {
     public static String time() {
         new Date().getTime();
-        return "" + System.currentTimeMillis() / 1000;
+        return "" + System.currentTimeMillis() / 1000 /60 /60;
     }
 }

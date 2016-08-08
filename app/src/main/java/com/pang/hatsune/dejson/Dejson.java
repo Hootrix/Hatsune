@@ -9,6 +9,7 @@ import com.pang.hatsune.info.SoundInfo;
 import com.pang.hatsune.info.gsonfactory.EchoSuggestBannerInfo;
 import com.pang.hatsune.info.gsonfactory.EchoSuggestSoundPageInfo;
 import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
+import com.pang.hatsune.info.gsonfactory.SearchResultInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,9 +88,20 @@ public class Dejson {
      * @param jsonString
      * @return
      */
-    public SearchResltTipInfo getSearchResult(String jsonString) {
+    public SearchResltTipInfo getSearchTipResult(String jsonString) {
         Gson gson = new Gson();
         SearchResltTipInfo info = gson.fromJson(jsonString, SearchResltTipInfo.class);
+        return info;
+    }
+
+    /**
+     * 解析搜索结果的内容 jsonString的json
+     * @param jsonString
+     * @return
+     */
+    public SearchResultInfo getSearchResult(String jsonString) {
+        Gson gson = new Gson();
+        SearchResultInfo info = gson.fromJson(jsonString, SearchResultInfo.class);
         return info;
     }
 

@@ -10,8 +10,9 @@
 
     <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
         android:id="@+id/search_resutlt_item_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
         fresco:placeholderImage="@drawable/echo_round_logo"></com.facebook.drawee.view.SimpleDraweeView>
 
 
@@ -31,7 +32,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="soundName"
-            android:textSize="18sp" />
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/search_resutlt_item_music_desc"
@@ -41,12 +42,13 @@
             android:height="0dp"
             android:gravity="center_vertical"
             android:text="desc"
-            android:textSize="16sp" />
+            android:singleLine="true"
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:alpha="0.5"
+            android:alpha="0.2"
             android:background="@color/appColorFontsGray" />
     </LinearLayout>
 

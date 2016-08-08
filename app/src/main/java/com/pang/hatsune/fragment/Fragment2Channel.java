@@ -262,7 +262,7 @@ public class Fragment2Channel extends BaseFragment {
                             System.out.println("fragment2：url 编码错误");
                             e.printStackTrace();
                         }
-                        SearchResltTipInfo searchResltInfo = Dejson.getInstance().getSearchResult(string);
+                        SearchResltTipInfo searchResltInfo = Dejson.getInstance().getSearchTipResult(string);
                         String url = "";
                         try {
                             url = searchResltInfo.getResult().getData().get(0).getSound().getPic();

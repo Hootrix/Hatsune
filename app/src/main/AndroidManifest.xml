@@ -33,7 +33,10 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".activity.SearchActivity" >
+        <activity android:name=".activity.SearchActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/colorPrimaryDark</item>         <!--编辑框的提示文字颜色-->
 
 
         <item name="android:textColorHighlight">#996ed56c</item>
