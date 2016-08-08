@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Administrator on 2016/7/25.
@@ -85,6 +86,7 @@ public class Dejson {
 
     /**
      * 解析搜索提示的内容 的json
+     *
      * @param jsonString
      * @return
      */
@@ -96,18 +98,25 @@ public class Dejson {
 
     /**
      * 解析搜索结果的内容 jsonString的json
+     *
      * @param jsonString
      * @return
      */
     public SearchResultInfo getSearchResult(String jsonString) {
         Gson gson = new Gson();
-        SearchResultInfo info = gson.fromJson(jsonString, SearchResultInfo.class);
+        SearchResultInfo info = null;
+
+        try {
+            info = gson.fromJson(jsonString, SearchResultInfo.class);//服务器可能不返回json  catch掉
+        } catch (Exception e) {
+        }
         return info;
     }
 
 
     /**
      * 回声 推荐页 的banner  json 解析
+     *
      * @param jsonString
      * @return
      */
@@ -119,6 +128,7 @@ public class Dejson {
 
     /**
      * 回声 推荐页 的banner下面的音乐封装信息  json 解析
+     *
      * @param jsonString
      * @return
      */

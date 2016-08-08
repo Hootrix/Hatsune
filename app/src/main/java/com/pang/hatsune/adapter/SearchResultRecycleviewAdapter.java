@@ -19,20 +19,32 @@ import java.util.List;
  * Created by Pang on 2016/8/7.
  */
 public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        List<SearchResultInfo.ResultBean.DataBean> list;
-//    SearchResultInfo  info;
+    List<SearchResultInfo.ResultBean.DataBean> list;
+    //    SearchResultInfo  info;
     Context context;
     private int TYPE_LOADING = 1;
+
+    private boolean isEmpty;//友情提示的空布局
+    private View emptyView;
 
     public SearchResultRecycleviewAdapter(List<SearchResultInfo.ResultBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
     }
 
+
+    public void setEmptyView(View v) {
+        this.emptyView = v;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_LOADING) {
-            return new VH(LayoutInflater.from(context).inflate(R.layout.loading, null));
+            return new VH(LayoutInflater.from(context).inflate(R.layout.loading, null, false));
+        }
+
+        if (isEmpty && emptyView != null) {
+            return new VH(emptyView);
         }
 
         View v = LayoutInflater.from(context).inflate(R.layout.activity_search_result_list_item, null, false);
@@ -41,7 +53,7 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (list.get(position) == null) {
+        if (isEmpty || list.get(position) == null   ) {//空布局 必须在前面判断
             return;
         }
 
@@ -54,12 +66,20 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemCount() {
+        if (list.size() == 0) {//判断是否显示空布局 提示
+            isEmpty = true;
+            return 1;
+        }
         return list.size();
     }
 
 
     @Override
     public int getItemViewType(int position) {
+        if(isEmpty){//空布局
+            return super.getItemViewType(position);
+        }
+
         if (list.get(position) == null) {
             return TYPE_LOADING;
         }

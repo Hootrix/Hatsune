@@ -119,8 +119,9 @@ public class HttpResquestPang {
             System.out.println("====get=result::" + result);
             return result;
         } catch (NullPointerException e) {
-
+int num = 0;
             loop: while (true){ // 循环处理避免返回空白内容
+                num++;
                 System.out.println("===get=无缓存开始请求");
                 result = "";
                 try {
@@ -152,7 +153,7 @@ public class HttpResquestPang {
                 System.out.println("===get请求地址：" + url+" ===result:" + result);
 
 //                if(true){
-                if(!TextUtils.isEmpty(result)){
+                if(num >9|| !TextUtils.isEmpty(result)){//10次就停止循环
                     break loop;
                 }
             }

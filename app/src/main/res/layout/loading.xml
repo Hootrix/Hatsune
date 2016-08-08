@@ -2,15 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     >
+
     <com.github.rahatarmanahmed.cpv.CircularProgressView
         android:layout_gravity="center"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/loading_progress"
-        android:layout_width="40dp"
+        android:layout_weight="40dp"
         android:layout_height="40dp"
         app:cpv_animAutostart="true"
         app:cpv_indeterminate="true" />
+
 
 </LinearLayout>
