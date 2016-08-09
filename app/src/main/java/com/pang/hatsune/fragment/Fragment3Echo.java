@@ -63,26 +63,26 @@ public class Fragment3Echo extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 int id = 0;
-                Toolbar toolbar = (Toolbar) Fragment3Echo.this.getBaseActivity().findViewById(R.id.toolbar);
-                boolean topBarWhite = false;
+//                Toolbar toolbar = (Toolbar) Fragment3Echo.this.getBaseActivity().findViewById(R.id.toolbar);
+//                boolean topBarWhite = false;
                 switch (position) {
                     case 0:
                         id = R.id.main_top_radiogroup_r1;
-                        topBarWhite = false;
+//                        topBarWhite = true;
+                        getBaseActivity().setTopBarBGShow(false);
                         break;
                     case 1:
                         id = R.id.main_top_radiogroup_r2;
-                        topBarWhite = true;
+//                        topBarWhite = false;
+                        getBaseActivity().setTopBarBGShow(true);
                         break;
                     default:
                         id = R.id.main_top_radiogroup_r1;
-                        topBarWhite = false;
+//                        topBarWhite = true;
+                        getBaseActivity().setTopBarBGShow(false);
                         break;
                 }
                 radioGroup.check(id);
-//                if(topBarWhite){
-//                    toolbar.setBackgroundColor(0xffffffff);
-//                }
             }
 
             @Override

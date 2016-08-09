@@ -105,14 +105,12 @@ public class Hot extends BaseFragment {
                         float heightPixels = getContext().getResources().getDisplayMetrics().heightPixels;
                         float scrollY = y;//该值 大于0
                         float alpha = 1 - scrollY / (heightPixels / 3);//
-                        getBaseActivity().setTopBaralpha((int) (alpha * 255));
-                        if (getBaseActivity().getTopBaralpha() < 0) {
-                            getBaseActivity().setTopBaralpha(0);
+                        int al = (int) (alpha * 255);
+                        if (al < 0) {
+                            al = 0;
                         }
-                        try {
-                            topBar.getBackground().setAlpha(getBaseActivity().getTopBaralpha());//0~255
-                        } catch (Exception e) {
-                        }
+                        getBaseActivity().setTopBaralpha(al);
+                            topBar.getBackground().setAlpha(al);//0~255
 
                     }
                 });
@@ -161,18 +159,20 @@ public class Hot extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-//        System.out.println("hhtjim:88:isVisibleToUser"+isVisibleToUser);
-//        System.out.println("hhtjim:88:getUserVisibleHint"+getUserVisibleHint());
+////        System.out.println("hhtjim:88:isVisibleToUser"+isVisibleToUser);
+////        System.out.println("hhtjim:88:getUserVisibleHint"+getUserVisibleHint());
         try {
             if (isVisibleToUser) {
                 getBaseActivity().setTopBarBGShow(true);
+//                topBar.getBackground().setAlpha(1);//0~255
                 topBar.setBackgroundResource(R.drawable.top_hot_color_gradient);
                 if (this.getBaseActivity().getTopBaralpha() != -1) {
                     topBar.getBackground().setAlpha(this.getBaseActivity().getTopBaralpha());//0~255
                 }
             } else {
                 getBaseActivity().setTopBarBGShow(false);
-                topBar.setBackgroundColor(0xffffffff);
+//                topBar.setBackgroundColor(0xffffffff);
+                topBar.getBackground().setAlpha(0);//TMD!!!
             }
         } catch (NullPointerException e) {
         }

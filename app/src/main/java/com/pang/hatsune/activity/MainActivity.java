@@ -223,12 +223,11 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
                 }
                 //设置顶部toolbar为白色
                 if (topbarWhite) {
-                    toolbar.setBackgroundColor(0xffffffff);
-                    //opBar.getBackground().setAlpha(0);//0~255
+                    toolbar.getBackground().setAlpha(0);//0~255
+//                    toolbar.setBackgroundColor(0xffffffff);//todo TMD!!!
                 } else {
                     if (MainActivity.this.isTopBarBGShow()) {
                         toolbar.setBackgroundResource(R.drawable.top_hot_color_gradient);
-//                    System.out.println("hhtjim:get:"+currentFragment.getTopBaralpha());
                         toolbar.getBackground().setAlpha(getTopBaralpha());//0~255
                     }
 
