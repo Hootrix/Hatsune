@@ -11,8 +11,11 @@
         android:background="#ffffff">
 
     </android.support.v7.widget.RecyclerView>
-        <include
-            layout="@layout/loading" />
+
+    <include
+        layout="@layout/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
 
 

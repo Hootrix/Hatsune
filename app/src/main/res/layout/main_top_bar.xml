@@ -15,7 +15,6 @@
             android:id="@+id/main_top_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
             android:onClick="toggle_left_view"
             android:src="@drawable/echo_round_logo" />
 
@@ -59,7 +58,7 @@
 
                 <RadioButton
                     android:id="@+id/main_top_radiogroup_r2"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:button="@null"
@@ -67,7 +66,7 @@
                     android:text="热门"
                     android:textColor="@color/main_textcolor_selector"
                     android:textSize="16sp"
-                    android:layout_weight="1" />
+                    />
             </RadioGroup>
         </LinearLayout>
 
@@ -77,10 +76,5 @@
             android:layout_height="40dp"
             android:background="@drawable/disk"
             android:onClick="doMusic" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
-
 
 </LinearLayout>

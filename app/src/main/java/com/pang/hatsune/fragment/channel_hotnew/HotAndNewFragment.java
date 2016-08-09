@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 
@@ -38,7 +40,7 @@ public class HotAndNewFragment extends Fragment {
     public static final int NEW = 20;
     private int type;
     private int lastNum = 0;//上次请求的页数
-    private View rootView;
+    private LinearLayout rootView;
     CircularProgressView loadingProgress;
     private boolean isLoading;//加载更多的状态
     private boolean isEnd;//判断是否到结尾了
@@ -99,9 +101,10 @@ public class HotAndNewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment2_channel_hotandnewfragment_layout, null);
+        rootView = (LinearLayout) inflater.inflate(R.layout.fragment2_channel_hotandnewfragment_layout, null);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment2_channel_hotandnewfragment_layout_recyclerview);
         loadingProgress = (CircularProgressView) rootView.findViewById(R.id.loading_progress);
+
         loadingProgress.setVisibility(View.GONE);
         setData();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

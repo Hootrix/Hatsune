@@ -3,9 +3,11 @@ package com.pang.hatsune.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -50,7 +52,11 @@ public class Fragment3EchoSuggestSoundAdapter extends RecyclerView.Adapter<Recyc
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == LOADING_TYPE) {
-            return new VH(LayoutInflater.from(context).inflate(R.layout.loading, null));
+            LinearLayout loading = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.loading, null);
+            loading.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+            loading.setGravity(Gravity.CENTER);
+
+            return new VH(loading);
         }
 
         if (mHeaderView != null && viewType == HEADER_TYPE) {
