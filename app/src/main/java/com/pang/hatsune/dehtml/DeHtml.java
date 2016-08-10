@@ -3,8 +3,11 @@ package com.pang.hatsune.dehtml;
 import android.provider.DocumentsContract;
 
 import com.pang.hatsune.acache.ACache;
+import com.pang.hatsune.data.DATA;
+import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.EchoHotInfo;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
+import com.pang.hatsune.info.gsonfactory.Fragment4CelebrityStartinfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -166,7 +169,8 @@ public class DeHtml {
         hotDataMatcher = hotDataPattern.matcher(htmlString);
         List<EchoHotInfo.DayHotListBean> dayList = new ArrayList<EchoHotInfo.DayHotListBean>();
         List<EchoHotInfo.WeekHotListBean> weekList = new ArrayList<EchoHotInfo.WeekHotListBean>();
-        w1:while (hotDataMatcher.find()) {
+        w1:
+        while (hotDataMatcher.find()) {
             EchoHotInfo.DayHotListBean day = new EchoHotInfo.DayHotListBean();
             EchoHotInfo.WeekHotListBean week = new EchoHotInfo.WeekHotListBean();
             w2:
@@ -207,12 +211,97 @@ public class DeHtml {
     }
 
     /**
+     * 初音群星
+     *
+     * @param htmlString
+     * @return
+     */
+    public ArrayList<Fragment4CelebrityStartinfo> getCelebrityStarts(String htmlString) {
+        ArrayList<Fragment4CelebrityStartinfo> list = new ArrayList<Fragment4CelebrityStartinfo>();
+
+        Pattern pattern = Pattern
+                .compile("<img src=\"([^\"]+)\"></a>\\s+<a class=\"name\" href=\"/user/\\d+\">([^<]+)</a>\\s+<h5>([^<]+)</h5>");
+        Matcher m = pattern.matcher(htmlString);
+
+        while (m.find()) {
+//            System.out.println(m.group(1));// image
+//            System.out.println(m.group(2));// 明星
+//            System.out.println(m.group(3));// desc
+            Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
+            info.setDescOrChannel(m.group(3));
+            info.setName(m.group(2));
+            info.setPic(m.group(1));
+            list.add(info);
+        }
+        return list;
+    }
+
+
+    /**
+     * 精选MV
+     *
+     * @param htmlString
+     * @return
+     */
+    public ArrayList<Fragment4CelebrityStartinfo> getCelebrityMvs(String htmlString) {
+        ArrayList<Fragment4CelebrityStartinfo> list = new ArrayList<Fragment4CelebrityStartinfo>();
+
+        Pattern pattern = Pattern
+				.compile("<a class=\"pic\" href=\"/mv/(\\d+)\">\\s+<img src=\"([^\"]+)\">[\\s\\S]*?</a>\\s*<a class=\"mv-title\" href=\"/mv/\\1\">([^<]+)</a>\\s*<a class=\"mv-channel\" href=\"/user/\\d+\">([^<]+)</a>");
+
+        Matcher m = pattern.matcher(htmlString);
+
+        while (m.find()) {
+//			System.out.println(m.group(1));// mv ID
+//			System.out.println(m.group(2));// image
+//			System.out.println(m.group(3));// desc
+//			System.out.println(m.group(4));// 频道名称
+            Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
+            info.setMvIdOrStartId(m.group(1));
+            info.setPic(m.group(2));
+            info.setDescOrChannel(m.group(3));
+            info.setName(m.group(4));
+            list.add(info);
+        }
+        return list;
+    }
+
+
+    /**
+     * 初音推荐 明星
+     *
+     * @param htmlString
+     * @return
+     */
+    public ArrayList<Fragment4CelebrityStartinfo> getCelebrityRecommendStarts(String htmlString) {
+        ArrayList<Fragment4CelebrityStartinfo> list = new ArrayList<Fragment4CelebrityStartinfo>();
+
+        Pattern pattern = Pattern
+                .compile("<img src=\"([^\"]+)\">\\s*</a>\\s*<div class=\"hgroup\">\\s*<h4><a href=\"/user/\\d+\">([^<]+)</a></h4>\\s*<span>([^<]+)</span>");
+        Matcher m = pattern.matcher(htmlString);
+
+        while (m.find()) {
+//            System.out.println(m.group(1));// image
+//            System.out.println(m.group(2));// 明星名字
+//            System.out.println(m.group(3));// desc
+
+            Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
+            info.setPic(m.group(1));
+            info.setName(m.group(2));
+            info.setDescOrChannel(m.group(3));
+            list.add(info);
+        }
+        return list;
+    }
+
+
+    /**
      * 替换图片裁剪的宽高
      *
      * @return
      */
     private String replaceWH(String url) {
         int w = 300;
-        return  url.replace("!100","!"+w).replace("-100","-"+w).replace("w/100","w/"+w);
+        return url.replace("!100", "!" + w).replace("-100", "-" + w).replace("w/100", "w/" + w);
     }
 }
