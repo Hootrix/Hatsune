@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.pang.hatsune.R;
+import com.pang.hatsune.adapter.Fragment4CelebrityListAdapter;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
 import com.pang.hatsune.http.HttpResquestPang;
@@ -36,6 +38,12 @@ public class Fragment4Celebrity extends BaseFragment {
 //            super.handleMessage(msg);
             if (msg.what == GO) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(Fragment4Celebrity.this.getContext()));
+                Fragment4CelebrityListAdapter adapter = new Fragment4CelebrityListAdapter(Fragment4Celebrity.this.getContext(), RecommendStartsList);
+                ImageView headerImage = new ImageView(Fragment4Celebrity.this.getContext());
+                headerImage.setImageResource(R.drawable.start_banner);
+                adapter.setmHeaderView(headerImage);
+
+//                adapter.setmHorizontalListview();
 //                recyclerView.setAdapter();
             }
         }
@@ -67,5 +75,11 @@ public class Fragment4Celebrity extends BaseFragment {
         return rootView;
     }
 
+
+    public View getHorizontalListview() {// TODO: 2016/8/12
+View v = LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.)
+
+        return null;
+    }
 
 }

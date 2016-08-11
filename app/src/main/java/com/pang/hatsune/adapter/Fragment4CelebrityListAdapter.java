@@ -1,12 +1,15 @@
 package com.pang.hatsune.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
+import android.widget.TextView;
 
-import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.pang.hatsune.R;
 import com.pang.hatsune.info.gsonfactory.Fragment4CelebrityStartinfo;
 
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ import java.util.ArrayList;
  * Created by Administrator on 2016/8/10.
  */
 public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    Context Context;
+    Context context;
     ArrayList<Fragment4CelebrityStartinfo> list;
 
     private final int TYPE_HEADER_IMAGE = 1;
@@ -28,7 +31,7 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
     private View mHeaderView;
     private View mHorizontalListview;
     private View mMvsGridListView;
-    private View mNormalRecommendListView;
+    private View mNormalRecommendTitleView;
 
     public void setmHeaderView(View mHeaderView) {
         this.mHeaderView = mHeaderView;
@@ -42,13 +45,13 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
         this.mMvsGridListView = mMvsGridListView;
     }
 
-    public void setmNormalRecommendListView(View mNormalRecommendListView) {
-        this.mNormalRecommendListView = mNormalRecommendListView;
+    public void setmNormalRecommendTitleView(View mNormalRecommendTitleView) {
+        this.mNormalRecommendTitleView = mNormalRecommendTitleView;
     }
 
 
     public Fragment4CelebrityListAdapter(android.content.Context context, ArrayList<Fragment4CelebrityStartinfo> list) {
-        Context = context;
+        this.context = context;
         this.list = list;
     }
 
@@ -57,23 +60,37 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_HEADER_IMAGE:
+                new VH(mHeaderView);
+                break;
             case TYPE_STARTS_HORIZONTAL_LIST:
+                new VH(mHorizontalListview);
+                break;
             case TYPE_MVS_GRID_LIST:
+                new VH(mMvsGridListView);
+                break;
             case TYPE_RECOMMEND_TITLE:
-            default://position>=4
+                new VH(mNormalRecommendTitleView);
+                break;
+            default://position>=4   TYPE_NORMAL_RECOMMEND_LIST
         }
+        View normalRecommendRootView = LayoutInflater.from(context).inflate(R.layout.fragment4_celebrity_recommend_list_item, null, false);
 
-        return null;
+        return new VH(normalRecommendRootView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        if (position < 4) {
+            return;
+        }
+        ((VH) holder).image.setImageURI(Uri.parse(list.get(position).getPic()));
+        ((VH) holder).name.setText(list.get(position).getName());
+        ((VH) holder).desc.setText(list.get(position).getDescOrChannel());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size() + 4;
     }
 
     @Override
@@ -94,12 +111,15 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
 
 
     public class VH extends RecyclerView.ViewHolder {
-
+        final SimpleDraweeView image;
+        final TextView name;
+        final TextView desc;
 
         public VH(View itemView) {
             super(itemView);
-
-
+            image = (SimpleDraweeView) itemView.findViewById(R.id.fragment4_celebrity_recommend_list_item_image);
+            name = (TextView) itemView.findViewById(R.id.fragment4_celebrity_recommend_list_item_name);
+            desc = (TextView) itemView.findViewById(R.id.fragment4_celebrity_recommend_list_item_desc);
         }
     }
 
