@@ -77,7 +77,7 @@ public class Fragment4Celebrity extends BaseFragment {
 
 
     public View getHorizontalListview() {// TODO: 2016/8/12
-View v = LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.)
+//View v = LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.)
 
         return null;
     }
