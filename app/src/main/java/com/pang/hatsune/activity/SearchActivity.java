@@ -38,7 +38,7 @@ public class SearchActivity extends BaseActivity {
     EditText editText;
     RecyclerView recyclerView;
     SearchResultRecycleviewAdapter adapter;
-    String keyword = "hebe";//todo
+    String keyword = "HEBE";
 
     ArrayList<SearchResultInfo.ResultBean.DataBean> searchList;
 
@@ -55,7 +55,7 @@ public class SearchActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
 //            super.handleMessage(msg);
-
+            editText.setText(keyword);//修改编辑框内容
             if (msg.what == LOADING) {
                 adapter.notifyItemRemoved(searchList.size());
                 isLoading = false;
@@ -93,7 +93,7 @@ public class SearchActivity extends BaseActivity {
             if (getkey == null) {//为空就进catch
                 throw new NullPointerException();
             }
-            editText.setText(getkey);
+//            editText.setText(getkey);
             keyword = getkey;//这样操作  避免上面报空之后被赋值为空
         } catch (NullPointerException e) {
         }

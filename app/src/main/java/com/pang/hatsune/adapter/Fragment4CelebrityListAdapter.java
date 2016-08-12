@@ -60,17 +60,17 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_HEADER_IMAGE:
-                new VH(mHeaderView);
-                break;
+                return new VH(mHeaderView);
+
             case TYPE_STARTS_HORIZONTAL_LIST:
-                new VH(mHorizontalListview);
-                break;
+                return   new VH(mHorizontalListview);
+
             case TYPE_MVS_GRID_LIST:
-                new VH(mMvsGridListView);
-                break;
+                return  new VH(mMvsGridListView);
+
             case TYPE_RECOMMEND_TITLE:
-                new VH(mNormalRecommendTitleView);
-                break;
+                return   new VH(mNormalRecommendTitleView);
+
             default://position>=4   TYPE_NORMAL_RECOMMEND_LIST
         }
         View normalRecommendRootView = LayoutInflater.from(context).inflate(R.layout.fragment4_celebrity_recommend_list_item, null, false);
@@ -83,6 +83,8 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
         if (position < 4) {
             return;
         }
+
+        position -= 4;
         ((VH) holder).image.setImageURI(Uri.parse(list.get(position).getPic()));
         ((VH) holder).name.setText(list.get(position).getName());
         ((VH) holder).desc.setText(list.get(position).getDescOrChannel());

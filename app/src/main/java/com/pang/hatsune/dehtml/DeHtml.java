@@ -227,12 +227,15 @@ public class DeHtml {
 //            System.out.println(m.group(1));// image
 //            System.out.println(m.group(2));// 明星
 //            System.out.println(m.group(3));// desc
+
             Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
             info.setDescOrChannel(m.group(3));
             info.setName(m.group(2));
             info.setPic(m.group(1));
             list.add(info);
         }
+//        System.out.println(list.size());
+//        System.out.println("-----------------");
         return list;
     }
 
@@ -256,6 +259,8 @@ public class DeHtml {
 //			System.out.println(m.group(2));// image
 //			System.out.println(m.group(3));// desc
 //			System.out.println(m.group(4));// 频道名称
+
+
             Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
             info.setMvIdOrStartId(m.group(1));
             info.setPic(m.group(2));
@@ -263,6 +268,8 @@ public class DeHtml {
             info.setName(m.group(4));
             list.add(info);
         }
+//        System.out.println(list.size());
+//        System.out.println("-----------------");
         return list;
     }
 
@@ -291,6 +298,10 @@ public class DeHtml {
             info.setDescOrChannel(m.group(3));
             list.add(info);
         }
+
+//        System.out.println(list.size());
+//        System.out.println("-----------------");
+
         return list;
     }
 

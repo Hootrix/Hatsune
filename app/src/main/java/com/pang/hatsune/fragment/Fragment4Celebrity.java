@@ -1,19 +1,25 @@
 package com.pang.hatsune.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment4CelebrityListAdapter;
+import com.pang.hatsune.custom_view.FullyGridLayoutManager;
+import com.pang.hatsune.custom_view.FullyLinearLayoutManager;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
 import com.pang.hatsune.http.HttpResquestPang;
@@ -42,9 +48,12 @@ public class Fragment4Celebrity extends BaseFragment {
                 ImageView headerImage = new ImageView(Fragment4Celebrity.this.getContext());
                 headerImage.setImageResource(R.drawable.start_banner);
                 adapter.setmHeaderView(headerImage);
-
-//                adapter.setmHorizontalListview();
-//                recyclerView.setAdapter();
+                adapter.setmHorizontalListview(getHorizontalListview());
+                adapter.setmMvsGridListView(getMvsGridListView());
+                TextView title = new TextView(Fragment4Celebrity.this.getContext());
+                title.setText("初音推荐");
+                adapter.setmNormalRecommendTitleView(title);
+                recyclerView.setAdapter(adapter);
             }
         }
     };
@@ -63,10 +72,10 @@ public class Fragment4Celebrity extends BaseFragment {
             @Override
             public void run() {
 //        super.run();
-                String htmlString = HttpResquestPang.getInstance().get(DATA.DOMAIN);
+                String htmlString = HttpResquestPang.getInstance().get(DATA.DOMAIN,HttpResquestPang.getInstance().getPCHeaders());
                 StartsList = DeHtml.getInstance().getCelebrityStarts(htmlString);
                 MvsList = DeHtml.getInstance().getCelebrityMvs(htmlString);
-                htmlString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_CELEBRITY_RECOMMEND_START_DATA);
+                htmlString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_CELEBRITY_RECOMMEND_START_DATA,HttpResquestPang.getInstance().getPCHeaders());
                 RecommendStartsList = DeHtml.getInstance().getCelebrityRecommendStarts(htmlString);
                 handler.sendEmptyMessage(GO);
             }
@@ -75,11 +84,91 @@ public class Fragment4Celebrity extends BaseFragment {
         return rootView;
     }
 
+    /**
+     * 设置初音群星 横向recycleView 数据
+     * @return
+     */
+    public View getHorizontalListview() {
+        View v = LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.fragment4_celebrity_recommend_child_horizontallistview_layout, null);
+        RecyclerView recyclerView  = (RecyclerView) v.findViewById(R.id.fragment4_celebrity_recommend_child_horizontallistview_layout_recycleview);
+//        RecyclerView recyclerView = new RecyclerView(this.getContext());
+//        recyclerView.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,RecyclerView.LayoutParams.MATCH_PARENT));
+        recyclerView.setLayoutManager(new FullyLinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setAdapter(new RecyclerView.Adapter() {
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return new VH(LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.fragment4_celebrity_starts_horizontal_list_item,null));
+            }
 
-    public View getHorizontalListview() {// TODO: 2016/8/12
-//View v = LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.)
+            @Override
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+                ((VH)holder).image.setImageURI(Uri.parse(StartsList.get(position).getPic()));
+                ((VH)holder).name.setText(StartsList.get(position).getName());
+                ((VH)holder).desc.setText(StartsList.get(position).getDescOrChannel());
+            }
 
-        return null;
+            @Override
+            public int getItemCount() {
+                return StartsList.size();
+            }
+
+              class VH extends RecyclerView.ViewHolder{
+                   SimpleDraweeView image;
+                  TextView name;
+                  TextView desc;
+
+                  public VH(View itemView) {
+                      super(itemView);
+                      image = (SimpleDraweeView) itemView.findViewById(R.id.fragment4_celebrity_starts_horizontal_list_item_image);
+                      name = (TextView) itemView.findViewById(R.id.fragment4_celebrity_starts_horizontal_list_item_name);
+                      desc = (TextView) itemView.findViewById(R.id.fragment4_celebrity_starts_horizontal_list_item_desc);
+                  }
+              }
+        });
+        return v;
     }
 
+    /**
+     * 设置Mvs 初音视频的数据 recycleView  GridList 的数据
+     * @return
+     */
+    public View getMvsGridListView(){
+View v = LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.fragment4_celebrity_recommend_child_mvs_gridlist_layout ,null);
+   RecyclerView  recyclerView = (RecyclerView) v.findViewById(R.id.fragment4_celebrity_recommend_child_mvs_gridlist_layout_recycleview);
+        recyclerView.setLayoutManager(new FullyGridLayoutManager(Fragment4Celebrity.this.getContext(),2));
+        recyclerView.setAdapter(new RecyclerView.Adapter() {
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return new VH(LayoutInflater.from(Fragment4Celebrity.this.getContext()).inflate(R.layout.fragment4_celebrity_starts_horizontal_list_item,null));
+            }
+
+            @Override
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+                ((VH)holder).image.setImageURI(Uri.parse(MvsList.get(position).getPic()));
+                ((VH)holder).desc.setText(MvsList.get(position).getDescOrChannel());
+                ((VH)holder).name.setText(MvsList.get(position).getName());
+            }
+
+            @Override
+            public int getItemCount() {
+                return MvsList.size();
+            }
+
+            class VH extends  RecyclerView.ViewHolder{
+                SimpleDraweeView image;
+                TextView name;
+                TextView desc;
+
+                public VH(View itemView) {
+                    super(itemView);
+                    image = (SimpleDraweeView) itemView.findViewById(R.id.fragment4_celebrity_starts_horizontal_list_item_image);
+                    name = (TextView) itemView.findViewById(R.id.fragment4_celebrity_starts_horizontal_list_item_name);
+                    desc = (TextView) itemView.findViewById(R.id.fragment4_celebrity_starts_horizontal_list_item_desc);
+
+                }
+            }
+        });
+
+        return  v;
+    }
 }
