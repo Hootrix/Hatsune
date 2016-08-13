@@ -8,6 +8,7 @@ import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.EchoHotInfo;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
 import com.pang.hatsune.info.gsonfactory.Fragment4CelebrityStartinfo;
+import com.pang.hatsune.utils.StringFilter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -178,7 +179,7 @@ public class DeHtml {
                 if (id.equals(hotDataMatcher.group(1))) {
                     day.setId(Integer.valueOf(hotDataMatcher.group(1)));
                     day.setChannel(hotDataMatcher.group(4));
-                    day.setPic(replaceWH(hotDataMatcher.group(2)));
+                    day.setPic(StringFilter.getInstance().replaceWH(hotDataMatcher.group(2)));
                     day.setTitle(hotDataMatcher.group(3));
                     dayList.add(day);
                     continue w1;
@@ -191,7 +192,7 @@ public class DeHtml {
                 if (id.equals(hotDataMatcher.group(1))) {
                     week.setId(Integer.valueOf(hotDataMatcher.group(1)));
                     week.setUsername(hotDataMatcher.group(4));
-                    week.setPic(replaceWH(hotDataMatcher.group(2)));
+                    week.setPic(StringFilter.getInstance().replaceWH(hotDataMatcher.group(2)));
                     week.setTitle(hotDataMatcher.group(3));
                     weekList.add(week);
                     continue w1;
@@ -229,9 +230,9 @@ public class DeHtml {
 //            System.out.println(m.group(3));// desc
 
             Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
-            info.setDescOrChannel(m.group(3));
-            info.setName(m.group(2));
+            info.setName(StringFilter.getInstance().replaceWH(m.group(2),100));
             info.setPic(m.group(1));
+            info.setDescOrChannel(m.group(3));
             list.add(info);
         }
 //        System.out.println(list.size());
@@ -257,15 +258,15 @@ public class DeHtml {
         while (m.find()) {
 //			System.out.println(m.group(1));// mv ID
 //			System.out.println(m.group(2));// image
-//			System.out.println(m.group(3));// desc
+//			System.out.println(m.group(3));// name
 //			System.out.println(m.group(4));// 频道名称
 
 
             Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
             info.setMvIdOrStartId(m.group(1));
             info.setPic(m.group(2));
-            info.setDescOrChannel(m.group(3));
-            info.setName(m.group(4));
+            info.setDescOrChannel(m.group(4));
+            info.setName(m.group(3));
             list.add(info);
         }
 //        System.out.println(list.size());
@@ -306,13 +307,5 @@ public class DeHtml {
     }
 
 
-    /**
-     * 替换图片裁剪的宽高
-     *
-     * @return
-     */
-    private String replaceWH(String url) {
-        int w = 300;
-        return url.replace("!100", "!" + w).replace("-100", "-" + w).replace("w/100", "w/" + w);
-    }
+
 }

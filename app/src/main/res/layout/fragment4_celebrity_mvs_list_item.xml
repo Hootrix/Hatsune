@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="5dp"
+    >
 
     <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/fragment4_celebrity_starts_horizontal_list_item_image"
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:id="@+id/fragment4_celebrity_mvs_list_item_image"
+        android:layout_width="320dp"
+        android:layout_height="160dp"
         android:layout_gravity="center" />
 
     <TextView

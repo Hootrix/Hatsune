@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="宣传视频"
+        android:textSize="20sp"
+        android:layout_margin="10dp"
         />
 
     <android.support.v7.widget.RecyclerView

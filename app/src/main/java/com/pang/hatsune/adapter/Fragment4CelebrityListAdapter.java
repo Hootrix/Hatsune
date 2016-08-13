@@ -1,15 +1,18 @@
 package com.pang.hatsune.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
+import com.pang.hatsune.activity.SearchActivity;
 import com.pang.hatsune.info.gsonfactory.Fragment4CelebrityStartinfo;
 
 import java.util.ArrayList;
@@ -73,8 +76,9 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
 
             default://position>=4   TYPE_NORMAL_RECOMMEND_LIST
         }
-        View normalRecommendRootView = LayoutInflater.from(context).inflate(R.layout.fragment4_celebrity_recommend_list_item, null, false);
-
+        LinearLayout normalRecommendRootView = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.fragment4_celebrity_recommend_list_item, null, false);
+        normalRecommendRootView.setBackgroundColor(0xffffffff);
+        normalRecommendRootView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
         return new VH(normalRecommendRootView);
     }
 
@@ -119,6 +123,14 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
 
         public VH(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent in = new Intent(context, SearchActivity.class);
+                    in.putExtra(SearchActivity.KEYWORD,list.get(getAdapterPosition()-4).getName());
+                    context.startActivity(in);
+                }
+            });
             image = (SimpleDraweeView) itemView.findViewById(R.id.fragment4_celebrity_recommend_list_item_image);
             name = (TextView) itemView.findViewById(R.id.fragment4_celebrity_recommend_list_item_name);
             desc = (TextView) itemView.findViewById(R.id.fragment4_celebrity_recommend_list_item_desc);

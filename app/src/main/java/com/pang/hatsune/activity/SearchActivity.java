@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
 import com.pang.hatsune.info.gsonfactory.SearchResultInfo;
 import com.pang.hatsune.token.Token;
+import com.pang.hatsune.utils.StringFilter;
 
 import org.w3c.dom.Text;
 
@@ -35,10 +37,11 @@ import java.util.List;
  * Created by Pang on 2016/8/7.
  */
 public class SearchActivity extends BaseActivity {
-    EditText editText;
-    RecyclerView recyclerView;
-    SearchResultRecycleviewAdapter adapter;
-    String keyword = "HEBE";
+    private EditText editText;
+    private RecyclerView recyclerView;
+    private SearchResultRecycleviewAdapter adapter;
+    private String keyword = "HEBE";
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     ArrayList<SearchResultInfo.ResultBean.DataBean> searchList;
 
@@ -59,6 +62,8 @@ public class SearchActivity extends BaseActivity {
             if (msg.what == LOADING) {
                 adapter.notifyItemRemoved(searchList.size());
                 isLoading = false;
+                swipeRefreshLayout.setEnabled(false);
+                swipeRefreshLayout.setRefreshing(false);
                 return;
             }
 
@@ -72,8 +77,11 @@ public class SearchActivity extends BaseActivity {
                 adapter.setEmptyView(empty);
                 recyclerView.setAdapter(adapter);
                 isLoading = false;
+                swipeRefreshLayout.setEnabled(false);
+                swipeRefreshLayout.setRefreshing(false);
                 return;
             }
+
         }
     };
 
@@ -81,12 +89,11 @@ public class SearchActivity extends BaseActivity {
     protected void initView() {
         editText = (EditText) findViewById(R.id.search_result_edittext);
         recyclerView = (RecyclerView) findViewById(R.id.search_result_list);
-
+        swipeRefreshLayout = $(R.id.search_result_refreshlayout);
     }
 
     @Override
     protected void initViewData() {
-
         searchList = new ArrayList<SearchResultInfo.ResultBean.DataBean>();
         try {
             String getkey = getIntent().getStringExtra(KEYWORD);
@@ -94,9 +101,15 @@ public class SearchActivity extends BaseActivity {
                 throw new NullPointerException();
             }
 //            editText.setText(getkey);
-            keyword = getkey;//这样操作  避免上面报空之后被赋值为空
+            keyword = StringFilter.getInstance().fitlerSearchKeyword(getkey);//这样操作  避免上面报空之后被赋值为空 && 过滤某些符号
+            editText.setText(keyword);//修改编辑框内容
         } catch (NullPointerException e) {
         }
+
+
+        swipeRefreshLayout.measure(0,0);//手动通知系统去测量
+        swipeRefreshLayout.setRefreshing(true);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -112,7 +125,7 @@ public class SearchActivity extends BaseActivity {
                     /**
                      * 此处判断：若结果只有一个 那么会执行到此语句。把loading状态取消
                      */
-                    if(dy==0){//Y轴位移为0  表示当前页面不能滚动：也就是搜索结果数量较少
+                    if (dy == 0) {//Y轴位移为0  表示当前页面不能滚动：也就是搜索结果数量较少
 //                        System.out.println("hhtjim:bottom:dy:isLoading====false;" );
                         isLoading = false;
                     }
@@ -121,7 +134,7 @@ public class SearchActivity extends BaseActivity {
                         searchList.add(null);
                         adapter.notifyItemInserted(searchList.size() - 1);
                     }
-                    if (dy > 0) {//触摸点向上托
+                    if (dy > 0) {//触摸点向上N托
                         thread(LOADING);
                     }
                 }
@@ -142,11 +155,17 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void thread(final int statue) {
+        if (statue != LOADING) {
+            swipeRefreshLayout.setEnabled(true);
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
         new Thread() {
             @Override
             public void run() {
 //                super.run();
-                String urlEncodeBefore = "";
+                String urlEncodekeyword = "";
+
                 if (!TextUtils.isEmpty(keyword) || !isEnd) {
                     String jsonString = "";
                     try {
@@ -155,15 +174,12 @@ public class SearchActivity extends BaseActivity {
                         } else {
                             lastNum = 1;
                         }
-//                        System.out.println("hhtjim:99:" + keyword);
-//                        ;
-                        keyword = URLEncoder.encode(keyword, "UTF-8");
-                        urlEncodeBefore = URLDecoder.decode(keyword, "UTF-8");
+                        urlEncodekeyword = URLEncoder.encode(keyword, "UTF-8");
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
 //                    System.out.println("hhtjim:keyword:" + keyword);
-                    jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_SEARCH_DATA + "keyword=" + keyword + "&page=" + lastNum + "&token=" + Token.getLinkSearchToken(urlEncodeBefore, lastNum + ""));
+                    jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_SEARCH_DATA + "keyword=" + urlEncodekeyword + "&page=" + lastNum + "&token=" + Token.getLinkSearchToken(keyword, lastNum + ""));
 
                     SearchResultInfo info = Dejson.getInstance().getSearchResult(jsonString);
                     List<SearchResultInfo.ResultBean.DataBean> tempList = null;
@@ -172,7 +188,7 @@ public class SearchActivity extends BaseActivity {
                     } catch (NullPointerException e) {
                         isEnd = true;
                         isLoading = false;
-                        Snackbar.make(editText,"NOT FOUND.",Snackbar.LENGTH_LONG).show();
+                        // Snackbar.make(editText,"NOT FOUND.",Snackbar.LENGTH_LONG).show();
                         handler.sendEmptyMessage(NORMAL);//万一第一次就为空  也得把recycleView的适配器装好
                         return;
                     }
