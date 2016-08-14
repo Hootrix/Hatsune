@@ -182,6 +182,7 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
         fragmentTransaction.commit(); //commit()方法提交对事务的操作
         radioGroupBottom.check(R.id.main_bottom_radiogroup_r3);//默认点亮第三个radiobutton
         radioGroupTop.check(R.id.main_top_radiogroup_r1);//默认顶部的第一个点亮：推荐按钮
+
         //监听浮动按钮
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -193,14 +194,15 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
+        fab.setVisibility(View.GONE);
 
         radioGroupBottom.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 BaseFragment currentFragment = null;
-                toolbar = (Toolbar) MainActivity.this.findViewById(R.id.toolbar);
                 boolean topbarWhite = false;
+                RadioButton rb = MainActivity.this.$(checkedId);
+                topTitle.setText(rb.getText().toString());
                 switch (checkedId) {
                     case R.id.main_bottom_radiogroup_r1:
                         currentFragment = fragment1News;
