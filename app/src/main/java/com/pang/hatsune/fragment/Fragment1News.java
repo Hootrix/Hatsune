@@ -104,6 +104,10 @@ public class Fragment1News extends BaseFragment {
                 }
                 isLoading = false;
 
+
+                if (list != null && list.size() < 4 && list.size() >= 0) {//载入的数据没有  或者很少   不能要notifyDataSetChanged方法 否则 不会显示
+                    thread(LOADING);
+                }
             }
         }
     };

@@ -1,6 +1,7 @@
 package com.pang.hatsune.fragment;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +12,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
+import com.pang.hatsune.activity.SearchActivity;
 import com.pang.hatsune.adapter.Fragment2ChannelHorizontalAdapter;
 import com.pang.hatsune.custom_view.FullyLinearLayoutManager;
 import com.pang.hatsune.custom_view.IndicatorView;
@@ -58,6 +62,7 @@ import java.util.Map;
 public class Fragment2Channel extends BaseFragment {
     ViewPager galleryViewpager;
     ScrollView myScrollview;
+    AppCompatEditText searchBox;
     ArrayList<Fragment> imageFragmentList;
     HashMap httpResutl;
     View rootView;
@@ -155,19 +160,37 @@ public class Fragment2Channel extends BaseFragment {
 
         myScrollview = (ScrollView) rootView.findViewById(R.id.myscrollview);
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment2_channel_refreshlayout);
+        searchBox = (AppCompatEditText) rootView.findViewById(R.id.fragment2_channel_edittext);
         myScrollview.setVisibility(View.GONE);
         mSwipeRefreshLayout.setEnabled(false);
         mSwipeRefreshLayout.measure(0, 0);
         mSwipeRefreshLayout.setRefreshing(true);
 
         galleryViewpager = (ViewPager) rootView.findViewById(R.id.fragment2_channel_image_viewpager);
-        galleryViewpager.setId(R.id.image_viewpager+859);
+        galleryViewpager.setId(R.id.image_viewpager + 859);
         horizontalRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment2_channel_horizontal_recyclerView);
 
 
         transaction.add(R.id.fragment2_channel_hot_and_new, hot);
         transaction.add(R.id.fragment2_channel_hot_and_new, newf);
         transaction.commit();
+
+        searchBox.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                switch (keyCode) {
+                    case KeyEvent.KEYCODE_ENTER:
+                        if (KeyEvent.ACTION_UP == event.getAction()) {
+                            Intent intent = new Intent(Fragment2Channel.this.getContext(), SearchActivity.class);
+                            intent.putExtra(SearchActivity.KEYWORD, searchBox.getText().toString());
+                            Fragment2Channel.this.getContext().startActivity(intent);
+                            return true;
+                        }
+                }
+                return false;
+            }
+        });
 
 
         new Thread() {
