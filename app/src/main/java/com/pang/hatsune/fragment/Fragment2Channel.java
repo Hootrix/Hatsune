@@ -10,28 +10,38 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.Fragment2ChannelHorizontalAdapter;
 import com.pang.hatsune.custom_view.FullyLinearLayoutManager;
 import com.pang.hatsune.custom_view.IndicatorView;
+import com.pang.hatsune.custom_view.MyScrollView;
 import com.pang.hatsune.custom_view.RecycleViewDivider;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
 import com.pang.hatsune.dejson.Dejson;
+import com.pang.hatsune.event_bus_message.EventHot;
+import com.pang.hatsune.event_bus_message.EventNew;
 import com.pang.hatsune.fragment.channel_hotnew.HotAndNewFragment;
 import com.pang.hatsune.fragment.image.ImageFragment;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
 import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -51,11 +61,14 @@ public class Fragment2Channel extends BaseFragment {
     ArrayList<Fragment> imageFragmentList;
     HashMap httpResutl;
     View rootView;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     boolean isFinish;//是否完成分类文本数据加载
     private final int UPDATE_BANNER = 1;//更新banner
     private final int UPDATE_CLASS_NAME = 2;//更新分类数据  只是分类名字  没有图片
     private final int UPDATE_CLASS_IMAGE = 10;//更新分类数据  显示图片
-    private final String DEFAULT_IMAGE = "http://kibey-echo.b0.upaiyun.com/poster/2014/06/06/40c1270e870ab214.jpg";//默认的图片
+    private final String DEFAULT_IMAGE = "http://kibey-echo.b0.upaiyun.com/poster/2014/06/06/40c1270e870ab214.jpg";//横向频道分类默认的网络图片
+
+    private int currentNewOrHot = HotAndNewFragment.HOT;//默认显示为最热;//记录当前显示最新还是最热
 
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
@@ -63,7 +76,7 @@ public class Fragment2Channel extends BaseFragment {
     Fragment2ChannelHorizontalAdapter horizontalRecyclerViewAdapter;//横向的recycleView 适配器
     ArrayList<Fragment2ChannelHorizontalInfo> hoRelist;//横向的recycleView 容器
 
-    ArrayList<HotAndNewFragment> hotAndNewFragmentList;//装热门/最新 fragment的容器
+    ArrayList<Fragment> hotAndNewFragmentList;//装  热门/最新 fragment的容器
 
     Handler handler = new Handler() {
         @Override
@@ -82,8 +95,7 @@ public class Fragment2Channel extends BaseFragment {
                         return imageFragmentList.size();
                     }
                 });
-
-                IndicatorView mIndicatorView = (IndicatorView) rootView.findViewById(R.id.id_indicator);
+                IndicatorView mIndicatorView = (IndicatorView) rootView.findViewById(R.id.fragment2_channel_id_indicator);
                 mIndicatorView.setViewPager(galleryViewpager);//设置滑动指示器
             }
 
@@ -109,6 +121,10 @@ public class Fragment2Channel extends BaseFragment {
                 //上面的只更新某一项  无效 so 注释
 
                 horizontalRecyclerViewAdapter.notifyDataSetChanged();
+
+
+                myScrollview.setVisibility(View.VISIBLE);
+                mSwipeRefreshLayout.setRefreshing(false);//取消刷新动画
             }
         }
     };
@@ -124,22 +140,33 @@ public class Fragment2Channel extends BaseFragment {
                              Bundle savedInstanceState) {
         fragmentManager = this.getChildFragmentManager();
         transaction = fragmentManager.beginTransaction();
-        hotAndNewFragmentList = new ArrayList<HotAndNewFragment>();
-        HotAndNewFragment hot = new HotAndNewFragment().setType(HotAndNewFragment.HOT);
-        HotAndNewFragment newf = new HotAndNewFragment().setType(HotAndNewFragment.NEW);
+        hotAndNewFragmentList = new ArrayList<Fragment>();
+        HotAndNewFragment hot = new HotAndNewFragment();
+        hot.setType(HotAndNewFragment.HOT);
+
+        HotAndNewFragment newf = new HotAndNewFragment();
+        newf.setType(HotAndNewFragment.NEW);
+
         hotAndNewFragmentList.add(hot);
         hotAndNewFragmentList.add(newf);
 
 
         rootView = inflater.inflate(R.layout.fragment_fragment2_channel, null);
-        myScrollview = (ScrollView) rootView.findViewById(R.id.myscrollview);
 
-        galleryViewpager = (ViewPager) rootView.findViewById(R.id.image_viewpager);
+        myScrollview = (ScrollView) rootView.findViewById(R.id.myscrollview);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment2_channel_refreshlayout);
+        myScrollview.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.measure(0, 0);
+        mSwipeRefreshLayout.setRefreshing(true);
+
+        galleryViewpager = (ViewPager) rootView.findViewById(R.id.fragment2_channel_image_viewpager);
+        galleryViewpager.setId(R.id.image_viewpager+859);
         horizontalRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment2_channel_horizontal_recyclerView);
 
 
         transaction.add(R.id.fragment2_channel_hot_and_new, hot);
-        transaction.add(R.id.fragment2_channel_hot_and_new,newf);
+        transaction.add(R.id.fragment2_channel_hot_and_new, newf);
         transaction.commit();
 
 
@@ -154,9 +181,9 @@ public class Fragment2Channel extends BaseFragment {
                 String httpString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_CHANNEL_DATA, hashMap);
                 httpResutl = DeHtml.getInstance().getChannelViewPagerImage(httpString);
                 handler.sendEmptyMessage(UPDATE_BANNER);
+//                System.out.println("hhtjim:888:sendbanner");
 
-
-//1.获取分类的文本数据 设置给适配器
+////1.获取分类的文本数据 设置给适配器
                 ArrayList<String> httpStringChannelClassList = DeHtml.getInstance().getChannelClassname(httpString);
                 hoRelist = new ArrayList<Fragment2ChannelHorizontalInfo>();
                 for (int i = 0; i < httpStringChannelClassList.size(); i++) {
@@ -174,21 +201,20 @@ public class Fragment2Channel extends BaseFragment {
         thread.start();
 
 
-
         //最新 最热  按钮监听
         RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.fragment2_channel_hot_and_new_radiogroup);
         radioGroup.check(R.id.fragment2_channel_hot_and_new_r1);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // int position = 0;
+//                 int position = 0;
                 switch (checkedId) {
                     case R.id.fragment2_channel_hot_and_new_r1:
-                        //  position = 0;
+                        currentNewOrHot = HotAndNewFragment.HOT;
                         displayFragment(hotAndNewFragmentList.get(0));
                         break;
                     case R.id.fragment2_channel_hot_and_new_r2:
-                        // position = 1;
+                        currentNewOrHot = HotAndNewFragment.NEW;
                         displayFragment(hotAndNewFragmentList.get(1));
                         break;
                     default:
@@ -197,7 +223,7 @@ public class Fragment2Channel extends BaseFragment {
 
             }
         });
-
+        listenerScroolView();
         return rootView;
     }
 
@@ -213,9 +239,7 @@ public class Fragment2Channel extends BaseFragment {
             SimpleDraweeView simpleDraweeView = new SimpleDraweeView(Fragment2Channel.this.getContext());
             simpleDraweeView.setImageURI(Uri.parse(t.getValue()));
 //            simpleDraweeView.setMaxWidth(600);
-
             imageFragmentList.add(new ImageFragment().setView(simpleDraweeView));
-//            System.out.println(itor.next().getKey());
         }
 
     }
@@ -229,7 +253,7 @@ public class Fragment2Channel extends BaseFragment {
     public void displayFragment(Fragment fr) {//传入需要显示的Fragment
         transaction = fragmentManager.beginTransaction();
         transaction.show(fr);
-        Iterator<HotAndNewFragment> it = hotAndNewFragmentList.iterator();
+        Iterator<Fragment> it = hotAndNewFragmentList.iterator();
         while (it.hasNext()) {
             Fragment f = it.next();
             if (f != fr) {
@@ -284,5 +308,32 @@ public class Fragment2Channel extends BaseFragment {
                 }
             }
         }
+    }
+
+
+    /**
+     * 监听最新最热   是否滚动到底部 <br/>用eventBus发送消息给里面的 fragment做处理
+     */
+    public void listenerScroolView() {
+        MyScrollView myscrollview = (MyScrollView) rootView.findViewById(R.id.myscrollview);
+        myscrollview.setOnScrollChangeListener(new MyScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(MyScrollView view, int x, int y, int oldx, int oldy) {
+            }
+
+            @Override
+            public void onScrollBottomListener() {
+//取消加载更多
+//                if (currentNewOrHot == HotAndNewFragment.HOT) {
+//                    EventBus.getDefault().post(new EventHot());
+//                } else if (currentNewOrHot == HotAndNewFragment.NEW) {
+//                    EventBus.getDefault().post(new EventNew());
+//                }
+            }
+
+            @Override
+            public void onScrollTopListener() {
+            }
+        });
     }
 }

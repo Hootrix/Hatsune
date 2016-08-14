@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -32,21 +33,17 @@ import java.util.List;
  */
 public class Hot extends BaseFragment {
     Toolbar topBar;
-    //    int alphaValue = -1;
     EchoHotInfo hotDataInfo;
     RecyclerView gridRecyclerView;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private final int DOING = 10;
-//    ArrayList<ImageFragment> imageFragmentList;
+
 
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 //            super.handleMessage(msg);
             if (msg.what == DOING) {
-//                getEchoHotData
-//                System.out.println("hhtjim:78:handler");
-//                System.out.println("hhtjim:78:" + hotDataInfo.getDayHotList().size());
-//                System.out.println("hhtjim:78:" + hotDataInfo.getWeekHotList().size());
 
                 GridLayoutManager gridManager = new GridLayoutManager(Hot.this.getContext(), 2);
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -66,18 +63,28 @@ public class Hot extends BaseFragment {
                 TextView dayTitle = new TextView(Hot.this.getContext());
                 dayTitle.setText("今日最热");
                 dayTitle.setTextSize(20);
+               LinearLayout dayTitleLayout = new LinearLayout(Hot.this.getContext());
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                lp.setMargins(20,10,0,10);
+                dayTitleLayout.setLayoutParams(lp);
+                dayTitleLayout.addView(dayTitle);
+
                 TextView weekTitle = new TextView(Hot.this.getContext());
                 weekTitle.setText("周榜");
                 weekTitle.setTextSize(20);
-                adapter.setDayHotTitle(dayTitle);
-                adapter.setWeekHotTitle(weekTitle);
+                LinearLayout weekTitleLayout = new LinearLayout(Hot.this.getContext());
+                weekTitleLayout.setLayoutParams(lp);
+                weekTitleLayout.addView(weekTitle);
+
+                adapter.setDayHotTitle(dayTitleLayout);
+                adapter.setWeekHotTitle(weekTitleLayout);
                 ImageView headerImage = new ImageView(Hot.this.getContext());
                 headerImage.setImageResource(R.drawable.echo_hot_top_image);
 
 
-                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
+                ViewGroup.LayoutParams lp2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
                 headerImage.setScaleType(ImageView.ScaleType.FIT_XY);
-                headerImage.setLayoutParams(lp);
+                headerImage.setLayoutParams(lp2);
                 adapter.setHeaderView(headerImage);
 
                 gridRecyclerView.setAdapter(adapter);
@@ -114,6 +121,9 @@ public class Hot extends BaseFragment {
 
                     }
                 });
+
+
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         }
 
@@ -128,6 +138,12 @@ public class Hot extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment3_echo_viewpager_fragment2_hot, null);
+       mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.fragment3_echo_viewpager_fragment2_hot_refreshlayout);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.measure(0,0);
+        mSwipeRefreshLayout.setRefreshing(true);
+
+
         gridRecyclerView = (RecyclerView) v.findViewById(R.id.fragment3_echo_viewpager_fragment2_hot_grid);
         topBar = (Toolbar) this.getActivity().findViewById(R.id.toolbar);
         thread();

@@ -7,9 +7,14 @@
 
     <!--<include layout="@layout/image_viewpager" />-->
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment3_echo_viewpager_fragment1_suggest_refreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment3_echo_viewpager_fragment1_suggest_recycleview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-
+</android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

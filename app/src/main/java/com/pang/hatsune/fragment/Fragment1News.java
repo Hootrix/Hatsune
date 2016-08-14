@@ -45,9 +45,9 @@ public class Fragment1News extends BaseFragment {
     boolean isLoading;//加载更多的状态
     boolean isEnd;//判断是否到结尾了
 
-    private  final int NORMAL = 0;
-    private  final int LOADING = -2;
-    private  final int REFRESH = -1;
+    private final int NORMAL = 0;
+    private final int LOADING = -2;
+    private final int REFRESH = -1;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -57,32 +57,53 @@ public class Fragment1News extends BaseFragment {
                 recyclerViewAdapter = new Fragment1RecyclerViewAdapter(Fragment1News.this.getContext(), list);
                 recyclerView.setAdapter(recyclerViewAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(Fragment1News.this.getActivity()));
-                return;
                 //分割线
 //                recyclerView.addItemDecoration(new RecycleViewDivider(Fragment1News.this.getActivity(),LinearLayoutManager.HORIZONTAL));
 //                recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setEnabled(true);
+                if (list != null && list.size() < 4 && list.size() >= 0) {
+                    thread(LOADING);
+                }
+                return;
             }
 
 
             if (msg.what == REFRESH) {//下拉刷新
                 list.clear();
                 list.addAll(Dejson.getInstance().getNewsInfoJsonObject(jsonString));
-                recyclerViewAdapter.notifyDataSetChanged();
+
                 swipeRefreshLayout.setRefreshing(false);//取消下拉刷新的提示
+                if (list != null && list.size() < 4 && list.size() >= 0) {//刷新的第一页若没有数据  或者很少   不能要notifyDataSetChanged方法 否则 不会显示
+                    thread(LOADING);
+                }else{//普通的刷新一次就会有很多数据  notifyDataSetChanged更新适配器
+                    recyclerViewAdapter.notifyDataSetChanged();
+                }
                 return;
             }
 
             if (msg.what == LOADING) {//上拉加载
-                list.remove(list.size() - 1);
+                boolean isloadingLayout = false;
+                if (list.size() > 0 && list.get(list.size() - 1) == null) {
+                    list.remove(list.size() - 1);
+                    isloadingLayout = true;
+                }
                 ArrayList<NewsRecyclerViewInfo> templist = Dejson.getInstance().getNewsInfoJsonObject(jsonString);
-                if (templist.size() < 1) {
+                if (templist == null) {//返回错误代码  就直接得到null   应该只有上拉加载才会出现
                     pageNum = lastPage;
                     isEnd = true;
+                } else {
+                    list.addAll(templist);
                 }
-                list.addAll(templist);
-                recyclerViewAdapter.notifyItemRemoved(list.size());
-//                recyclerViewAdapter.notifyDataSetChanged();
+                if (isloadingLayout) {
+                    recyclerViewAdapter.notifyItemRemoved(list.size());
+                } else {
+                    recyclerViewAdapter.notifyDataSetChanged();
+                }
                 isLoading = false;
+
             }
         }
     };
@@ -98,6 +119,9 @@ public class Fragment1News extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_fragment1_news, null, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment1_news_recyclerview);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment1_news_refreshlayout);
+        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.measure(0, 0);
+        swipeRefreshLayout.setRefreshing(true);
         thread();
 
 
@@ -118,10 +142,11 @@ public class Fragment1News extends BaseFragment {
                 //滑动到最后一个并且状态不是加载中,执行加载更多，isLoading默认值false
                 if (lastItemIndex >= list.size() - 1 && !isLoading) {//若最后一项的布局高度比较高，列表的下边界在最后一项高度以内 都会触发if
                     if (!isEnd) {
+                        isLoading = true;
                         list.add(null);
                         recyclerViewAdapter.notifyItemInserted(list.size() - 1);
                     }
-                    if (dy > 0) {//触摸点向上托
+                    if (dy > 0 || list.size() < 4) {//触摸点向上托   或 个数太少
                         thread(LOADING);
                     }
                 }
@@ -142,21 +167,17 @@ public class Fragment1News extends BaseFragment {
         switch (state) {
             case -1://下拉刷新
                 lastPage = 1;//默认第一页
-                if(pageNum != 0 && isEnd){//如果已经拉到末尾
+                if (pageNum != 0 && isEnd) {//如果已经拉到末尾
                     isEnd = false;
                 }
                 break;
             case -2://上拉加载
-                if (isLoading) {
-                    return;
-                }
 
                 if (pageNum != 0 && isEnd) {
-                    Snackbar.make(recyclerView, "没有了哦", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(recyclerView, "没有了", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
-                isLoading = true;
                 lastPage++;
                 break;
             default://默认第一页

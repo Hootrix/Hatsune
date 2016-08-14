@@ -5,93 +5,122 @@
     android:orientation="vertical"
     tools:context="com.pang.hatsune.fragment.Fragment2Channel">
     <!--com.pang.hatsune.custom_view.My-->
-    <com.pang.hatsune.custom_view.MyScrollView
-        android:id="@+id/myscrollview"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment2_channel_refreshlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.pang.hatsune.custom_view.MyScrollView
+            android:id="@+id/myscrollview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.AppCompatEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:drawableTint="@color/appColorGray"
-                android:gravity="center"
-                android:hint="Search"
-                android:inputType="text"
-                android:singleLine="true" />
-
-            <include layout="@layout/image_viewpager" />
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="5dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_menu_channel" />
-
-                <TextView
+                <android.support.v7.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="频道分类"
-                    android:textSize="20sp" />
+                    android:layout_margin="10dp"
+                    android:drawableTint="@color/appColorGray"
+                    android:gravity="center"
+                    android:hint="Search"
+                    android:inputType="text"
+                    android:singleLine="true" />
+
+                <!--<include layout="@layout/image_viewpager" />-->
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/fragment2_channel_image_viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"></android.support.v4.view.ViewPager>
+
+                    <!--滑动指示器-->
+                    <com.pang.hatsune.custom_view.IndicatorView xmlns:zgy="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/fragment2_channel_id_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="-50dp"
+                        android:padding="5dp"
+                        zgy:indicator_icon="@drawable/indicator_selector"
+                        zgy:indicator_margin="5dp"
+                        zgy:indicator_smooth="true" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_menu_channel" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="频道分类"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/fragment2_channel_horizontal_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:background="#ffffff">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <RadioGroup
+                    android:id="@+id/fragment2_channel_hot_and_new_radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/fragment2_channel_hot_and_new_r1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="最热"
+                        android:textColor="@color/main_textcolor_selector"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/fragment2_channel_hot_and_new_r2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="最新"
+                        android:textColor="@color/main_textcolor_selector"
+                        android:textSize="20sp" />
+                </RadioGroup>
+
+
+                <LinearLayout
+                    android:id="@+id/fragment2_channel_hot_and_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
             </LinearLayout>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/fragment2_channel_horizontal_recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:background="#ffffff">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <RadioGroup
-                android:id="@+id/fragment2_channel_hot_and_new_radiogroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/fragment2_channel_hot_and_new_r1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="最热"
-                    android:textColor="@color/main_textcolor_selector"
-                    android:textSize="20sp" />
-
-                <RadioButton
-                    android:id="@+id/fragment2_channel_hot_and_new_r2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="最新"
-                    android:textColor="@color/main_textcolor_selector"
-                    android:textSize="20sp" />
-            </RadioGroup>
-
-
-            <LinearLayout
-                android:id="@+id/fragment2_channel_hot_and_new"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
-        </LinearLayout>
-    </com.pang.hatsune.custom_view.MyScrollView>
+        </com.pang.hatsune.custom_view.MyScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

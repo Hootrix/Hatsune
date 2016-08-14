@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
  */
 public class Fragment4Celebrity extends BaseFragment {
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<Fragment4CelebrityStartinfo> StartsList;
     ArrayList<Fragment4CelebrityStartinfo> MvsList;
     ArrayList<Fragment4CelebrityStartinfo> RecommendStartsList;
@@ -51,6 +53,8 @@ public class Fragment4Celebrity extends BaseFragment {
                 ImageView headerImage = new ImageView(Fragment4Celebrity.this.getContext());
                 headerImage.setImageResource(R.drawable.start_banner);
                 headerImage.setScaleType(ImageView.ScaleType.FIT_XY);
+                headerImage.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300));
+
                 adapter.setmHeaderView(headerImage);
                 adapter.setmHorizontalListview(getHorizontalListview());
                 adapter.setmMvsGridListView(getMvsGridListView());
@@ -66,6 +70,9 @@ public class Fragment4Celebrity extends BaseFragment {
                 linearLayout.setLayoutParams(lp);
                 adapter.setmNormalRecommendTitleView(linearLayout);
                 recyclerView.setAdapter(adapter);
+
+                swipeRefreshLayout.setEnabled(false);
+                swipeRefreshLayout.setRefreshing(false);
             }
         }
     };
@@ -79,7 +86,16 @@ public class Fragment4Celebrity extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_fragment4_celebrity, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment3_celebrity_list);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment4_celebrity_list);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment4_celebrity_refreshlayout);
+
+        swipeRefreshLayout.measure(0,0);
+        swipeRefreshLayout.setRefreshing(true);
+
+        //下拉动作不会触发刷新的动画
+        // 避免报错
+        swipeRefreshLayout.setEnabled(false);
+
         new Thread() {
             @Override
             public void run() {

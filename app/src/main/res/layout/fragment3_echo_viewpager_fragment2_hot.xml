@@ -13,10 +13,17 @@
         <!--android:text="今日最热"-->
         <!--/>-->
 
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment3_echo_viewpager_fragment2_hot_refreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment3_echo_viewpager_fragment2_hot_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
         ></android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

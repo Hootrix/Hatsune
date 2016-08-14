@@ -109,7 +109,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         holder.mItem = list;
         holder.publisher.setText(holder.mItem.get(position).getPublisherInfo().getName());
         holder.publicTitle.setText(holder.mItem.get(position).getLabel_text());
-        String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date(Long.valueOf(holder.mItem.get(position).getCreate_time())));
+        String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date(Long.valueOf(holder.mItem.get(position).getCreate_time()+"000")));
         holder.publicTime.setText(date);
         holder.content.setText(holder.mItem.get(position).getContent() + "");
 
@@ -132,7 +132,9 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
 //        holder.musicIcon.setHierarchy(hierarchy);
 
         holder.musicDes.setText(holder.mItem.get(position).getSoundInfo().getName());
-        holder.musicPlayNum.setText(holder.mItem.get(position).getSoundInfo().getView_count());
+        String pNum = holder.mItem.get(position).getSoundInfo().getView_count();
+      long l=   Long.parseLong(pNum);
+        holder.musicPlayNum.setText("播放："+l/10000f+"万次");
         holder.comment.setText(holder.mItem.get(position).getComment_num());
         holder.like.setText(holder.mItem.get(position).getLike_num());
         holder.share.setText(holder.mItem.get(position).getRelay_num());

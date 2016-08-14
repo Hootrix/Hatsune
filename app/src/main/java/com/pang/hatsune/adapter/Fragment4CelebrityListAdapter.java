@@ -66,19 +66,19 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
                 return new VH(mHeaderView);
 
             case TYPE_STARTS_HORIZONTAL_LIST:
-                return   new VH(mHorizontalListview);
+                return new VH(mHorizontalListview);
 
             case TYPE_MVS_GRID_LIST:
-                return  new VH(mMvsGridListView);
+                return new VH(mMvsGridListView);
 
             case TYPE_RECOMMEND_TITLE:
-                return   new VH(mNormalRecommendTitleView);
+                return new VH(mNormalRecommendTitleView);
 
             default://position>=4   TYPE_NORMAL_RECOMMEND_LIST
         }
         LinearLayout normalRecommendRootView = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.fragment4_celebrity_recommend_list_item, null, false);
         normalRecommendRootView.setBackgroundColor(0xffffffff);
-        normalRecommendRootView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+        normalRecommendRootView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         return new VH(normalRecommendRootView);
     }
 
@@ -123,12 +123,23 @@ public class Fragment4CelebrityListAdapter extends RecyclerView.Adapter<Recycler
 
         public VH(View itemView) {
             super(itemView);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent in = new Intent(context, SearchActivity.class);
-                    in.putExtra(SearchActivity.KEYWORD,list.get(getAdapterPosition()-4).getName());
-                    context.startActivity(in);
+                    String keyword = null;
+                    if (getAdapterPosition() == 0) {
+                        keyword = "H3M";
+                    }
+                    if (getAdapterPosition() >= 4) {
+                        keyword = list.get(getAdapterPosition() - 4).getName();
+                    }
+
+                    if (keyword != null) {
+                        Intent in = new Intent(context, SearchActivity.class);
+                        in.putExtra(SearchActivity.KEYWORD, keyword);
+                        context.startActivity(in);
+                    }
                 }
             });
             image = (SimpleDraweeView) itemView.findViewById(R.id.fragment4_celebrity_recommend_list_item_image);

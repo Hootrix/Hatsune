@@ -26,7 +26,7 @@ public class StringFilter {
      * @return
      */
     public String replaceWH(String url) {
-        return replaceWH(url, 300);
+        return replaceWH(url, 250);
     }
 
     public String replaceWH(String url, int w) {

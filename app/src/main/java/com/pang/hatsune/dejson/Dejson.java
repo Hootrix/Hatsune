@@ -51,6 +51,9 @@ public class Dejson {
         ArrayList<NewsRecyclerViewInfo> list = new ArrayList<NewsRecyclerViewInfo>();
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
+            if(jsonObject.getInt("status") == 200){//100为正常
+                return null;
+            }
             JSONArray jsonArray = jsonObject.getJSONArray("desc");
             if (jsonObject.getInt("status") != 100 || jsonObject.getString("desc").equals("没有更多动态")) {
                 return null;
@@ -68,7 +71,7 @@ public class Dejson {
                 newsRecyclerViewInfo.setComment_num(obj.getInt("comment_num") + "");
                 newsRecyclerViewInfo.setRelay_num(obj.getInt("relay_num") + "");
                 JSONObject soundObj = obj.getJSONObject("sound");
-                newsRecyclerViewInfo.setSoundInfo(new SoundInfo().setId(soundObj.getString("id")).setName(soundObj.getString("name")).setPic(soundObj.getString("pic")).setSource(soundObj.getString("source")));
+                newsRecyclerViewInfo.setSoundInfo(new SoundInfo().setId(soundObj.getString("id")).setName(soundObj.getString("name")).setPic(soundObj.getString("pic")).setSource(soundObj.getString("source")).setView_count(""+soundObj.getInt("view_count")));
                 if (obj.has("publisher")) {
                     JSONObject publisherObj = obj.getJSONObject("publisher");
                     newsRecyclerViewInfo.setPublisherInfo(new PublisherInfo().setName(publisherObj.getString("name")).setAvatar(publisherObj.getString("avatar")).setAvatar_100(publisherObj.getString("avatar_100")));

@@ -24,8 +24,13 @@ import com.pang.hatsune.custom_view.MyScrollView;
 import com.pang.hatsune.custom_view.RecycleViewDivider;
 import com.pang.hatsune.data.DATA;
 import com.pang.hatsune.dehtml.DeHtml;
+import com.pang.hatsune.event_bus_message.EventHot;
+import com.pang.hatsune.event_bus_message.EventNew;
 import com.pang.hatsune.http.HttpResquestPang;
 import com.pang.hatsune.info.Fragment2ChannelHorizontalInfo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -83,6 +88,7 @@ public class HotAndNewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);//接收消息的页面 注册eventbus
     }
 
     /**
@@ -90,13 +96,14 @@ public class HotAndNewFragment extends Fragment {
      *
      * @param type
      */
-    public HotAndNewFragment setType(int type) {
+    public void setType(int type) {
         if (type != HOT && type != NEW) {
             throw new RuntimeException("指定类型错误。");
         }
         this.type = type;
-        return this;
+        return;
     }
+
 
     @Nullable
     @Override
@@ -107,62 +114,30 @@ public class HotAndNewFragment extends Fragment {
 
         loadingProgress.setVisibility(View.GONE);
         setData();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-//                System.out.println("hhtjim:888");
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-//                System.out.println("hhtjim:887");
-//                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//                int lastItemIndex = manager.findLastVisibleItemPosition();
-//                int firstItemIndex = manager.findFirstVisibleItemPosition();
-////                Log.i("aa","进了onScrolled："+lastItemIndex+":"+list.size());
-//                //滑动到最后一个并且状态不是加载中,执行加载更多，isLoading默认值false
-//                if (lastItemIndex >= list.size() - 1 && !isLoading) {//若最后一项的布局高度比较高，列表的下边界在最后一项高度以内 都会触发if
+//        MyScrollView myscrollview = (MyScrollView) this.getActivity().findViewById(R.id.myscrollview);
+//        myscrollview.setOnScrollChangeListener(new MyScrollView.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(MyScrollView view, int x, int y, int oldx, int oldy) {
+//            }
+//
+//            @Override
+//            public void onScrollBottomListener() {
+////                System.out.println("hhtjim::"+type+"进了onScrolled底部");
+//
+//                if (!isLoading) {//若没有loading
 //                    if (!isEnd) {
 //                        loadingProgress.setVisibility(View.VISIBLE);
-//
-////                        list.add(null);
-////                        adapter.notifyItemInserted(list.size() - 1);
-//                    }
-//                    if (dy > 0) {//触摸点向上托
-//                        thread();
+//                        thread(LOADING_MORE);
+////                        System.out.println("hhtjim:99"+type+":执行loading thread");
 //                    }
 //                }
-//                System.out.println("hhtjim:lastItemIndex:" + lastItemIndex);
-//                System.out.println("hhtjim:list.size():" + list.size());
-
-            }
-        });
-
-        MyScrollView myscrollview = (MyScrollView) this.getActivity().findViewById(R.id.myscrollview);
-        myscrollview.setOnScrollChangeListener(new MyScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(MyScrollView view, int x, int y, int oldx, int oldy) {
-            }
-
-            @Override
-            public void onScrollBottomListener() {
-//                System.out.println("hhtjim::"+"进了onScrolled底部");
-
-                if (!isLoading) {//若没有loading
-                    if (!isEnd) {
-                        loadingProgress.setVisibility(View.VISIBLE);
-                        thread(LOADING_MORE);
-//                        System.out.println("hhtjim:99:执行loading thread");
-                    }
-                }
-            }
-
-            @Override
-            public void onScrollTopListener() {
-            }
-        });
+//            }
+//
+//            @Override
+//            public void onScrollTopListener() {
+//            }
+//        });
 
         return rootView;
     }
@@ -192,16 +167,10 @@ public class HotAndNewFragment extends Fragment {
                     isLoading = true;
 //                super.run();
                     for (int i = 0; i < 2; i++) {
+//                        System.out.println("hhtjim:88899:1：" + type);
                         String url = HotAndNewFragment.this.type == HOT ? DATA.DOMAIN_API_HOT_DATA : DATA.DOMAIN_API_NEW_DATA;
                         String htmlString = "";
-                        w:
-                        while (true) {
-                            htmlString = HttpResquestPang.getInstance().get(url + ++lastNum, HttpResquestPang.getInstance().getPCHeaders());//url + ++lastNum
-                            if (!TextUtils.isEmpty(htmlString)) {
-                                break w;
-                            }
-                        }
-
+                        htmlString = HttpResquestPang.getInstance().get(url + ++lastNum, HttpResquestPang.getInstance().getPCHeaders());//url + ++lastNum
                         if (state == NORMAL && i < 1) {
                             list = DeHtml.getInstance().getHotAndNewData(htmlString);
                             handler.sendEmptyMessage(NORMAL);
@@ -219,17 +188,48 @@ public class HotAndNewFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//取消eventBus注册
+    }
 
-//
-//    /**
-//     * 抓取网络图片和标题的线程
-//     */
-//    public class FetchImageTitleData implements Runnable {
-//
-//        @Override
-//        public void run() {
-//
-//
-//        }
-//    }
+
+    /**
+     * 接受eventbus消息  更新最热
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onEventMainThread(EventHot event) {
+        if (type == HOT) {//判断当前的fragment  是否为最热
+            doLoadin();
+        }
+    }
+
+
+    /**
+     * 接受eventbus消息  更新最新
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onEventMainThread(EventNew event) {
+        if (type == NEW) {//判断当前的fragment  是否为最新
+            doLoadin();
+        }
+    }
+
+    /**
+     * 执行loading 操作
+     */
+    private void doLoadin() {
+        if (!isLoading) {//若没有loading
+            if (!isEnd) {
+                loadingProgress.setVisibility(View.VISIBLE);
+                thread(LOADING_MORE);
+//                        System.out.println("hhtjim:99"+type+":执行loading thread");
+            }
+        }
+    }
 }

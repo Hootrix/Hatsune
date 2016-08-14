@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ import java.util.List;
  */
 public class Suggest extends BaseFragment {
     ViewPager imageViewpager;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     ArrayList<ImageFragment> imageFragmentList;
     Fragment3EchoSuggestSoundAdapter soundGridAdapter;//
     List<EchoSuggestSoundPageInfo.DescBean.DataBean> soundGridList;//
@@ -102,6 +104,8 @@ public class Suggest extends BaseFragment {
                 soundGridrecyclerView.setAdapter(soundGridAdapter);
                 soundGridAdapter.setHeaderView(headerView);
 
+
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
 
@@ -128,6 +132,11 @@ public class Suggest extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment3_echo_viewpager_fragment1_suggest, null, false);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.fragment3_echo_viewpager_fragment1_suggest_refreshlayout);
+        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.measure(0,0);
+        mSwipeRefreshLayout.setRefreshing(true);
+
         headerView = LayoutInflater.from(Suggest.this.getContext()).inflate(R.layout.image_viewpager, null,false);
         imageViewpager = (ViewPager) headerView.findViewById(R.id.image_viewpager);
         mIndicatorView = (IndicatorView) headerView.findViewById(R.id.id_indicator);

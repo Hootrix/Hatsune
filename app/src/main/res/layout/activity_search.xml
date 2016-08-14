@@ -25,6 +25,7 @@
         android:layout_marginRight="5dp"
         android:hint="搜索专辑、音乐"
         android:background="#fff"
+        android:singleLine="true"
         />
 <android.support.v7.widget.AppCompatButton
     android:layout_width="wrap_content"

@@ -62,7 +62,7 @@ public class SearchActivity extends BaseActivity {
             if (msg.what == LOADING) {
                 adapter.notifyItemRemoved(searchList.size());
                 isLoading = false;
-                swipeRefreshLayout.setEnabled(false);
+
                 swipeRefreshLayout.setRefreshing(false);
                 return;
             }
@@ -77,7 +77,7 @@ public class SearchActivity extends BaseActivity {
                 adapter.setEmptyView(empty);
                 recyclerView.setAdapter(adapter);
                 isLoading = false;
-                swipeRefreshLayout.setEnabled(false);
+
                 swipeRefreshLayout.setRefreshing(false);
                 return;
             }
@@ -94,6 +94,8 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initViewData() {
+        swipeRefreshLayout.setEnabled(false);
+
         searchList = new ArrayList<SearchResultInfo.ResultBean.DataBean>();
         try {
             String getkey = getIntent().getStringExtra(KEYWORD);
@@ -156,7 +158,6 @@ public class SearchActivity extends BaseActivity {
 
     private void thread(final int statue) {
         if (statue != LOADING) {
-            swipeRefreshLayout.setEnabled(true);
             swipeRefreshLayout.setRefreshing(true);
         }
 
