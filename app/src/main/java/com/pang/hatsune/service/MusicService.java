@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 /**
+ * 播放音乐的后台服务
  * Created by Pang on 2016/7/23.
  */
 public class MusicService extends Service{
