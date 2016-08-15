@@ -1,5 +1,6 @@
 package com.pang.hatsune.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
@@ -260,7 +261,9 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
                 } else if (id == R.id.nav_share) {
 
                 } else if (id == R.id.nav_send) {
-
+//                    startActivityWithoutExtras(aboutActivity.class);
+                    Intent intent = new Intent(MainActivity.this, aboutActivity.class);
+                    startActivity(intent);
                 }
 
                 //  DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

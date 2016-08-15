@@ -12,6 +12,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:cpv_animAutostart="true"
+        app:cpv_color="@color/appColorGreen"
         app:cpv_indeterminate="true" />
 
 </LinearLayout>

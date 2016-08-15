@@ -1,21 +1,15 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-
-    android:layout_gravity="center"
-    card:cardBackgroundColor="@android:color/white"
-    card:cardCornerRadius="0dp"
-    card:cardElevation="2dp"
-    card:cardMaxElevation="@dimen/cardview_default_elevation">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <!--cardMaxElevation：最大卡片阴影的宽度-->
     <!--cardElevation:卡片阴影的宽度-->
     <!--cardBackgroundColor:卡片的背景颜色-->
     <!--cardCornerRadius ：卡片的圆角半径-->
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical">
 
         <ImageView
@@ -24,7 +18,6 @@
             android:layout_height="0dp"
             android:layout_centerInParent="true"
             android:layout_weight="3"
-
             android:src="@drawable/hatsune_logo" />
 
         <TextView
@@ -35,9 +28,21 @@
             android:clickable="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="图片描述"
+            android:text="版本1.0"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="© 2016 Pang "
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+</RelativeLayout>

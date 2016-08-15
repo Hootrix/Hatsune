@@ -6,10 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorHint">@color/colorPrimaryDark</item>         <!--编辑框的提示文字颜色-->
+        <!--<item name="android:textColorHint">@color/colorPrimaryDark</item>         &lt;!&ndash;编辑框的提示文字颜色&ndash;&gt;-->
+        <item name="android:editTextBackground">@drawable/apptheme_edit_text_holo_light</item>
 
-
-        <item name="android:textColorHighlight">#996ed56c</item>
+        <item name="android:textColorHighlight">#99ff0000</item>
         <item name="android:textSelectHandleLeft">@drawable/apptheme_text_select_handle_left</item>
         <item name="android:textSelectHandleRight">@drawable/apptheme_text_select_handle_right</item>
         <item name="android:textSelectHandle">@drawable/apptheme_text_select_handle_middle</item>
@@ -30,5 +30,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
 
 </resources>
