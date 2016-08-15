@@ -13,7 +13,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginBottom="5dp"
-        fresco:placeholderImage="@drawable/echo_round_logo"></com.facebook.drawee.view.SimpleDraweeView>
+        fresco:placeholderImage="@drawable/hatsune_logo"></com.facebook.drawee.view.SimpleDraweeView>
 
 
     <LinearLayout

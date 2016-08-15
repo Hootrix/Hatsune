@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,15 +11,15 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:padding="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/fragment1_news_recyclerview_item_echo_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/echo_round_logo" />
+                android:src="@drawable/hatsune_logo" />
 
             <ImageView
                 android:layout_width="10dp"
@@ -27,8 +27,7 @@
                 android:layout_alignRight="@id/fragment1_news_recyclerview_item_echo_icon"
                 android:layout_below="@id/fragment1_news_recyclerview_item_echo_icon"
                 android:layout_marginTop="-10dp"
-                android:src="@drawable/vip_m_on"
-                />
+                android:src="@drawable/vip_m_on" />
 
         </RelativeLayout>
 
@@ -39,7 +38,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="-10dp"
-            android:text="echo回声"
+            android:alpha="0.7"
+            android:text="Hatsune初音"
             android:textColor="@color/appColorGreen"
             android:textSize="18sp" />
 
@@ -69,74 +69,72 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="20dp"
-        android:orientation="vertical"
         android:background="#fff"
-        >
+        android:orientation="vertical"
+        android:padding="20dp">
+
         <TextView
             android:id="@+id/fragment1_news_recyclerview_item_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="content" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="#f5f5f5"
-            android:paddingRight="20dp"
-            >
+            android:orientation="horizontal"
+            android:paddingRight="20dp">
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/fragment1_news_recyclerview_item_music_icon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                fresco:placeholderImage="@drawable/echo_round_logo"
-                >
-                </com.facebook.drawee.view.SimpleDraweeView>
+                fresco:placeholderImage="@drawable/hatsune_logo"></com.facebook.drawee.view.SimpleDraweeView>
 
             <!--<ImageView-->
-                <!--android:id="@+id/fragment1_news_recyclerview_item_music_icon"-->
-                <!--android:layout_width="80dp"-->
-                <!--android:layout_height="80dp"-->
-                <!--android:src="@drawable/echo_round_logo"-->
-                <!--/>-->
+            <!--android:id="@+id/fragment1_news_recyclerview_item_music_icon"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:src="@drawable/echo_round_logo"-->
+            <!--/>-->
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:layout_marginLeft="10dp"
-                android:paddingTop="10dp"
-                >
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
                 <TextView
                     android:id="@+id/fragment1_news_recyclerview_item_music_title"
                     android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:singleLine="true"
-                    android:height="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:height="0dp"
+                    android:singleLine="true"
                     android:text="name"
-                    android:textSize="18sp"
-                    />
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/fragment1_news_recyclerview_item_music_play_num"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:height="0dp"
                     android:gravity="center_vertical"
-                    android:layout_height="match_parent"
                     android:text="播放：20.1万次"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp" />
 
 
             </LinearLayout>
+
             <ImageButton
-                android:layout_gravity="center"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:background="@drawable/expression_play_playbalck"
-                />
+                android:layout_gravity="center"
+                android:background="@drawable/expression_play_playbalck" />
         </LinearLayout>
 
 
@@ -150,33 +148,32 @@
             <Button
                 android:id="@+id/fragment1_news_recyclerview_item_play_comment"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:textColor="@color/appColorGray"
+                android:layout_weight="1"
+                android:background="@null"
                 android:drawableLeft="@drawable/ic_comment"
                 android:text="2"
-                android:background="@null"
-                />
+                android:textColor="@color/appColorGray" />
+
             <Button
                 android:id="@+id/fragment1_news_recyclerview_item_play_like"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:textColor="@color/appColorGray"
+                android:layout_weight="1"
+                android:background="@null"
                 android:drawableLeft="@drawable/short_play_like_empty"
                 android:text="2"
-                android:background="@null"
-                />
+                android:textColor="@color/appColorGray" />
+
             <Button
                 android:id="@+id/fragment1_news_recyclerview_item_play_share"
                 android:layout_width="0dp"
-                android:textColor="@color/appColorGray"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
                 android:drawableLeft="@drawable/short_play_share"
                 android:text="2"
-                android:background="@null"
-                />
+                android:textColor="@color/appColorGray" />
 
         </LinearLayout>
     </LinearLayout>

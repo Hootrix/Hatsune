@@ -21,6 +21,7 @@
             android:checked="false"
             android:gravity="center"
             android:text="动态"
+            android:drawableTop="@drawable/main_bottom_news_selector"
             android:textColor="@color/main_textcolor_selector" />
 
         <RadioButton
@@ -31,6 +32,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="频道"
+            android:drawableTop="@drawable/main_bottom_channel_selector"
             android:textColor="@color/main_textcolor_selector" />
 
         <RadioButton
@@ -40,7 +42,8 @@
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
-            android:text="回声"
+            android:text="初音"
+            android:drawableTop="@drawable/main_bottom_hatsune_selector"
             android:textColor="@color/main_textcolor_selector" />
 
         <RadioButton
@@ -50,6 +53,7 @@
             android:layout_weight="1"
             android:button="@null"
             android:gravity="center"
+            android:drawableTop="@drawable/main_bottom_starts_selector"
             android:text="名人"
             android:textColor="@color/main_textcolor_selector" />
     </RadioGroup>

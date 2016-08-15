@@ -250,12 +250,13 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
 
                 if (id == R.id.nav_camera) {
                     // Handle the camera action
+                    radioGroupBottom.check(R.id.main_bottom_radiogroup_r1);
                 } else if (id == R.id.nav_gallery) {
-
+                    radioGroupBottom.check(R.id.main_bottom_radiogroup_r2);
                 } else if (id == R.id.nav_slideshow) {
-
+                    radioGroupBottom.check(R.id.main_bottom_radiogroup_r3);
                 } else if (id == R.id.nav_manage) {
-
+                    radioGroupBottom.check(R.id.main_bottom_radiogroup_r4);
                 } else if (id == R.id.nav_share) {
 
                 } else if (id == R.id.nav_send) {
