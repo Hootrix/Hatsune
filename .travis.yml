@@ -1,6 +1,1 @@
-{
-  "language": "android",
-  "group": "stable",
-  "dist": "precise",
-  "os": "windows"
-}
+language: android
