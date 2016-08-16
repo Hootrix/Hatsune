@@ -52,8 +52,10 @@ public class Fragment4Celebrity extends BaseFragment {
                 Fragment4CelebrityListAdapter adapter = new Fragment4CelebrityListAdapter(Fragment4Celebrity.this.getContext(), RecommendStartsList);
                 ImageView headerImage = new ImageView(Fragment4Celebrity.this.getContext());
                 headerImage.setImageResource(R.drawable.start_banner);
-                headerImage.setScaleType(ImageView.ScaleType.FIT_XY);
-                headerImage.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300));
+
+                //拉伸图片
+                headerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                headerImage.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 
                 adapter.setmHeaderView(headerImage);
                 adapter.setmHorizontalListview(getHorizontalListview());

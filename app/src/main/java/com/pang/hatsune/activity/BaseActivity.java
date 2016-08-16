@@ -1,11 +1,16 @@
 package com.pang.hatsune.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -168,15 +173,83 @@ public abstract class BaseActivity extends AppCompatActivity {
             // 利用handler延迟发送更改状态信息
             mHandler.sendEmptyMessageDelayed(0, 2000);
         } else {
-            // 执行退出
-            Intent exit = new Intent(Intent.ACTION_MAIN);
-            exit.addCategory(Intent.CATEGORY_HOME);
-            exit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(exit);
-            System.exit(0);
-            this.finish();
+            exit(true);
         }
     }
 
+    /**
+     * 不判断直接退出
+     *
+     * @param areYouSure
+     */
+    private void exit(boolean areYouSure) {
+        // 执行退出
+        Intent exit = new Intent(Intent.ACTION_MAIN);
+        exit.addCategory(Intent.CATEGORY_HOME);
+        exit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(exit);
+        System.exit(0);
+        this.finish();
+    }
+
+
+    /**
+     * 判断是否有网络连接
+     */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        validDataInternet();
+    }
+
+    public boolean validDataInternet() {
+        ConnectivityManager manager = (ConnectivityManager) this.getSystemService(this.CONNECTIVITY_SERVICE);
+        if (manager == null) {
+            openWirelessSet();
+            return false;
+        } else {
+            NetworkInfo[] networkInfos = manager.getAllNetworkInfo();
+            if (networkInfos != null) {
+                for (NetworkInfo networkInfo : networkInfos) {
+                    if (networkInfo.getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        }
+        openWirelessSet();
+        return false;
+    }
+
+    /**
+     * 打开网络设置对话框
+     */
+
+    private void openWirelessSet() {
+        AlertDialog.Builder diaBuilder = new AlertDialog.Builder(this);
+        diaBuilder.setInverseBackgroundForced(true);
+        diaBuilder.setCancelable(false);
+        diaBuilder.setMessage("请检查网络");
+        diaBuilder.setTitle("::ERROR::");
+        diaBuilder.setPositiveButton("去设置", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                Intent in = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                BaseActivity.this.startActivity(in);
+            }
+        });
+        diaBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                exit(true);
+            }
+        });
+        diaBuilder.show();
+    }
 
 }

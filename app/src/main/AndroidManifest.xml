@@ -17,12 +17,13 @@
     <application
         android:name=".fresco.FrescoAppliacationPang"
         android:allowBackup="true"
-        android:icon="@drawable/hatsune_logo_red"
+        android:icon="@drawable/hatsune_app_logo_red"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

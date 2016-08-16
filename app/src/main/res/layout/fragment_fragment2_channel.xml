@@ -28,7 +28,7 @@
                     android:layout_margin="10dp"
                     android:drawableTint="@color/appColorGray"
                     android:gravity="center"
-                    android:hint="Search"
+                    android:hint="搜索音乐、歌手..."
                     android:inputType="text"
                     android:singleLine="true" />
 
@@ -47,13 +47,14 @@
                         android:id="@+id/fragment2_channel_id_indicator"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="-50dp"
                         android:padding="5dp"
                         zgy:indicator_icon="@drawable/indicator_selector"
                         zgy:indicator_margin="5dp"
                         zgy:indicator_smooth="true" />
+
                 </RelativeLayout>
 
                 <LinearLayout

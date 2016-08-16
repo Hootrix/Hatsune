@@ -134,10 +134,10 @@ public class Suggest extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment3_echo_viewpager_fragment1_suggest, null, false);
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.fragment3_echo_viewpager_fragment1_suggest_refreshlayout);
         mSwipeRefreshLayout.setEnabled(false);
-        mSwipeRefreshLayout.measure(0,0);
+        mSwipeRefreshLayout.measure(0, 0);
         mSwipeRefreshLayout.setRefreshing(true);
 
-        headerView = LayoutInflater.from(Suggest.this.getContext()).inflate(R.layout.image_viewpager, null,false);
+        headerView = LayoutInflater.from(Suggest.this.getContext()).inflate(R.layout.image_viewpager, null, false);
         imageViewpager = (ViewPager) headerView.findViewById(R.id.image_viewpager);
         mIndicatorView = (IndicatorView) headerView.findViewById(R.id.id_indicator);
         soundGridrecyclerView = (RecyclerView) v.findViewById(R.id.fragment3_echo_viewpager_fragment1_suggest_recycleview);
@@ -145,7 +145,7 @@ public class Suggest extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-             //   gridLayoutManager = (GridLayoutManager) soundGridrecyclerView.getLayoutManager();
+                //   gridLayoutManager = (GridLayoutManager) soundGridrecyclerView.getLayoutManager();
 
                 int lastItemIndex = gridLayoutManager.findLastVisibleItemPosition() - 1;
                 int firstItemIndex = gridLayoutManager.findFirstVisibleItemPosition();
@@ -207,7 +207,9 @@ public class Suggest extends BaseFragment {
 //        super.run();
                     String jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_ECHO_SUGGEST_BANNER);
                     echoSuggestBannerInfo = Dejson.getInstance().getEchoSuggestBannerInfo(jsonString);
-                    handler.sendEmptyMessage(GOGOING_BANNERIMAGE);
+                    if (echoSuggestBannerInfo != null) {
+                        handler.sendEmptyMessage(GOGOING_BANNERIMAGE);
+                    }
                 }
             }.start();
             return;
@@ -221,7 +223,9 @@ public class Suggest extends BaseFragment {
                 public void run() {
                     String jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_ECHO_SUGGEST_SOUND_INFO + lastNum);
                     soundPageInfo = Dejson.getInstance().getEchoSuggestSoundPageInfoo(jsonString);
-                    handler.sendEmptyMessage(state);
+                    if (soundPageInfo != null) {
+                        handler.sendEmptyMessage(state);
+                    }
                 }
             }.start();
 
@@ -238,7 +242,9 @@ public class Suggest extends BaseFragment {
                         lastNum++;
                         String jsonString = HttpResquestPang.getInstance().get(DATA.DOMAIN_API_ECHO_SUGGEST_SOUND_INFO + lastNum);
                         soundPageInfo = Dejson.getInstance().getEchoSuggestSoundPageInfoo(jsonString);
-                        handler.sendEmptyMessage(state);
+                        if (soundPageInfo != null) {
+                            handler.sendEmptyMessage(state);
+                        }
 
                     }
                 }.start();
