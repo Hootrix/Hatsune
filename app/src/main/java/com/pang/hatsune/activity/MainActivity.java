@@ -207,18 +207,22 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
                 switch (checkedId) {
                     case R.id.main_bottom_radiogroup_r1:
                         currentFragment = fragment1News;
+                        navigationView.setCheckedItem(R.id.nav_1);
                         topbarWhite = true;
                         break;
                     case R.id.main_bottom_radiogroup_r2:
                         currentFragment = fragment2Channel;
+                        navigationView.setCheckedItem(R.id.nav_2);
                         topbarWhite = true;
                         break;
                     case R.id.main_bottom_radiogroup_r3:
                         currentFragment = fragment3Echo;
+                        navigationView.setCheckedItem(R.id.nav_3);
                         topbarWhite = false;
                         break;
                     case R.id.main_bottom_radiogroup_r4:
                         currentFragment = fragment4Celebrity;
+                        navigationView.setCheckedItem(R.id.nav_4);
                         topbarWhite = true;
                         break;
                     default:
@@ -239,24 +243,24 @@ public class MainActivity extends BaseActivity {//AppCompatActivity
             }
         });
 
-
         /**
          * 监听侧滑栏的item 点击
          */
+        navigationView.setCheckedItem(R.id.nav_3);//默认选中
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 // Handle navigation view item clicks here.
                 int id = item.getItemId();
 
-                if (id == R.id.nav_camera) {
+                if (id == R.id.nav_1) {
                     // Handle the camera action
                     radioGroupBottom.check(R.id.main_bottom_radiogroup_r1);
-                } else if (id == R.id.nav_gallery) {
+                } else if (id == R.id.nav_2) {
                     radioGroupBottom.check(R.id.main_bottom_radiogroup_r2);
-                } else if (id == R.id.nav_slideshow) {
+                } else if (id == R.id.nav_3) {
                     radioGroupBottom.check(R.id.main_bottom_radiogroup_r3);
-                } else if (id == R.id.nav_manage) {
+                } else if (id == R.id.nav_4) {
                     radioGroupBottom.check(R.id.main_bottom_radiogroup_r4);
                 } else if (id == R.id.nav_share) {
 

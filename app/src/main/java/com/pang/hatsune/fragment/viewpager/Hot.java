@@ -63,9 +63,9 @@ public class Hot extends BaseFragment {
                 TextView dayTitle = new TextView(Hot.this.getContext());
                 dayTitle.setText("今日最热");
                 dayTitle.setTextSize(20);
-               LinearLayout dayTitleLayout = new LinearLayout(Hot.this.getContext());
+                LinearLayout dayTitleLayout = new LinearLayout(Hot.this.getContext());
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                lp.setMargins(20,10,0,10);
+                lp.setMargins(20, 10, 0, 10);
                 dayTitleLayout.setLayoutParams(lp);
                 dayTitleLayout.addView(dayTitle);
 
@@ -81,9 +81,9 @@ public class Hot extends BaseFragment {
                 ImageView headerImage = new ImageView(Hot.this.getContext());
                 headerImage.setImageResource(R.drawable.echo_hot_top_image);
 
-
-                ViewGroup.LayoutParams lp2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
-                headerImage.setScaleType(ImageView.ScaleType.FIT_XY);
+                //拉伸图片
+                ViewGroup.LayoutParams lp2 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                headerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 headerImage.setLayoutParams(lp2);
                 adapter.setHeaderView(headerImage);
 
@@ -117,7 +117,7 @@ public class Hot extends BaseFragment {
                             al = 0;
                         }
                         getBaseActivity().setTopBaralpha(al);
-                            topBar.getBackground().setAlpha(al);//0~255
+                        topBar.getBackground().setAlpha(al);//0~255
 
                     }
                 });
@@ -138,9 +138,9 @@ public class Hot extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment3_echo_viewpager_fragment2_hot, null);
-       mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.fragment3_echo_viewpager_fragment2_hot_refreshlayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.fragment3_echo_viewpager_fragment2_hot_refreshlayout);
         mSwipeRefreshLayout.setEnabled(false);
-        mSwipeRefreshLayout.measure(0,0);
+        mSwipeRefreshLayout.measure(0, 0);
         mSwipeRefreshLayout.setRefreshing(true);
 
 

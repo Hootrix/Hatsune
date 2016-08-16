@@ -102,6 +102,7 @@ public class Fragment2Channel extends BaseFragment {
                 });
                 IndicatorView mIndicatorView = (IndicatorView) rootView.findViewById(R.id.fragment2_channel_id_indicator);
                 mIndicatorView.setViewPager(galleryViewpager);//设置滑动指示器
+                mIndicatorView.measure(0,0);//必须加上  否则会有移位
             }
 
             if (msg.what == UPDATE_CLASS_NAME) {//  更新分类数据  只是分类名字  没有图片
