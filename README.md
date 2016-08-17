@@ -1,6 +1,7 @@
 # Hatsune
 [![GitHub version](https://badge.fury.io/gh/Hootrix%2FHatsune.svg)](https://badge.fury.io/gh/Hootrix%2FHatsune)
 [![Build Status](https://travis-ci.org/Hootrix/Hatsune.png)](https://travis-ci.org/Hootrix/Hatsune)
+
 初音：超low仿android端 回声echo App
 
 ## android studio代码
