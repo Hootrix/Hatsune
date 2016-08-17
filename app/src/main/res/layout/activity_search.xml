@@ -3,50 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:background="#f5f5f5"
-        >
+        android:orientation="horizontal">
 
-    <EditText
-        android:layout_marginLeft="5dp"
-        android:paddingLeft="5dp"
-        android:drawableLeft="@drawable/ic_search_gray_small"
-        android:id="@+id/search_result_edittext"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="30dp"
-        android:textSize="13sp"
-        android:layout_marginRight="5dp"
-        android:hint="搜索专辑、音乐"
-        android:background="#fff"
-        android:singleLine="true"
-        />
-<android.support.v7.widget.AppCompatButton
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@null"
-    android:text="搜索"
-    android:onClick="doSearch"
-    />
+        <!--<EditText-->
+            <!--android:id="@+id/search_result_edittext"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="#fff"-->
+            <!--android:drawableLeft="@drawable/ic_search_gray_small"-->
+            <!--android:hint="搜索专辑、音乐"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:singleLine="true"-->
+            <!--android:textSize="13sp" />-->
 
+        <!--<android.support.v7.widget.AppCompatButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@null"-->
+            <!--android:onClick="doSearch"-->
+            <!--android:text="搜索" />-->
+        <com.quinny898.library.persistentsearch.SearchBox
+            android:layout_width="wrap_content"
+            android:id="@+id/searchbox"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
     </LinearLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/search_result_refreshlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-  >
+        android:layout_height="wrap_content">
 
 
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/search_result_list"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_result_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

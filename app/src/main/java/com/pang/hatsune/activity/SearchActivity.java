@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pang.hatsune.R;
 import com.pang.hatsune.adapter.SearchResultRecycleviewAdapter;
@@ -27,6 +28,8 @@ import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
 import com.pang.hatsune.info.gsonfactory.SearchResultInfo;
 import com.pang.hatsune.token.Token;
 import com.pang.hatsune.utils.StringFilter;
+import com.quinny898.library.persistentsearch.SearchBox;
+import com.quinny898.library.persistentsearch.SearchResult;
 
 import org.w3c.dom.Text;
 
@@ -41,11 +44,12 @@ import java.util.List;
  * Created by Pang on 2016/8/7.
  */
 public class SearchActivity extends BaseActivity {
-    private EditText editText;
+//    private EditText editText;
     private RecyclerView recyclerView;
     private SearchResultRecycleviewAdapter adapter;
     private String keyword = "HEBE";
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SearchBox search;
 
     ArrayList<SearchResultInfo.ResultBean.DataBean> searchList;
 
@@ -65,7 +69,7 @@ public class SearchActivity extends BaseActivity {
         public void handleMessage(Message msg) {
 //            super.handleMessage(msg);
             isFirst = false;
-            editText.setText(keyword);//修改编辑框内容
+//            editText.setText(keyword);//修改编辑框内容 // TODO: 2016/8/17  
 
             if (msg.what == REMOVE_LOADING) {
                 searchList.remove(searchList.size() - 1);
@@ -101,13 +105,89 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        editText = (EditText) findViewById(R.id.search_result_edittext);
+//        editText = (EditText) findViewById(R.id.search_result_edittext); // TODO: 2016/8/17  
         recyclerView = (RecyclerView) findViewById(R.id.search_result_list);
         swipeRefreshLayout = $(R.id.search_result_refreshlayout);
+        search = (SearchBox) findViewById(R.id.searchbox);
     }
 
     @Override
     protected void initViewData() {
+
+        search.enableVoiceRecognition(this);
+//        for(int x = 0; x < 10; x++){
+//            SearchResult option = new SearchResult("Result " + Integer.toString(x), getResources().getDrawable(R.drawable.ic_history));
+//            search.addSearchable(option);
+//        }
+        search.setMenuVisibility(View.INVISIBLE);
+//        search.setMenuListener(new SearchBox.MenuListener(){
+//
+//            @Override
+//            public void onMenuClick() {
+//                //Hamburger has been clicked
+//                Toast.makeText(SearchActivity.this, "Menu click", Toast.LENGTH_LONG).show();
+//            }
+//
+//        });
+        search.setSearchListener(new SearchBox.SearchListener() {
+
+            @Override
+            public void onSearchOpened() {
+                //Use this to tint the screen
+                System.out.println("hhtjim:onSearchOpened");
+            }
+
+            @Override
+            public void onSearchClosed() {
+                //Use this to un-tint the screen
+                System.out.println("hhtjim:onSearchClosed");
+            }
+
+            @Override
+            public void onSearchTermChanged(String term) {
+                //React to the search term changing
+                //Called after it has updated results
+                System.out.println("hhtjim:onSearchTermChanged");
+            }
+
+            @Override
+            public void onSearch(String searchTerm) {
+                System.out.println("hhtjim:onSearch");
+//                Toast.makeText(SearchActivity.this, searchTerm + " Searched", Toast.LENGTH_LONG).show();
+                keyword= searchTerm;
+                isEnd = false;//必须重置此标记
+//        System.out.println("hhtjim:isLoading"+isLoading);
+                if (!isLoading) {
+                    isLoading = true;
+                    if (TextUtils.isEmpty(keyword)) {
+                        Snackbar.make(search, "请输入内容", Snackbar.LENGTH_SHORT).show();
+                        isLoading = false;
+                    } else {
+//        System.out.println("hhtjim:thread(NORMAL)" );
+                        thread();
+                    }
+                }
+            }
+
+            @Override
+            public void onResultClick(SearchResult result) {
+                //React to a result being clicked
+                System.out.println("hhtjim:onResultClick");
+            }
+
+            @Override
+            public void onSearchCleared() {
+                //Called when the clear button is clicked
+                System.out.println("hhtjim:onSearchCleared");
+            }
+
+        });
+
+
+
+
+
+
         swipeRefreshLayout.setEnabled(false);
 
         searchList = new ArrayList<SearchResultInfo.ResultBean.DataBean>();
@@ -118,7 +198,8 @@ public class SearchActivity extends BaseActivity {
             }
 //            editText.setText(getkey);
             keyword = StringFilter.getInstance().fitlerSearchKeyword(getkey);//这样操作  避免上面报空之后被赋值为空 && 过滤某些符号
-            editText.setText(keyword);//修改编辑框内容
+//            editText.setText(keyword);//修改编辑框内容 // TODO: 2016/8/17
+            search.setSearchString(keyword);
         } catch (NullPointerException e) {
         }
 
@@ -164,20 +245,20 @@ public class SearchActivity extends BaseActivity {
         });
         thread();
 
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                switch (keyCode) {
-                    case KeyEvent.KEYCODE_ENTER:
-                        if (KeyEvent.ACTION_UP == event.getAction()) {
-                            doSearch(v);
-                            return true;
-                        }
-                }
-                return false;
-            }
-        });
+//        editText.setOnKeyListener(new View.OnKeyListener() { // TODO: 2016/8/17
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                switch (keyCode) {
+//                    case KeyEvent.KEYCODE_ENTER:
+//                        if (KeyEvent.ACTION_UP == event.getAction()) {
+//                            doSearch(v);
+//                            return true;
+//                        }
+//                }
+//                return false;
+//            }
+//        });
     }
 
     @Override
@@ -262,7 +343,7 @@ public class SearchActivity extends BaseActivity {
      * @param v
      */
     public void doSearch(View v) {
-        keyword = editText.getText().toString();
+//        keyword = editText.getText().toString(); // TODO: 2016/8/17  
         isEnd = false;//必须重置此标记
 //        System.out.println("hhtjim:isLoading"+isLoading);
         if (!isLoading) {
