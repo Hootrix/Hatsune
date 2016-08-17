@@ -1,6 +1,19 @@
 language: android
+
+jdk:
+ - oraclejdk7
+ - oraclejdk8
+
+before_install:
+ - chmod +x gradlew
+
 android:
   components:
     - build-tools-23.0.3
-    - android-17
-    - extra
+    - android-21
+    - extra-android-m2repository
+  licenses:
+    - android-sdk-license-5be876d5
+
+notifications:
+  email: false
