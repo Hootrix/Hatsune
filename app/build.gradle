@@ -32,4 +32,13 @@ dependencies {
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'//loading 提示动画
     compile 'org.greenrobot:eventbus:3.0.0' //eventBus
     compile 'com.android.support:cardview-v7:23.1.1' //carView
+    compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT' //searchBox
+}
+
+allprojects {
+    repositories {
+        maven{
+            url "https://oss.sonatype.org/content/repositories/snapshots" //searchBox
+        }
+    }
 }
