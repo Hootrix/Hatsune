@@ -31,7 +31,7 @@ script:
   - sudo chmod +x gradlew
   #- ./gradlew connectedCheck
 
-  - if [[ $LINT == 'true' ]]; then ./gradlew lint ; fi
+ # - if [[ $LINT == 'true' ]]; then ./gradlew lint ; fi
 
 after_success:
   - ./gradlew uploadArchives -PnexusUsername="${nexusUsername}" -PnexusPassword="${nexusPassword}"
