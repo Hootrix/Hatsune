@@ -4,7 +4,8 @@ package com.pang.hatsune.utils;
  * 字符串过滤操作
  * Created by Pang on 2016/8/13.
  */
-public class StringFilter {
+public class
+StringFilter {
     private volatile static StringFilter instance;//volatile  轻量级同步锁
 
     public static StringFilter getInstance() {//仿imageLoader的单例模式
@@ -51,5 +52,22 @@ public class StringFilter {
      */
     public String fitlerEchoKeyword(String str) {
         return str.replace("回声", "初音");
+    }
+
+
+    /**
+     * TextView里面过滤关键字为指定颜色
+     * @param keyword
+     * @param allStr
+     * @return
+     */
+    public  CharSequence fitlerColor(String keyword,String allStr){
+        allStr = allStr.replaceAll("(?i)"+keyword,"{$0}");
+        CharSequence formatted = ColorPhrase.from(allStr)
+                .withSeparator("{}")
+                .innerColor(0xFFE6454A)
+                .outerColor(0xFF666666)
+                .format();
+        return formatted;
     }
 }

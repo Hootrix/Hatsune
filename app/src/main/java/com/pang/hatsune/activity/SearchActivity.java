@@ -91,6 +91,8 @@ public class SearchActivity extends BaseActivity {
 
             if (msg.what == NORMAL) {
                 adapter = new SearchResultRecycleviewAdapter(searchList, SearchActivity.this);
+                adapter.setColorFitlerKeyword(keyword);//搜索关键字高亮
+
                 TextView empty = new TextView(SearchActivity.this);
                 empty.setGravity(Gravity.CENTER);
                 empty.setText("-EOF-");
@@ -156,6 +158,7 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onSearch(String searchTerm) {
                 keyword = searchTerm;
+                adapter.setColorFitlerKeyword(keyword);//搜索关键字高亮
                 doSearch();
             }
 

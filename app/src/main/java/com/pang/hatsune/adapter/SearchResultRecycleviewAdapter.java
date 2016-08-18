@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pang.hatsune.R;
-import com.pang.hatsune.info.gsonfactory.SearchResltTipInfo;
 import com.pang.hatsune.info.gsonfactory.SearchResultInfo;
+import com.pang.hatsune.utils.StringFilter;
 
 import java.util.List;
 
@@ -29,6 +29,9 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
     private boolean isEmpty;//友情提示的空布局
     private View emptyView;
 
+    private String colorFitlerKeyword;//搜索关键字 用于搜索关键字颜色高亮
+
+
     public SearchResultRecycleviewAdapter(List<SearchResultInfo.ResultBean.DataBean> list, Context context) {
         this.list = list;
         this.context = context;
@@ -39,6 +42,10 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
         this.emptyView = v;
     }
 
+    public void setColorFitlerKeyword(String colorFitlerKeyword) {
+        this.colorFitlerKeyword = colorFitlerKeyword;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_LOADING) {
@@ -47,14 +54,14 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
             /**
              * 必须设置LayoutParams 布局参数 否者不会居中显示
              */
-            loading.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+            loading.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
             loading.setGravity(Gravity.CENTER);
             return new VH(loading);
         }
 
         if (isEmpty && emptyView != null) {
             TextView tv = (TextView) emptyView;
-            tv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+            tv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             tv.setGravity(Gravity.CENTER);
             return new VH(tv);
         }
@@ -65,14 +72,22 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (isEmpty || list.get(position) == null   ) {//空布局 必须在前面判断
+        if (isEmpty || list.get(position) == null) {//空布局 必须在前面判断
             return;
         }
 
         VH vh = (VH) holder;
         vh.image.setImageURI(Uri.parse(list.get(position).getPic()));
-        vh.desc.setText(list.get(position).getInfo());
-        vh.title.setText(list.get(position).getName());
+
+        if (colorFitlerKeyword != null) {//有搜索关键字高亮的需求
+            vh.desc.setText(StringFilter.getInstance().fitlerColor(colorFitlerKeyword, list.get(position).getInfo()));
+            vh.title.setText(StringFilter.getInstance().fitlerColor(colorFitlerKeyword, list.get(position).getName()));
+        } else {
+            vh.desc.setText(list.get(position).getInfo());
+            vh.title.setText(list.get(position).getName());
+        }
+
+
 // list.get(position).getSource();
     }
 
@@ -88,7 +103,7 @@ public class SearchResultRecycleviewAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemViewType(int position) {
-        if(isEmpty){//空布局
+        if (isEmpty) {//空布局
             return super.getItemViewType(position);
         }
 
