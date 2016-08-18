@@ -73,7 +73,7 @@ public class SearchActivity extends BaseActivity {
             swipeRefreshLayout.setRefreshing(false);
 
 
-//            editText.setText(keyword);//修改编辑框内容 // TODO: 2016/8/17  
+//            editText.setText(keyword);//修改编辑框内容 //
 
             if (msg.what == REMOVE_LOADING) {
                 searchList.remove(searchList.size() - 1);
@@ -108,7 +108,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-//        editText = (EditText) findViewById(R.id.search_result_edittext); // TODO: 2016/8/17  
+//        editText = (EditText) findViewById(R.id.search_result_edittext); //
         recyclerView = (RecyclerView) findViewById(R.id.search_result_list);
         swipeRefreshLayout = $(R.id.search_result_refreshlayout);
         search = (SearchBox) findViewById(R.id.searchbox);
@@ -184,9 +184,9 @@ public class SearchActivity extends BaseActivity {
             }
 //            editText.setText(getkey);
             keyword = StringFilter.getInstance().fitlerSearchKeyword(getkey);//这样操作  避免上面报空之后被赋值为空 && 过滤某些符号
-//            editText.setText(keyword);//修改编辑框内容 // TODO: 2016/8/17
+//            editText.setText(keyword);//修改编辑框内容 //
             search.setSearchString(keyword);
-//            search.setLogoText(keyword);
+            search.setLogoText(keyword);
         } catch (NullPointerException e) {
         }
 
@@ -231,7 +231,7 @@ public class SearchActivity extends BaseActivity {
         });
         thread();
 
-//        editText.setOnKeyListener(new View.OnKeyListener() { // TODO: 2016/8/17
+//        editText.setOnKeyListener(new View.OnKeyListener() { //
 //            @Override
 //            public boolean onKey(View v, int keyCode, KeyEvent event) {
 //
