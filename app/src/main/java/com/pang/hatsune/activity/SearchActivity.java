@@ -69,11 +69,16 @@ public class SearchActivity extends BaseActivity {
         public void handleMessage(Message msg) {
 //            super.handleMessage(msg);
             isFirst = false;
+
+            swipeRefreshLayout.setRefreshing(false);
+
+
 //            editText.setText(keyword);//修改编辑框内容 // TODO: 2016/8/17  
 
             if (msg.what == REMOVE_LOADING) {
                 searchList.remove(searchList.size() - 1);
                 adapter.notifyItemRemoved(searchList.size());
+
                 return;
             }
 
@@ -81,7 +86,6 @@ public class SearchActivity extends BaseActivity {
                 adapter.notifyItemRemoved(searchList.size());
                 isLoading = false;
 
-                swipeRefreshLayout.setRefreshing(false);
                 return;
             }
 
@@ -96,7 +100,6 @@ public class SearchActivity extends BaseActivity {
                 recyclerView.setAdapter(adapter);
                 isLoading = false;
 
-                swipeRefreshLayout.setRefreshing(false);
                 return;
             }
 
@@ -314,6 +317,9 @@ public class SearchActivity extends BaseActivity {
                         if (!isEnd && searchList.get(searchList.size() - 1) == null) {
                             handler.sendEmptyMessage(REMOVE_LOADING);
                         }
+
+                        handler.sendEmptyMessage(0);//发送一个空消息  取消刷新提示
+
                         isEnd = true;
                         isLoading = false;
                         return;
@@ -337,26 +343,26 @@ public class SearchActivity extends BaseActivity {
     }
 
 
-    /**
-     * 执行搜索按钮
-     *
-     * @param v
-     */
-    public void doSearch(View v) {
-//        keyword = editText.getText().toString(); // TODO: 2016/8/17  
-        isEnd = false;//必须重置此标记
-//        System.out.println("hhtjim:isLoading"+isLoading);
-        if (!isLoading) {
-            isLoading = true;
-            if (TextUtils.isEmpty(keyword)) {
-                Snackbar.make(v, "请输入内容", Snackbar.LENGTH_SHORT).show();
-                isLoading = false;
-            } else {
-//        System.out.println("hhtjim:thread(NORMAL)" );
-                thread();
-            }
-        }
-    }
+//    /**
+//     * 执行搜索按钮
+//     *
+//     * @param v
+//     */
+//    public void doSearch(View v) {
+////        keyword = editText.getText().toString(); // TODO: 2016/8/17
+//        isEnd = false;//必须重置此标记
+////        System.out.println("hhtjim:isLoading"+isLoading);
+//        if (!isLoading) {
+//            isLoading = true;
+//            if (TextUtils.isEmpty(keyword)) {
+//                Snackbar.make(v, "请输入内容", Snackbar.LENGTH_SHORT).show();
+//                isLoading = false;
+//            } else {
+////        System.out.println("hhtjim:thread(NORMAL)" );
+//                thread();
+//            }
+//        }
+//    }
 
 
     /**
