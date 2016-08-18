@@ -4,9 +4,9 @@ jdk: oraclejdk7
 env:
   matrix:
     - ANDROID_SDKS=sysimg-21 ANDROID_TARGET=android-21 ANDROID_ABI=armeabi-v7a SKIN=WXGA800 LINT=true
-  global:
-    - TERM=dumb
-    - secure: A5Bq4mDhsHqKK8PlxNlxVGJuSBi1L2uBg817821AOXyPjSSXS5GQK+4bIp+io8R/bPzxCNuC8nqJUvupa0GrEgKhzfA0JF5nhMjLyZ5cfpbNOYWCJHlbiZCDkW4MFhtWTCGedu3sQ8WifyJ25ceh+1nxxAn/hIhJUfYssNw1+8Q=
+ # global:
+   # - TERM=dumb
+   # - secure: A5Bq4mDhsHqKK8PlxNlxVGJuSBi1L2uBg817821AOXyPjSSXS5GQK+4bIp+io8R/bPzxCNuC8nqJUvupa0GrEgKhzfA0JF5nhMjLyZ5cfpbNOYWCJHlbiZCDkW4MFhtWTCGedu3sQ8WifyJ25ceh+1nxxAn/hIhJUfYssNw1+8Q=
 
 before_install:
   # Install base Android SDK

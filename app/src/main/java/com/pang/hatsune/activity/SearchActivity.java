@@ -44,7 +44,7 @@ import java.util.List;
  * Created by Pang on 2016/8/7.
  */
 public class SearchActivity extends BaseActivity {
-//    private EditText editText;
+    //    private EditText editText;
     private RecyclerView recyclerView;
     private SearchResultRecycleviewAdapter adapter;
     private String keyword = "HEBE";
@@ -137,58 +137,41 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onSearchOpened() {
                 //Use this to tint the screen
-                System.out.println("hhtjim:onSearchOpened");
+//                System.out.println("hhtjim:onSearchOpened");
             }
 
             @Override
             public void onSearchClosed() {
                 //Use this to un-tint the screen
-                System.out.println("hhtjim:onSearchClosed");
+//                System.out.println("hhtjim:onSearchClosed");
             }
 
             @Override
             public void onSearchTermChanged(String term) {
                 //React to the search term changing
                 //Called after it has updated results
-                System.out.println("hhtjim:onSearchTermChanged");
+//                System.out.println("hhtjim:onSearchTermChanged");
             }
 
             @Override
             public void onSearch(String searchTerm) {
-                System.out.println("hhtjim:onSearch");
-//                Toast.makeText(SearchActivity.this, searchTerm + " Searched", Toast.LENGTH_LONG).show();
-                keyword= searchTerm;
-                isEnd = false;//必须重置此标记
-//        System.out.println("hhtjim:isLoading"+isLoading);
-                if (!isLoading) {
-                    isLoading = true;
-                    if (TextUtils.isEmpty(keyword)) {
-                        Snackbar.make(search, "请输入内容", Snackbar.LENGTH_SHORT).show();
-                        isLoading = false;
-                    } else {
-//        System.out.println("hhtjim:thread(NORMAL)" );
-                        thread();
-                    }
-                }
+                keyword = searchTerm;
+                doSearch();
             }
 
             @Override
             public void onResultClick(SearchResult result) {
                 //React to a result being clicked
-                System.out.println("hhtjim:onResultClick");
+//                System.out.println("hhtjim:onResultClick");
             }
 
             @Override
             public void onSearchCleared() {
                 //Called when the clear button is clicked
-                System.out.println("hhtjim:onSearchCleared");
+//                System.out.println("hhtjim:onSearchCleared");
             }
 
         });
-
-
-
-
 
 
         swipeRefreshLayout.setEnabled(false);
@@ -203,6 +186,7 @@ public class SearchActivity extends BaseActivity {
             keyword = StringFilter.getInstance().fitlerSearchKeyword(getkey);//这样操作  避免上面报空之后被赋值为空 && 过滤某些符号
 //            editText.setText(keyword);//修改编辑框内容 // TODO: 2016/8/17
             search.setSearchString(keyword);
+//            search.setLogoText(keyword);
         } catch (NullPointerException e) {
         }
 
@@ -235,11 +219,10 @@ public class SearchActivity extends BaseActivity {
 
                     if (!isEnd) {
                         isLoading = true;//放在此处最好不过
-//                        System.out.println("hhtjim:add(null)");
                         searchList.add(null);
                         adapter.notifyItemInserted(searchList.size() - 1);
                     }
-                    if (dy > 0) {//触摸点向上N托
+                    if (dy > 0 && !isEnd) {//触摸点向上托 并且没有结束
                         thread(LOADING);
                     }
                 }
@@ -282,7 +265,6 @@ public class SearchActivity extends BaseActivity {
         new Thread() {
             @Override
             public void run() {
-//                super.run();
                 String urlEncodekeyword = "";
 
                 if (!TextUtils.isEmpty(keyword) || !isEnd) {
@@ -309,15 +291,20 @@ public class SearchActivity extends BaseActivity {
                             throw new NullPointerException();
                         }
                     } catch (NullPointerException e) {
-
+//                        System.out.println("hhhtjim:info NOTFOUND");
                         // Snackbar.make(editText,"NOT FOUND.",Snackbar.LENGTH_LONG).show();
                         if (isFirst) {
                             handler.sendEmptyMessage(NORMAL);//万一第一次就为空  也得把recycleView的适配器装好
                         }
-                        if (!isEnd && searchList.get(searchList.size() - 1) == null) {
+                        if (searchList.size() > 0 && !isEnd && searchList.get(searchList.size() - 1) == null) {
                             handler.sendEmptyMessage(REMOVE_LOADING);
                         }
 
+                        if (lastNum == 1) {//若是新输入的关键字（页数肯定是1）结果为空   就清空容器 修改UI
+                            searchList.clear();
+                            searchList.addAll(tempList);
+                            handler.sendEmptyMessage(statue);
+                        }
                         handler.sendEmptyMessage(0);//发送一个空消息  取消刷新提示
 
                         isEnd = true;
@@ -343,26 +330,30 @@ public class SearchActivity extends BaseActivity {
     }
 
 
-//    /**
-//     * 执行搜索按钮
-//     *
-//     * @param v
-//     */
-//    public void doSearch(View v) {
-////        keyword = editText.getText().toString(); // TODO: 2016/8/17
-//        isEnd = false;//必须重置此标记
-////        System.out.println("hhtjim:isLoading"+isLoading);
-//        if (!isLoading) {
-//            isLoading = true;
-//            if (TextUtils.isEmpty(keyword)) {
-//                Snackbar.make(v, "请输入内容", Snackbar.LENGTH_SHORT).show();
-//                isLoading = false;
-//            } else {
-////        System.out.println("hhtjim:thread(NORMAL)" );
-//                thread();
-//            }
-//        }
-//    }
+    public void doSearch() {
+        doSearch(search, true);
+    }
+
+    /**
+     * 执行搜索按钮
+     *
+     * @param v     控件  用于Snackbar弹出
+     * @param reset 是否重置搜索结果的判断标志
+     */
+    public void doSearch(View v, boolean reset) {//以前用来绑定搜索按钮
+        if (reset) {
+            isEnd = false;//必须重置此标记  以免开始新的搜索就判断为end
+        }
+        if (!isLoading) {
+            isLoading = true;
+            if (TextUtils.isEmpty(keyword)) {
+                Snackbar.make(v, "请输入内容", Snackbar.LENGTH_SHORT).show();
+                isLoading = false;
+            } else {
+                thread();
+            }
+        }
+    }
 
 
     /**
