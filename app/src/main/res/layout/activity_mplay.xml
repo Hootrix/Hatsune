@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_play"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/play_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="TITLE"
+        android:textSize="30sp" />
+
+    <com.facebook.drawee.view.SimpleDraweeView xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/play_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:placeholderImage="@drawable/hatsune_logo"
+        fresco:roundAsCircle="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/play_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00" />
+        <!--indeterminateBehavior-->
+
+        <android.support.v7.widget.AppCompatSeekBar
+            android:id="@+id/play_seekbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#ff0000"
+            android:secondaryProgressTintMode="add"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/play_end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-00:00" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp">
+
+        <ImageView
+            android:id="@+id/play_pre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_music_notification_pre_gray" />
+
+        <ImageView
+            android:id="@+id/play_play"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_music_notification_play_gray" />
+
+        <ImageView
+            android:id="@+id/play_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_music_notification_next_gray" />
+    </LinearLayout>
+</LinearLayout>
