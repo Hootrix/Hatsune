@@ -8,9 +8,11 @@
 首次使用studio开发5.0 ，自带Material Design设计风格。
 
 
-## MIT License
+## License
+``` 
+The MIT License (MIT)
 
-Copyright (c) 2016 pang
+Copyright (c) 2016 Pang
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,3 +31,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+``` 
