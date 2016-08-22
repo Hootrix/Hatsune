@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -77,7 +78,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.loading, parent, false);
 
-            return  new ViewHolder(v);
+            return new ViewHolder(v);
         }
 
         View view = LayoutInflater.from(parent.getContext())
@@ -94,7 +95,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (list.get(position)==null) {//加载更多
+        if (list.get(position) == null) {//加载更多
 
             //设置loading的文本内容，样式
 //            TextView tv = (TextView)holder.mView;
@@ -109,7 +110,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         holder.mItem = list;
         holder.publisher.setText(holder.mItem.get(position).getPublisherInfo().getName());
         holder.publicTitle.setText(holder.mItem.get(position).getLabel_text());
-        String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date(Long.valueOf(holder.mItem.get(position).getCreate_time()+"000")));
+        String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date(Long.valueOf(holder.mItem.get(position).getCreate_time() + "000")));
         holder.publicTime.setText(date);
         holder.content.setText(holder.mItem.get(position).getContent() + "");
 
@@ -133,11 +134,18 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
 
         holder.musicDes.setText(holder.mItem.get(position).getSoundInfo().getName());
         String pNum = holder.mItem.get(position).getSoundInfo().getView_count();
-      long l=   Long.parseLong(pNum);
-        holder.musicPlayNum.setText("播放："+l/10000f+"万次");
+        long l = Long.parseLong(pNum);
+        holder.musicPlayNum.setText("播放：" + l / 10000f + "万次");
         holder.comment.setText(holder.mItem.get(position).getComment_num());
         holder.like.setText(holder.mItem.get(position).getLike_num());
         holder.share.setText(holder.mItem.get(position).getRelay_num());
+
+//        holder.playBn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                playBn
+//            }
+//        });
     }
 
     @Override
@@ -150,7 +158,6 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         }
         return num;
     }
-
 
 
     /**
@@ -168,6 +175,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         public final Button comment;
         public final Button like;
         public final Button share;
+        public final ImageButton playBn;
 
         public List<NewsRecyclerViewInfo> mItem;
 
@@ -184,7 +192,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
             comment = (Button) rootView.findViewById(R.id.fragment1_news_recyclerview_item_play_comment);
             like = (Button) rootView.findViewById(R.id.fragment1_news_recyclerview_item_play_like);
             share = (Button) rootView.findViewById(R.id.fragment1_news_recyclerview_item_play_share);
-
+            playBn = (ImageButton) rootView.findViewById(R.id.fragment1_news_recyclerview_item_play_bn);
 
         }
     }

@@ -131,6 +131,7 @@
             </LinearLayout>
 
             <ImageButton
+                android:id="@+id/fragment1_news_recyclerview_item_play_bn"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"

@@ -70,4 +70,23 @@ StringFilter {
                 .format();
         return formatted;
     }
+
+
+    /**
+     * 计算mp3的音乐播放时间
+     * @param duration
+     * @return
+     */
+    public String calcDurtions(int duration){
+        //int duration = 2427;
+        int seconds = (int) (duration / 1000);// 总时间
+        int minute = 0;
+        if (seconds >= 60) {
+            int index = seconds / 60;
+            minute = index;
+            seconds = seconds - index * 60;
+        }
+        String result = String.format( "%02d",minute) + ":" + String.format( "%02d",seconds);
+        return  result;
+    }
 }

@@ -44,8 +44,8 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:backgroundTint="#ff0000"
-            android:secondaryProgressTintMode="add"
-            android:max="100" />
+            android:max="100"
+            android:secondaryProgressTintMode="add" />
 
         <TextView
             android:id="@+id/play_end_time"
@@ -69,6 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="click_listen_play_button"
             android:src="@drawable/ic_music_notification_pre_gray" />
 
         <ImageView
@@ -76,6 +77,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="click_listen_play_button"
             android:src="@drawable/ic_music_notification_play_gray" />
 
         <ImageView
@@ -83,6 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="click_listen_play_button"
             android:src="@drawable/ic_music_notification_next_gray" />
     </LinearLayout>
 </LinearLayout>
