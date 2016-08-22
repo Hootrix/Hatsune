@@ -146,7 +146,7 @@ public class DeHtml {
 
 
 //		regx = "data-sid=\"([\\d,]+)\">月榜</i>";
-        regx = "data-sid=\"([\\d,]+)\">周榜</i>";
+        regx = "data-sid=\"([\\d,]+)\">\\s*周榜\\s*</i>";
         hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
         hotDataMatcher = hotDataPattern.matcher(htmlString);
 
@@ -156,7 +156,7 @@ public class DeHtml {
         }
 
         String hotIdArr[] = null;//热门榜单数组
-        regx = "热门榜单<i class=\"play-all js-mp-play-one\" data-sid=\"([\\d,]+)\">";
+        regx = "热门榜单\\s*<i class=\"play-all js-mp-play-one\" data-sid=\"([\\d,]+)\">";
         hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
         hotDataMatcher = hotDataPattern.matcher(htmlString);
         while (hotDataMatcher.find()) {

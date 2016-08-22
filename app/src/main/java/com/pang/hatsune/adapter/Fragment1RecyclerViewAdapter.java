@@ -1,6 +1,7 @@
 package com.pang.hatsune.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
@@ -25,10 +27,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.pang.hatsune.R;
+import com.pang.hatsune.activity.PlayMusicActivity;
 import com.pang.hatsune.fresco.FrescoConfigClass;
 import com.pang.hatsune.fresco.ImageLoadingDrawable;
 import com.pang.hatsune.info.NewsRecyclerViewInfo;
 import com.pang.hatsune.info.gsonfactory.NewsRecyclerViewInfoGson;
+import com.pang.hatsune.utils.StringFilter;
 
 import org.w3c.dom.Text;
 
@@ -94,7 +98,7 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
      * @param position
      */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (list.get(position) == null) {//加载更多
 
             //设置loading的文本内容，样式
@@ -108,11 +112,11 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         }
 
         holder.mItem = list;
-        holder.publisher.setText(holder.mItem.get(position).getPublisherInfo().getName());
-        holder.publicTitle.setText(holder.mItem.get(position).getLabel_text());
+        holder.publisher.setText(StringFilter.getInstance().fitlerEchoKeyword(holder.mItem.get(position).getPublisherInfo().getName()));
+        holder.publicTitle.setText(StringFilter.getInstance().fitlerEchoKeyword(holder.mItem.get(position).getLabel_text()));
         String date = new SimpleDateFormat("MM-dd HH:mm").format(new Date(Long.valueOf(holder.mItem.get(position).getCreate_time() + "000")));
         holder.publicTime.setText(date);
-        holder.content.setText(holder.mItem.get(position).getContent() + "");
+        holder.content.setText(StringFilter.getInstance().fitlerEchoKeyword(holder.mItem.get(position).getContent() + ""));
 
         holder.musicIcon.setImageURI(Uri.parse(holder.mItem.get(position).getSoundInfo().getPic()));
         holder.musicIcon.setHierarchy(FrescoConfigClass.getLoadingProgressHierarchy());
@@ -140,12 +144,15 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
         holder.like.setText(holder.mItem.get(position).getLike_num());
         holder.share.setText(holder.mItem.get(position).getRelay_num());
 
-//        holder.playBn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                playBn
-//            }
-//        });
+        holder.playBn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
+//                Intent in = new Intent(context, PlayMusicActivity.class);
+//                in.putExtra(PlayMusicActivity.KEYWORD, holder.mItem.get(position).getSoundInfo());
+//                context.startActivity(in);
+            }
+        });
     }
 
     @Override

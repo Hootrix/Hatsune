@@ -71,7 +71,7 @@ public class PlayMusicActivity extends BaseActivity {
 
         try {
             title.setText(soundSource.getName());
-            image.setImageURI(Uri.parse(soundSource.getPic()));
+            image.setImageURI(Uri.parse(StringFilter.getInstance().replaceWH(soundSource.getPic(),400)));
         } catch (NullPointerException e) {
             title.setText("");
             image.setImageURI(Uri.parse("http://f2.topitme.com/2/8c/49/1102507542417498c2l.jpg"));

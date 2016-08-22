@@ -51,7 +51,7 @@ StringFilter {
      * @return
      */
     public String fitlerEchoKeyword(String str) {
-        return str.replace("回声", "初音");
+        return str.replaceAll("(?i)echo回声", "Hatsune初音").replace("回声", "初音");
     }
 
 

@@ -47,15 +47,8 @@ public class PlayMusic {
     timerTask task = new timerTask();
 
     private PlayMusic(SeekBar seekBar) {
-        this.seekBar = seekBar;
-        this.mMediaPlayer = new MediaPlayer();
-        this.mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
-        mMediaPlayer.setOnBufferingUpdateListener(new seekbarBuffering());
-        mMediaPlayer.setOnPreparedListener(new MpPrepared());
-        mMediaPlayer.setOnCompletionListener(new MpComple());
+        initPlayMusic(seekBar);
 
-        // 每一秒触发一次
-        mTimer.schedule(task, 0, 1000);
     }
 
     public static PlayMusic getInstance(SeekBar seekBar) {
@@ -74,8 +67,29 @@ public class PlayMusic {
         return mMediaPlayer;
     }
 
+    /**
+     * 注册播放的对象和监听器
+     */
+    private void initPlayMusic(SeekBar seekBar) {
+        this.seekBar = seekBar;
+        this.mMediaPlayer = new MediaPlayer();
+        this.mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
+        mMediaPlayer.setOnBufferingUpdateListener(new seekbarBuffering());
+        mMediaPlayer.setOnPreparedListener(new MpPrepared());
+        mMediaPlayer.setOnCompletionListener(new MpComple());
+
+
+        // 每一秒触发一次
+        mTimer.schedule(task, 0, 1000);
+    }
+
     public void play() {
-        mMediaPlayer.start();
+        try {
+            mMediaPlayer.start();
+        } catch (NullPointerException e) {
+            initPlayMusic(seekBar);
+        }
+
     }
 
     /**
