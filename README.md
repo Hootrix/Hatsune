@@ -2,10 +2,10 @@
 [![GitHub version](https://badge.fury.io/gh/Hootrix%2FHatsune.svg)](https://badge.fury.io/gh/Hootrix%2FHatsune)
 [![Build Status](https://travis-ci.org/Hootrix/Hatsune.png)](https://travis-ci.org/Hootrix/Hatsune)
 
-初音：超low仿android端 回声echo App
+初音：仿android端 回声echo App
 
 ## android studio 开发
-首次使用studio开发5.0 ，自带Material Design设计风格。
+IDE使用Android studio ，android Material Design设计风格。
 
 
 ## License
