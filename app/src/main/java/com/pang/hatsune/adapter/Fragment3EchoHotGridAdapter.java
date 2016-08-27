@@ -107,17 +107,29 @@ public class Fragment3EchoHotGridAdapter extends RecyclerView.Adapter<RecyclerVi
          * 周榜数据设置
          */
         if (position >= info.getDayHotList().size() + 3) {
-            position = position-(info.getDayHotList().size()+3);
+            position = position - (info.getDayHotList().size() + 3);
             vh.username.setText(info.getWeekHotList().get(position).getUsername());
             vh.weekDataImage.setImageURI(Uri.parse(info.getWeekHotList().get(position).getPic()));
             vh.weekDataTitle.setText(info.getWeekHotList().get(position).getTitle());
             return;
         }
 
-        if (position <= info.getDayHotList().size() + 2 ) {
-            position = position-2;
-            vh.channel.setText(info.getDayHotList().get(position).getChannel());
-            vh.dayDataImage.setImageURI(Uri.parse(info.getDayHotList().get(position).getPic()));
+        /**
+         * 今日最热数据设置
+         */
+        if (position <= info.getDayHotList().size() + 2) {
+            position = position - 2;
+//            vh.channel.setText(info.getDayHotList().get(position).getChannel());
+
+            if (info.getDayHotList().get(position).getPic() != null) {
+                vh.dayDataImage.setImageURI(Uri.parse(info.getDayHotList().get(position).getPic()));
+                vh.dayDataImage.setVisibility(View.VISIBLE);
+                vh.orderText.setVisibility(View.GONE);
+            } else {
+                vh.dayDataImage.setVisibility(View.GONE);
+                vh.orderText.setVisibility(View.VISIBLE);
+            }
+            vh.orderText.setText((position + 1) + "");
             vh.dayDataTitle.setText(info.getDayHotList().get(position).getTitle());
             return;
         }
@@ -127,14 +139,16 @@ public class Fragment3EchoHotGridAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        return info.getDayHotList().size() + info.getWeekHotList().size()+3;
+        return info.getDayHotList().size() + info.getWeekHotList().size() + 3;
 //        return 10;
     }
 
     public class VH extends RecyclerView.ViewHolder {
         public final TextView dayDataTitle, weekDataTitle;
+        public final TextView orderText;//今日热门排序用来显示的文本
         public final SimpleDraweeView dayDataImage, weekDataImage;
-        public final TextView username, channel;
+        public final TextView username;
+//        public final TextView  channel;
 
         public VH(View itemView) {
             super(itemView);
@@ -143,7 +157,8 @@ public class Fragment3EchoHotGridAdapter extends RecyclerView.Adapter<RecyclerVi
             dayDataImage = (SimpleDraweeView) itemView.findViewById(R.id.fragment3_echo_hot_grid_day_hot_item_image);
             weekDataImage = (SimpleDraweeView) itemView.findViewById(R.id.fragment3_echo_hot_grid_week_hot_item_image);
             username = (TextView) itemView.findViewById(R.id.fragment3_echo_hot_grid_week_hot_item_username);
-            channel = (TextView) itemView.findViewById(R.id.fragment3_echo_hot_grid_day_hot_item_channel);
+//            channel = (TextView) itemView.findViewById(R.id.fragment3_echo_hot_grid_day_hot_item_channel);
+            orderText = (TextView) itemView.findViewById(R.id.fragment3_echo_hot_grid_day_hot_item_order);
         }
     }
 }

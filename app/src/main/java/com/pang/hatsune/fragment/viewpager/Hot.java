@@ -49,10 +49,11 @@ public class Hot extends BaseFragment {
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                     @Override
                     public int getSpanSize(int position) {
-                        if (position == 0 || position == 1 || position >= hotDataInfo.getDayHotList().size() + 2) {
-                            return 2;
-                        }
-                        return 1;
+//                        if (position == 0 || position == 1 || position >= hotDataInfo.getDayHotList().size() + 2) {
+//                            return 2;
+//                        }
+//                        return 1;
+                        return 2;
                     }
                 });
 

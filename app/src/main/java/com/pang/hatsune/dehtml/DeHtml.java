@@ -155,13 +155,14 @@ public class DeHtml {
             weekIdArr = hotDataMatcher.group(1).split(",");
         }
 
-        String hotIdArr[] = null;//热门榜单数组
-        regx = "热门榜单\\s*<i class=\"play-all js-mp-play-one\" data-sid=\"([\\d,]+)\">";
-        hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
-        hotDataMatcher = hotDataPattern.matcher(htmlString);
-        while (hotDataMatcher.find()) {
-            hotIdArr = hotDataMatcher.group(1).split(",");
-        }
+
+//        String hotIdArr[] = null;//热门榜单数组
+//        regx = "热门榜单\\s*<i class=\"play-all js-mp-play-one\" data-sid=\"([\\d,]+)\">";
+//        hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+//        hotDataMatcher = hotDataPattern.matcher(htmlString);
+//        while (hotDataMatcher.find()) {
+//            hotIdArr = hotDataMatcher.group(1).split(",");
+//        }
 
 
 //        regx = "<a href=\"/sound/(\\d+)\">[\\s\\S]+?<img src=\"([^\"\\?]+)(?:\\?[^\">]+)?\">[\\s\\S]+?<h4>([^>]+?)</h4>\\s+<h5>([^>]+?)</h5>";//去掉图片裁剪尾巴
@@ -172,22 +173,21 @@ public class DeHtml {
         List<EchoHotInfo.WeekHotListBean> weekList = new ArrayList<EchoHotInfo.WeekHotListBean>();
         w1:
         while (hotDataMatcher.find()) {
-            EchoHotInfo.DayHotListBean day = new EchoHotInfo.DayHotListBean();
             EchoHotInfo.WeekHotListBean week = new EchoHotInfo.WeekHotListBean();
-            w2:
-            for (String id : hotIdArr) {
-                if (id.equals(hotDataMatcher.group(1))) {
-                    day.setId(Integer.valueOf(hotDataMatcher.group(1)));
-                    day.setChannel(hotDataMatcher.group(4));
-                    day.setPic(StringFilter.getInstance().replaceWH(hotDataMatcher.group(2)));
-                    day.setTitle(hotDataMatcher.group(3));
-                    dayList.add(day);
-                    continue w1;
-                }
-            }
+//            EchoHotInfo.DayHotListBean day = new EchoHotInfo.DayHotListBean();
+//            w2:
+//            for (String id : hotIdArr) {
+//                if (id.equals(hotDataMatcher.group(1))) {
+//                    day.setId(Integer.valueOf(hotDataMatcher.group(1)));
+//                    day.setChannel(hotDataMatcher.group(4));
+//                    day.setPic(StringFilter.getInstance().replaceWH(hotDataMatcher.group(2)));
+//                    day.setTitle(hotDataMatcher.group(3));
+//                    dayList.add(day);
+//                    continue w1;
+//                }
+//            }
 
 
-            w3:
             for (String id : weekIdArr) {
                 if (id.equals(hotDataMatcher.group(1))) {
                     week.setId(Integer.valueOf(hotDataMatcher.group(1)));
@@ -206,8 +206,32 @@ public class DeHtml {
 //            System.out.println(m.group(4));//channel or username
         }
 
-        info.setDayHotList(dayList);
         info.setWeekHotList(weekList);
+
+
+        /**
+         * 正则匹配今日热门的数据
+         */
+        regx = "<a href=\"/sound/(\\d+)\">(?:<img src=\"([^\"]+)\"></a></div>\\s*<a class=\"song-title\" href=\"/sound/\\1\">)?([^<]+)</a>";
+        hotDataPattern = Pattern.compile(regx, Pattern.CASE_INSENSITIVE);
+        hotDataMatcher = hotDataPattern.matcher(htmlString);
+        while (hotDataMatcher.find()) {
+            EchoHotInfo.DayHotListBean day = new EchoHotInfo.DayHotListBean();
+            day.setId(Integer.valueOf(hotDataMatcher.group(1)));
+            String pic = hotDataMatcher.group(2);
+            if (pic != null) {
+                day.setPic(StringFilter.getInstance().replaceWH(hotDataMatcher.group(2)));
+            }
+            day.setTitle(hotDataMatcher.group(3));
+            dayList.add(day);
+
+//            System.out.println("-----------");
+//            System.out.println(hotDataMatcher.group(1)); //id
+//            System.out.println(hotDataMatcher.group(2)); //pic
+//            System.out.println(hotDataMatcher.group(3));//name
+        }
+
+        info.setDayHotList(dayList);
         return info;
     }
 
@@ -230,7 +254,7 @@ public class DeHtml {
 //            System.out.println(m.group(3));// desc
 
             Fragment4CelebrityStartinfo info = new Fragment4CelebrityStartinfo();
-            info.setName(StringFilter.getInstance().replaceWH(m.group(2),100));
+            info.setName(StringFilter.getInstance().replaceWH(m.group(2), 100));
             info.setPic(m.group(1));
             info.setDescOrChannel(m.group(3));
             list.add(info);
@@ -251,7 +275,7 @@ public class DeHtml {
         ArrayList<Fragment4CelebrityStartinfo> list = new ArrayList<Fragment4CelebrityStartinfo>();
 
         Pattern pattern = Pattern
-				.compile("<a class=\"pic\" href=\"/mv/(\\d+)\">\\s+<img src=\"([^\"]+)\">[\\s\\S]*?</a>\\s*<a class=\"mv-title\" href=\"/mv/\\1\">([^<]+)</a>\\s*<a class=\"mv-channel\" href=\"/user/\\d+\">([^<]+)</a>");
+                .compile("<a class=\"pic\" href=\"/mv/(\\d+)\">\\s+<img src=\"([^\"]+)\">[\\s\\S]*?</a>\\s*<a class=\"mv-title\" href=\"/mv/\\1\">([^<]+)</a>\\s*<a class=\"mv-channel\" href=\"/user/\\d+\">([^<]+)</a>");
 
         Matcher m = pattern.matcher(htmlString);
 
@@ -305,7 +329,6 @@ public class DeHtml {
 
         return list;
     }
-
 
 
 }

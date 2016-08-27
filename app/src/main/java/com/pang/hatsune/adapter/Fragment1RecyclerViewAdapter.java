@@ -148,9 +148,9 @@ public class Fragment1RecyclerViewAdapter extends RecyclerView.Adapter<Fragment1
             @Override
             public void onClick(View v) {
 //                Toast.makeText(context, position + "", Toast.LENGTH_SHORT).show();
-//                Intent in = new Intent(context, PlayMusicActivity.class);
-//                in.putExtra(PlayMusicActivity.KEYWORD, holder.mItem.get(position).getSoundInfo());
-//                context.startActivity(in);
+                Intent in = new Intent(context, PlayMusicActivity.class);
+                in.putExtra(PlayMusicActivity.KEYWORD, holder.mItem.get(position).getSoundInfo());
+                context.startActivity(in);
             }
         });
     }
